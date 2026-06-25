@@ -1966,6 +1966,22 @@ function calculateTotal() {
                 if(!isNaN(selectedDate)) updateDates(selectedDate);
             });
         });
-    </script>
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2rGccvT16z-nlXzM9wRXdTzTfRRICHjk",
+    authDomain: "madrasa-app-91dd6.firebaseapp.com",
+    projectId: "madrasa-app-91dd6",
+    storageBucket: "madrasa-app-91dd6.appspot.com",
+    messagingSenderId: "281211783935",
+    appId: "1:281211783935:web:29d80daf6fe72fe6f89aca",
+    measurementId: "G-93VMQT1M3V"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 </body>
 </html>
