@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>জামেয়া ইমদাদিয়া মাদানীনগর প্রোফাইল</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enables dark mode based on class
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --bg-body: #eef2f5;
+            --bg-card: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --header-bg: #ffffff;
+        }
+
+        /* Dark Theme Variables */
+        body[data-theme="dark"] {
+            --bg-body: #111827;
+            --bg-card: #1f2937;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
+            --header-bg: #1f2937;
+        }
+
+        /* Night Theme Variables */
+        body[data-theme="night"] {
+            --bg-body: #000000;
+            --bg-card: #0a0a0a;
+            --text-main: #d4d4d4;
+            --text-muted: #737373;
+            --border-color: #262626;
+            --header-bg: #0a0a0a;
+        }
+
+        body { 
+            font-family: 'Hind Siliguri', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main);
+            -webkit-tap-highlight-color: transparent; 
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .theme-card { background-color: var(--bg-card); border-color: var(--border-color); color: var(--text-main); }
+        .theme-header { background-color: var(--header-bg); border-color: var(--border-color); }
+        .theme-text { color: var(--text-main); }
+        .theme-text-muted { color: var(--text-muted); }
+
+        .modal-overlay { background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Custom Toast */
+        #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: #333; color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 14px; opacity: 0; transition: opacity 0.3s, transform 0.3s; transform: translateY(-20px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .toast.show { opacity: 1; transform: translateY(0); }
+
+        /* Digital Clock Font */
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        .digital-clock { font-family: 'Share Tech Mono', monospace; }
+        
+        .makruh-bg { background: repeating-linear-gradient(45deg, #fee2e2, #fee2e2 10px, #fecaca 10px, #fecaca 20px); }
+        body[data-theme="dark"] .makruh-bg, body[data-theme="night"] .makruh-bg { background: repeating-linear-gradient(45deg, #7f1d1d, #7f1d1d 10px, #991b1b 10px, #991b1b 20px); }
+        
+        /* Print Styles */
+        @media print {
+            body * { visibility: hidden; }
+            #admin-dashboard-screen, #admin-dashboard-screen * { visibility: visible; }
+            #admin-dashboard-screen { position: absolute; left: 0; top: 0; width: 100%; height: auto; border: none; box-shadow: none; }
+            .no-print, button { display: none !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body class="pb-24 relative hide-scroll" data-theme="default">
+
+    <div id="toast-container"></div>
+
+    <!-- Header -->
+    <header class="theme-header p-4 text-center shadow-sm border-b flex flex-col items-center justify-center">
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center border border-green-200 text-green-700 text-xl font-bold">মাদানী</div>
+            <h1 class="text-xl font-bold theme-text">জামেয়া ইমদাদিয়া মাদানীনগর</h1>
+        </div>
+        <p class="text-sm theme-text-muted mt-1">মনিরামপুর, যশোর</p>
+    </header>
+
+    <!-- Top Bar -->
+    <div class="px-4 py-3 flex justify-between items-center theme-card shadow-sm mt-1 relative">
+        <div id="calendar-trigger" class="flex items-center theme-text-muted font-medium cursor-pointer hover:text-green-600 transition-colors select-none text-sm">
+            <span id="display-month-year">▼ লোড হচ্ছে...</span>
+            <input type="date" id="calendar-picker" class="w-0 h-0 absolute opacity-0 pointer-events-none">
+        </div>
+        
+        <div class="absolute left-1/2 transform -translate-x-1/2">
+            <div onclick="openModal('notification-alert-modal')" id="notification-trigger" class="relative cursor-pointer w-3 h-3 flex items-center justify-center active:scale-95 transition-transform theme-card rounded-full border">
+                <span class="text-lg">🔔</span>
+                <span id="notification-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-3 h-3 flex items-center justify-center rounded-full transition-opacity">২</span>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3 relative">
+            <div onclick="openModal('location-modal')" class="bg-green-50 border border-green-200 text-green-700 text-[11px] px-2.5 py-1 rounded-full flex items-center gap-1 cursor-pointer active:scale-95 transition-transform">
+                <span id="location-text">মনিরামপুর</span> <span class="text-[10px]">▼</span>
+            </div>
+            
+            <!-- Profile Trigger -->
+            <div onclick="toggleProfileMenu(event)" id="profile-trigger" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-300 cursor-pointer active:scale-95">
+                <span id="profile-icon" class="text-lg">👤</span>
+            </div>
+            
+            <!-- Main Profile Dropdown Menu -->
+            <div id="profile-dropdown" class="hidden absolute right-0 top-10 w-48 theme-card rounded-xl shadow-xl border z-50 overflow-hidden transform origin-top-right transition-all">
+                <button onclick="openModal('login-modal'); closeProfileMenu();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center gap-2 border-b">
+                    <span>🔐</span> লগইন / ক্রিয়েট একাউন্ট
+                </button>
+                <button onclick="openRecycleBin();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center gap-2 border-b">
+                    <span>🗑️</span> রিসাইকেল বিন
+                </button>
+                <button onclick="showToast('হিস্টোরি লোড হচ্ছে...'); closeProfileMenu();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center gap-2 border-b">
+                    <span>🕒</span> হিস্টোরি
+                </button>
+                
+                <!-- Theme Submenu Toggle -->
+                <div class="relative group">
+                    <button class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center justify-between border-b">
+                        <span class="flex items-center gap-2"><span>🎨</span> থিম</span>
+                        <span class="text-xs">▶</span>
+                    </button>
+                    <!-- Theme Options -->
+                    <div class="hidden group-hover:block absolute right-full top-0 w-32 theme-card rounded-xl shadow-xl border overflow-hidden mr-1">
+                        <button onclick="setTheme('default')" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-gray-100 dark:hover:bg-gray-700">ডিফল্ট</button>
+                        <button onclick="setTheme('dark')" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-gray-100 dark:hover:bg-gray-700">ডার্ক</button>
+                        <button onclick="setTheme('night')" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-gray-100 dark:hover:bg-gray-700">নাইট</button>
+                    </div>
+                </div>
+
+                <button onclick="openModal('settings-modal'); closeProfileMenu();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center gap-2 border-b">
+                    <span>⚙️</span> সেটিং
+                </button>
+                <button onclick="openModal('about-modal'); closeProfileMenu();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center gap-2">
+                    <span>ℹ️</span> এবাউট
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="p-4 space-y-4">
+        
+        <!-- Date Display -->
+        <div class="theme-card p-3 rounded-xl shadow-sm text-center border">
+            <h2 id="display-hijri" class="text-green-600 font-bold text-lg">লোড হচ্ছে...</h2>
+            <p id="display-bangla" class="theme-text-muted text-[13px] mt-0.5">তারিখ গণনা করা হচ্ছে...</p>
+        </div>
+
+        <!-- UPDATED PRAYER LIVE TIME CARD (Matching user image instructions) -->
+        <div class="theme-card rounded-2xl shadow-md border relative overflow-hidden p-4 space-y-4">
+            
+            <!-- Sunrise & Sunset Row -->
+            <div class="flex justify-between items-center text-sm">
+                <!-- Sunrise Box -->
+                <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-gray-700">
+                    <span class="text-xl">☀️</span>
+                    <div>
+                        <p class="text-[10px] theme-text-muted font-bold">সূর্যোদয়</p>
+                        <p id="sunrise-time" class="font-bold theme-text">--:--</p>
+                    </div>
+                </div>
+                <!-- Sunset Box -->
+                <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-gray-700">
+                    <div>
+                        <p class="text-[10px] theme-text-muted font-bold text-right">সূর্যাস্ত</p>
+                        <p id="sunset-time" class="font-bold theme-text">--:--</p>
+                    </div>
+                    <span class="text-xl">🌇</span>
+                </div>
+            </div>
+
+            <!-- Current Prayer Name & Dynamic Time Range Row -->
+            <div class="flex justify-between items-end pt-1">
+                <div>
+                    <p class="text-[10px] theme-text-muted mb-0.5">ওয়াক্তের নাম</p>
+                    <h2 id="current-prayer-name" class="font-bold text-2xl text-green-600 tracking-wide leading-tight">--</h2>
+                </div>
+                <div class="text-right">
+                    <p class="text-[10px] theme-text-muted mb-0.5">নামাজের টাইম সীমা</p>
+                    <p id="current-prayer-range" class="font-bold theme-text text-base tracking-wide">--:-- - --:--</p>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden shadow-inner">
+                <div id="prayer-progress" class="bg-green-500 h-full rounded-full transition-all duration-1000" style="width: 0%"></div>
+            </div>
+
+            <!-- Status & Countdown Text Row -->
+            <div class="flex justify-between items-center text-sm">
+                <div class="flex items-center gap-2 font-bold text-green-600">
+                    <span id="status-dot" class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></span>
+                    <span>চলমান</span>
+                </div>
+                <div id="time-remaining-text" class="font-bold theme-text text-sm">
+                    -- ঘণ্টা -- মিনিট বাকি
+                </div>
+            </div>
+
+            <!-- Scrollable Timeline Grid -->
+            <div class="overflow-x-auto hide-scroll border-t pt-2 dark:border-gray-700">
+                <div class="flex w-max min-w-full divide-x dark:divide-gray-700 theme-text-muted" id="prayer-timeline-grid">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid Menu -->
+        <section class="grid grid-cols-4 gap-3">
+            <div onclick="openModal('routine-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
+                <span class="text-2xl mb-1">📅</span><p class="text-[10px] font-bold theme-text leading-tight">ক্লাস রুটিন</p>
+            </div>
+            <div onclick="openModal('sakkhat-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
+                <span class="text-2xl mb-1">🤝</span><p class="text-[10px] font-bold theme-text leading-tight">সাক্ষাত টাইম</p>
+            </div>
+            <div onclick="openModal('rat-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
+                <span class="text-2xl mb-1">📃</span><p class="text-[10px] font-bold theme-text leading-tight">খানার মূল্য</p>
+            </div>
+            <div onclick="openModal('calc-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
+                <span class="text-2xl mb-1">🧮</span><p class="text-[10px] font-bold theme-text leading-tight">খানা ও বেতন</p>
+            </div>
+            <div onclick="openModal('note-modal'); renderNotes();" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
+                <span class="text-2xl mb-1">📝</span><p class="text-[10px] font-bold theme-text leading-tight">নোট</p>
+            </div>  
+            <div onclick="openModal('notification-modal')" id="notice-board-trigger" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800 relative">    
+                <span class="text-2xl mb-1">📢</span><p class="text-[10px] font-bold theme-text leading-tight">নোটিশ</p>
+            </div>          
+            <div onclick="openModal('donation-modal', 'দান')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
+                <span class="text-2xl mb-1">🤲</span><p class="text-[10px] font-bold theme-text leading-tight">দান</p>            
+            </div>
+            <div onclick="openModal('donation-modal', 'যাকাত')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
+                <span class="text-2xl mb-1">🏦</span><p class="text-[10px] font-bold theme-text leading-tight">যাকাত</p>
+            </div>            
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 w-full theme-header border-t p-2 flex justify-around shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-40">
+        <button onclick="closeAllModals()" class="flex flex-col items-center text-green-600 w-16 p-1 rounded-lg bg-green-50 dark:bg-gray-800">
+            <span class="text-[22px] mb-0.5">🏠</span><span class="text-[10px] font-medium">হোম</span>
+        </button>
+        <button onclick="openModal('contact-modal')" class="flex flex-col items-center theme-text-muted w-16 p-1 active:bg-gray-50 dark:active:bg-gray-800 rounded-lg">
+            <span class="text-[22px] mb-0.5">☎️</span><span class="text-[10px] font-medium">যোগাযোগ</span>
+        </button>
+        <button onclick="window.open('https://qmmsoft.com/10012/login', '_blank')" class="flex flex-col items-center theme-text-muted w-16 p-1 active:bg-gray-50 dark:active:bg-gray-800 rounded-lg">
+            <span class="text-[22px] mb-0.5">👨‍🎓</span><span class="text-[10px] font-medium whitespace-nowrap">শিক্ষার্থী প্রো.</span>
+        </button>
+        <button onclick="openAdminEntry()" class="flex flex-col items-center theme-text-muted w-16 p-1 active:bg-gray-50 dark:active:bg-gray-800 rounded-lg">
+            <span class="text-[22px] mb-0.5">🛡️</span><span class="text-[10px] font-medium">অ্যাডমিন</span>
+        </button>
+    </nav>
+
+    <!-- Shared 3-Dot Action Menu -->
+    <div id="shared-action-menu" class="hidden absolute theme-card shadow-xl border border-gray-200 dark:border-gray-700 rounded-lg w-28 z-[100] overflow-hidden">
+        <button id="action-edit-btn" class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm theme-text border-b dark:border-gray-700">এডিট</button>
+        <button id="action-delete-btn" class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-red-600">ডিলিট</button>
+    </div>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- Notepad Modal -->
+    <div id="note-modal" class="fixed inset-0 modal-overlay z-[60] hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-2xl w-full max-w-sm h-[80vh] shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
+            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 class="font-bold theme-text flex items-center gap-2 text-base">
+                    <span>📝</span> নোটপ্যাড
+                </h3>
+                <div class="flex gap-2">
+                    <button onclick="openAddNoteForm()" class="w-8 h-8 bg-green-600 text-white rounded-full font-bold hover:bg-green-700">+</button>
+                    <button onclick="closeModal('note-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold">✕</button>
+                </div>
+            </div>
+            
+            <!-- Note Add/Edit Form -->
+            <div id="add-note-form" class="hidden flex-col p-4 border-b bg-gray-100 dark:bg-gray-900">
+                <h4 id="note-form-title" class="font-bold text-sm mb-2 theme-text">নতুন নোট</h4>
+                <input type="hidden" id="editing-note-id">
+                <textarea id="new-note-text" class="w-full border rounded-lg p-2 text-sm outline-none focus:border-green-500 bg-white dark:bg-gray-800 theme-text mb-2 h-20" placeholder="নোট লিখুন..."></textarea>
+                <div class="flex gap-2">
+                    <button onclick="saveNote()" class="flex-1 bg-green-600 text-white text-sm font-bold py-2 rounded-lg">সেভ করুন</button>
+                    <button onclick="closeAddNoteForm()" class="flex-1 bg-gray-400 text-white text-sm font-bold py-2 rounded-lg">বাতিল</button>
+                </div>
+            </div>
+
+            <!-- Notes List -->
+            <div id="note-list-container" class="p-4 overflow-y-auto space-y-3 flex-1 bg-gray-50 dark:bg-gray-900 hide-scroll">
+                <!-- Notes injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Recycle Bin Modal -->
+    <div id="recycle-bin-modal" class="fixed inset-0 modal-overlay z-[70] hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-2xl w-full max-w-sm h-[70vh] shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
+            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 class="font-bold theme-text text-base">🗑️ রিসাইকেল বিন</h3>
+                <button onclick="closeModal('recycle-bin-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold">✕</button>
+            </div>
+            <div id="recycle-bin-list" class="p-4 overflow-y-auto space-y-3 flex-1 bg-gray-50 dark:bg-gray-900 hide-scroll">
+                <!-- Data injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Alert Modal -->
+    <div id="notification-alert-modal" class="fixed inset-0 modal-overlay z-[60] hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-2xl w-full max-w-sm max-h-[80vh] shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
+            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 class="font-bold theme-text flex items-center gap-2 text-base">
+                    <span>🔔</span> নোটিফিকেশন
+                </h3>
+                <button onclick="closeModal('notification-alert-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold hover:bg-gray-300">✕</button>
+            </div>
+            <div id="notification-alert-list" class="p-4 overflow-y-auto space-y-2 text-sm hide-scroll bg-gray-50 dark:bg-gray-900">
+                <!-- Alerts injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications/Notice Modal -->
+    <div id="notification-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-2xl w-full max-w-sm max-h-[80vh] shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
+            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 class="font-bold theme-text flex items-center gap-2 text-base">
+                    <span>📢</span> নোটিশ বোর্ড
+                </h3>
+                <button onclick="closeModal('notification-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold hover:bg-gray-300">✕</button>
+            </div>
+            <div id="notification-list" class="p-4 overflow-y-auto space-y-3 text-sm hide-scroll bg-gray-50 dark:bg-gray-900">
+                <!-- Notices injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Location Modal -->
+    <div id="location-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
+            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 class="font-bold theme-text text-base">লোকেশন নির্বাচন</h3>
+                <button onclick="closeModal('location-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text">✕</button>
+            </div>
+            <div class="p-4 space-y-3">
+                <button onclick="getLocationGPS()" class="w-full bg-blue-50 border border-blue-200 text-blue-700 p-3 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400">
+                    <span>📍</span> জিপিএস এর মাধ্যমে (Auto)
+                </button>
+                <div class="text-center text-xs theme-text-muted">অথবা ম্যানুয়ালি নির্বাচন করুন</div>
+                <select id="manual-location" class="w-full border p-3 rounded-xl outline-none focus:border-green-500 bg-transparent theme-text text-sm font-medium">
+                    <option value="23.0159,89.2272,মনিরামপুর">মনিরামপুর, যশোর</option>
+                    <option value="23.8103,90.4125,ঢাকা">ঢাকা</option>
+                    <option value="22.3569,91.7832,চট্টগ্রাম">চট্টগ্রাম</option>
+                    <option value="24.8949,91.8687,সিলেট">সিলেট</option>
+                    <option value="24.3636,88.6241,রাজশাহী">রাজশাহী</option>
+                </select>
+                <button onclick="setManualLocation()" class="w-full bg-green-600 text-white font-bold p-3 rounded-xl active:scale-95 transition-transform">সংরক্ষণ করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Routine Modal -->
+    <div id="routine-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
+            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 class="font-bold theme-text">📅 ক্লাস রুটিন</h3>
+                <button onclick="closeModal('routine-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold hover:bg-gray-300">✕</button>
+            </div>
+            <div class="p-4">
+                <select id="class-select" class="w-full p-3 border rounded-xl mb-4 bg-transparent theme-text font-bold outline-none focus:border-green-500">
+				<option> তাকমীল </option>
+				<option> ফজীলাত ২য় </option>
+				<option> ফজীলাত ১ম </option>
+				<option> সানাবিয়্যাহ ২য়  </option>
+				<option> সানাবিয়্যাহ ২য় (২য় দল) </option>
+				<option> সানাবিয়্যাহ ১ম (১ম দল) </option>
+				<option> সানাবিয়্যাহ ১ম (২য় দল)  </option>
+				<option> সানাবিয়্যাহ ১ম বর্ষ (৩য় দল) </option>
+				<option> মুতাওয়াসসিতাহ ২য় (১ম দল) </option>
+				<option> মুতাওয়াসসিতাহ ২য় (২য় দল) </option>
+				<option> মুতাওয়াসসিতাহ ২য় (৩য় দল) </option>
+				<option> মুতাওয়াসসিতাহ ২য় (৪র্থ দল) </option>
+				<option> মুতাওয়াসসিতাহ ১ম (১ম দল) </option>
+				<option> মুতাওয়াসসিতাহ ১ম (২য় দল) </option>
+				<option> মুতাওয়াসসিতাহ ১ম (৩য় দল) </option>
+				<option> মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল) </option>
+				<option> মুতাওয়াসসিতাহ (৫ম দল) </option>
+				<option> খুছুছী (১ম দল) </option>
+				<option> খুছুছী (২য় দল) </option>
+				<option> খুছুছী (৩য় দল) </option>
+				<option> ইবতেদাইয়্যাহ ৫ম (১ম দল) </option>
+				<option> ইবতেদাইয়্যাহ ৫ম (২য় দল) </option>
+				<option> ইবতেদাইয়্যাহ ৪র্থ (১ম দল) </option>
+				<option> ইবতেদাইয়্যাহ ৪র্থ (২য় দল) </option>
+				<option> ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল) </option>
+				<option> ইবতেদাইয়্যাহ ৩য় (১ম দল) </option>
+				<option> ইবতেদাইয়্যাহ ৩য় (২য় দল) </option>
+				<option> ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল) </option>
+				<option> হিফ্‌জ খানা (হাফেজা রহীমা) </option>
+				<option> হিফ্‌জ খানা (হাফেজা সামিরা) </option>
+				<option> হিফ্‌জ খানা (হাফেজা আয়েশা) </option>
+				<option> হিফ্‌জ খানা (হাফেজা মারয়াম) </option>
+				<option> হিফ্‌জ খানা (হাফেজা সুমাইয়া) </option>
+				<option> হিফ্‌জ খানা (হাফেজা নাঈমা) </option>
+				<option> হিফ্‌জ খানা (৩০ পারা) </option>
+				<option> হিফজ নাজেরা (উম্মে হাবীবা) </option>
+				<option> হিফজ নাজেরা (আলেমা ফারজানা) </option>
+                </select>
+                <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-xl border border-yellow-200 dark:border-yellow-800 text-center">
+                    <h4 class="font-bold text-yellow-800 dark:text-yellow-500 mb-2">রুটিন</h4>
+                    <p class="text-sm text-yellow-700 dark:text-yellow-600">সকাল ৮:০০ - কুরআন ক্লাস<br>সকাল ১০:০০ - ফিকহ<br>দুপুর ১২:০০ - বিরতি<br>বিকাল ৩:০০ - হাদিস</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sakkhat (Meeting) Modal -->
+    <div id="sakkhat-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
+            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 class="font-bold theme-text">🤝 সাক্ষাতের সময়সূচী</h3>
+                <button onclick="closeModal('sakkhat-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold hover:bg-gray-300">✕</button>
+            </div>
+            <div class="p-5 space-y-3">
+                <div class="flex justify-between items-center border-b dark:border-gray-700 pb-2">
+                    <span class="text-sm font-bold theme-text">সকাল</span>
+                    <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">ক্লাস শুরুর আগে</span>
+                </div>
+                <div class="flex justify-between items-center border-b dark:border-gray-700 pb-2">
+                    <span class="text-sm font-bold theme-text">দুপুর</span>
+                    <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">ক্লাস শেষে (১২:৩০ - ১:৩০)</span>
+                </div>
+                <div class="flex justify-between items-center border-b dark:border-gray-700 pb-2">
+                    <span class="text-sm font-bold theme-text">বিকাল</span>
+                    <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">৩:০০ টা থেকে আসর পর্যন্ত</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm font-bold theme-text">রাত</span>
+                    <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">ইশার পর থেকে রাত ১০:০০ টা</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Khana Rate Modal -->
+    <div id="rat-modal" class="fixed inset-0 modal-overlay z-[60] hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-2xl w-full max-w-sm max-h-[85vh] shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
+            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 class="font-bold theme-text flex items-center gap-2 text-base">
+                    <span>📃</span> Khanar Rate List
+                </h3>
+                <button onclick="closeModal('rat-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold">✕</button>
+            </div>
+            <div class="p-4 overflow-y-auto space-y-4 text-sm hide-scroll bg-gray-50 dark:bg-gray-900">
+                <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 p-3 rounded-lg">
+                    <h4 class="font-bold text-green-800 dark:text-green-500 border-b border-green-200 dark:border-green-800 pb-1 mb-2">Full Khana (Monthly)</h4>
+                    <ul class="space-y-1 theme-text">
+                        <li class="flex justify-between"><span>Base Rate:</span> <span class="font-bold">3,300 ৳</span></li>
+                    </ul>
+                </div>
+                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-3 rounded-lg">
+                    <h4 class="font-bold text-blue-800 dark:text-blue-500 border-b border-blue-200 dark:border-blue-800 pb-1 mb-2">Half Khana Categories (Monthly)</h4>
+                    <ul class="space-y-1 theme-text">
+                        <li class="flex justify-between"><span>Category 1:</span> <span class="font-bold">2,300 ৳</span></li>
+                        <li class="flex justify-between"><span>Category 2:</span> <span class="font-bold">2,450 ৳</span></li>
+                        <li class="flex justify-between"><span>Category 3:</span> <span class="font-bold">2,900 ৳</span></li>
+                        <li class="flex justify-between"><span>Category 4:</span> <span class="font-bold">3,050 ৳</span></li>
+                    </ul>
+                </div>
+                <div class="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 p-3 rounded-lg">
+                    <h4 class="font-bold text-orange-800 dark:text-orange-500 border-b border-orange-200 dark:border-orange-800 pb-1 mb-2">Special Item (Per Wakto)</h4>
+                    <ul class="space-y-1 theme-text">
+                        <li class="flex justify-between"><span>Morning Special:</span> <span class="font-bold">+150 ৳</span></li>
+                        <li class="flex justify-between"><span>Noon Special:</span> <span class="font-bold">+500 ৳</span></li>
+                        <li class="flex justify-between"><span>Night Special:</span> <span class="font-bold">+600 ৳</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Donation Modal -->
+    <div id="donation-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
+            <div class="p-4 border-b flex justify-between items-center bg-green-600 text-white">
+                <h3 class="font-bold text-lg" id="donation-title">दान করুন</h3>
+                <button onclick="closeModal('donation-modal')" class="w-8 h-8 bg-white/20 rounded-full text-white font-bold hover:bg-white/30">✕</button>
+            </div>
+            <div class="p-5 space-y-4 bg-gray-50 dark:bg-gray-900">
+                <div class="theme-card p-3 rounded-xl border flex items-center gap-3">
+                    <div class="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">B</div>
+                    <div>
+                        <p class="text-xs theme-text-muted font-bold">বিকাশ (মার্চেন্ট)</p>
+                        <p class="font-mono font-bold theme-text tracking-wider">01700-000000</p>
+                    </div>
+                </div>
+                <div class="theme-card p-3 rounded-xl border flex items-center gap-3">
+                    <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">N</div>
+                    <div>
+                        <p class="text-xs theme-text-muted font-bold">নগদ (মার্চেন্ট)</p>
+                        <p class="font-mono font-bold theme-text tracking-wider">01700-000000</p>
+                    </div>
+                </div>
+                
+                <hr class="dark:border-gray-700">
+                <p class="text-xs text-center theme-text-muted">পেমেন্ট করার পর ট্রানজেকশন আইডি প্রদান করুন</p>
+                <div class="flex gap-2">
+                    <input type="text" id="trx-id" placeholder="TrxID..." class="flex-1 border rounded-lg p-2 text-sm outline-none bg-transparent theme-text focus:border-green-500">
+                    <button onclick="submitDonation()" class="bg-green-600 text-white px-4 rounded-lg font-bold text-sm active:scale-95">সাবমিট</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+  <div id="contact-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div id="modal-content" class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
+            
+            <div class="p-4 border-b dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 class="font-bold theme-text text-lg">☎️ যোগাযোগ</h3>
+                <button onclick="closeModal('contact-modal')" class="w-8 h-8 flex justify-center items-center bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold hover:bg-red-500 hover:text-white transition-colors">
+                    ✕
+                </button>
+            </div>
+            
+            <div class="p-5 space-y-4">
+                
+                <div class="flex items-center justify-between border-b dark:border-gray-700 pb-3">
+                    <div>
+                        <p class="font-bold theme-text text-sm">মুহতামিম সাহেব</p>
+                        <p class="text-xs theme-text-muted font-mono mt-1">017XX-XXXXXX</p>
+                    </div>
+                    <a href="tel:01700000000" class="bg-green-100 text-green-700 w-10 h-10 rounded-full flex items-center justify-center text-lg shadow-sm hover:bg-green-200 transition-colors">
+                        📞
+                    </a>
+                </div>
+
+                <div class="flex items-center justify-between border-b dark:border-gray-700 pb-3">
+                    <div>
+                        <p class="font-bold theme-text text-sm">মনাজিম সাহেব</p>
+                        <p class="text-xs theme-text-muted font-mono mt-1">017XX-XXXXXX</p>
+                    </div>
+                    <a href="tel:01700000000" class="bg-green-100 text-green-700 w-10 h-10 rounded-full flex items-center justify-center text-lg shadow-sm hover:bg-green-200 transition-colors">
+                        📞
+                    </a>
+                </div>
+                
+                <div class="pt-2 flex flex-col gap-3">
+                    <button onclick="window.open('https://chat.whatsapp.com/G8R9T1wgLzfGYh4JdJe5XG', '_blank')" class="w-full bg-[#25D366] hover:bg-[#20b858] text-white p-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all">
+                        <span class="text-xl">💬</span> হোয়াটসঅ্যাপ গ্রুপে যুক্ত হোন
+                    </button>
+                    
+                    <button onclick="window.open('https://madaninagarbd.com', '_blank')" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all">
+                        <span class="text-xl">🌐</span> মাদ্রাসার ওয়েব সাইট
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Entry Modal -->
+
+    <div id="admin-entry-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
+            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 class="font-bold theme-text">কোথায় প্রবেশ করবেন?</h3>
+                <button onclick="closeModal('admin-entry-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300 font-bold hover:bg-gray-300">✕</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <button onclick="window.open('https://qmmsoft.com/login', '_blank')" class="w-full bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-800 p-4 rounded-xl flex items-center gap-4 transition-colors">
+                    <span class="text-3xl">👨‍🏫</span>
+                    <div class="text-left">
+                        <h4 class="font-bold text-lg">শিক্ষক পোর্টাল</h4>
+                        <p class="text-xs text-blue-600">ওয়েবসাইটে নিয়ে যাবে</p>
+                    </div>
+                </button>
+                <button onclick="openAdminPin()" class="w-full bg-gray-800 hover:bg-gray-900 text-white p-4 rounded-xl flex items-center gap-4 transition-colors shadow-md">
+                    <span class="text-3xl">🛡️</span>
+                    <div class="text-left">
+                        <h4 class="font-bold text-lg">অ্যাডমিন প্যানেল</h4>
+                        <p class="text-xs text-gray-400">শিক্ষার্থী লিস্ট (পাসওয়ার্ড প্রয়োজন)</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-2xl w-full max-w-md h-[90vh] shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200 relative">
+            
+            <div id="admin-pin-screen" class="flex-1 flex flex-col items-center justify-center p-6 theme-card relative">
+                <button onclick="closeModal('admin-modal')" class="absolute top-4 right-4 w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300 font-bold hover:bg-gray-300">✕</button>
+                <div class="w-16 h-16 bg-gray-200 dark:bg-gray-800 rounded-full flex items-center justify-center text-3xl mb-4">🛡️</div>
+                <h3 class="font-bold text-xl theme-text mb-2">অ্যাডমিন প্যানেল</h3>
+                <p class="text-xs theme-text-muted mb-6 text-center">প্রवेश করতে পিন কোড দিন (Demo: 1234)</p>
+                
+                <div class="relative w-full max-w-xs mb-4">
+                    <input type="password" id="admin-pin" class="w-full border-2 text-center text-2xl tracking-[0.5em] p-3 rounded-xl outline-none focus:border-green-500 pr-10 bg-transparent theme-text" placeholder="••••">
+                    <button onclick="toggleAdminPin()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl opacity-60 hover:opacity-100" id="pin-eye">👁️</button>
+                </div>
+                
+                <button onclick="verifyAdminPin()" class="w-full max-w-xs bg-gray-800 text-white font-bold py-3 rounded-xl shadow-md">প্রবেশ</button>
+            </div>
+
+            <div id="admin-dashboard-screen" class="hidden flex-1 flex flex-col overflow-hidden relative">
+                <div class="p-3 border-b bg-gray-800 text-white flex justify-between items-center shrink-0">
+                    <h3 class="font-bold text-base">শিক্ষার্থী তালিকা</h3>
+                    <button onclick="closeModal('admin-modal');" class="w-8 h-8 bg-white/20 rounded-full text-white font-bold hover:bg-white/30 no-print">✕</button>
+                </div>
+                
+                <div class="p-3 theme-card shrink-0 space-y-2 border-b no-print">
+                    <div class="flex gap-2">
+                        <select id="admin-class-filter" onchange="renderStudentList()" class="flex-1 p-2 border rounded-lg outline-none font-bold text-sm bg-transparent theme-text">
+                            <option value="all">সকল ক্লাস</option>
+                            <option value="তাকমীল">তাকমীল</option>
+                            <option value="ফজীলাত ২য়">ফজীলাত ২য়</option>
+                            <option value="ফজীলাত ১ম">ফজীলাত ১ম</option>
+                            <option value="সানাবিয়্যাহ ২য়">সানাবিয়্যাহ ২য়</option>
+                            <option value="সানাবিয়্যাহ ২য় (২য় দল)">সানাবিয়্যাহ ২য় (২য় দল)</option>
+                            <option value="সানাবিয়্যাহ ১ম (১ম দল)">সানাবিয়্যাহ ১ম (১ম দল)</option>
+                            <option value="সানাবিয়্যাহ ১ম (২য় দল)">সানাবিয়্যাহ ১ম (২য় দল)</option>
+                            <option value="সানাবিয়্যাহ ১ম বর্ষ (৩য় দল)">সানাবিয়্যাহ ১ম বর্ষ (৩য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (১ম দল)">মুতাওয়াসসিতাহ ২য় (১ম দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (২য় দল)">মুতাওয়াসসিতাহ ২য় (২য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (৩য় দল)">মুতাওয়াসসিতাহ ২য় (৩য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (৪র্থ দল)">মুতাওয়াসসিতাহ ২য় (৪র্থ দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম (১ম দল)">মুতাওয়াসসিতাহ ১ম (১ম দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম (২য় দল)">মুতাওয়াসসিতাহ ১ম (২য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম (৩য় দল)">মুতাওয়াসসিতাহ ১ম (৩য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল)">মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল)</option>
+                            <option value="মুতাওয়াসসিতাহ (৫ম দল)">মুতাওয়াসসিতাহ (৫ম দল)</option>
+                            <option value="খুছুছী (১ম দল)">খুছুছী (১ম দল)</option>
+                            <option value="খুছুছী (২য় দল)">খুছুছী (২য় দল)</option>
+                            <option value="খুছুছী (৩য় দল)">খুছুছী (৩য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৫ম (১ম দল)">ইবতেদাইয়্যাহ ৫ম (১ম দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৫ম (২য় দল)">ইবতেদাইয়্যাহ ৫ম (২য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৪র্থ (১ম দল)">ইবতেদাইয়্যাহ ৪র্থ (১ম দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৪র্থ (২য় দল)">ইবতেদাইয়্যাহ ৪র্থ (২য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)">ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৩য় (১ম দল)">ইবতেদাইয়্যাহ ৩য় (১ম দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৩য় (২য় দল)">ইবতেদাইয়্যাহ ৩য় (২য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)">ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা রহীমা)">হিফ্‌জ খানা (হাফেজা রহীমা)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা সামিরা)">হিফ্‌জ খানা (হাফেজা সামিরা)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা আয়েশা)">হিফ্‌জ খানা (হাফেজা আয়েশা)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা মারয়াম)">হিফ্‌জ খানা (হাফেজা মারয়াম)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা সুমাইয়া)">হিফ্‌জ খানা (হাফেজা সুমাইয়া)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা নাঈমা)">হিফ্‌জ খানা (হাফেজা নাঈমা)</option>
+                            <option value="হিফ্‌জ খানা (৩০ পারা)">হিফ্‌জ খানা (৩০ পারা)</option>
+                            <option value="হিফজ নাজেরা (উম্মে হাবীবা)">হিফজ নাজেরা (উম্মে হাবীবা)</option>
+                            <option value="হিফজ নাজেরা (আলেমা ফারজানা)">হিফজ নাজেরা (আলেমা ফারজানা)</option>
+                        </select>
+                        <button onclick="exportStudentData()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-bold flex items-center gap-1 hover:bg-blue-700">
+                            <span>📄</span> প্রিন্ট
+                        </button>
+                    </div>
+                    <div class="flex gap-2 items-center">
+                        <div class="relative flex-1">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
+                            <input type="text" id="admin-search" oninput="renderStudentList()" placeholder="আইডি বা নাম দিয়ে খুঁজুন..." class="w-full pl-9 pr-3 py-2 border rounded-lg outline-none focus:border-green-500 text-sm bg-transparent theme-text">
+                        </div>
+                        <button onclick="openAddStudentForm()" class="bg-green-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-xl hover:bg-green-700 shrink-0">
+                            +
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="p-3 flex-1 overflow-y-auto hide-scroll bg-gray-50 dark:bg-gray-900 space-y-3" id="student-list-container">
+                    </div>
+            </div>
+
+            <div id="add-student-screen" class="hidden absolute inset-0 theme-card z-10 flex-col">
+                <div class="p-4 border-b bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
+                    <h3 class="font-bold theme-text" id="add-std-title">নতুন শিক্ষার্থী যোগ করুন</h3>
+                    <button onclick="closeAddStudentForm()" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-600 font-bold">✕</button>
+                </div>
+                <div class="p-4 flex-1 overflow-y-auto space-y-3">
+                    <input type="hidden" id="edit-std-id">
+                    <div>
+                        <label class="block text-xs font-bold theme-text-muted mb-1">ক্লাস নির্বাচন করুন</label>
+                        <select id="new-std-class" class="w-full border rounded-lg p-2 bg-transparent theme-text outline-none focus:border-green-500">
+                            <option value="তাকমীল">তাকমীল</option>
+                            <option value="ফজীলাত ২য়">ফজীলাত ২য়</option>
+                            <option value="ফজীলাত ১ম">ফজীলাত ১ম</option>
+                            <option value="সানাবিয়্যাহ ২য়">সানাবিয়্যাহ ২য়</option>
+                            <option value="সানাবিয়্যাহ ২য় (২য় দল)">সানাবিয়্যাহ ২য় (২য় দল)</option>
+                            <option value="সানাবিয়্যাহ ১ম (১ম দল)">সানাবিয়্যাহ ১ম (১ম দল)</option>
+                            <option value="সানাবিয়্যাহ ১ম (২য় দল)">সানাবিয়্যাহ ১ম (২য় দল)</option>
+                            <option value="সানাবিয়্যাহ ১ম বর্ষ (৩য় দল)">সানাবিয়্যাহ ১ম বর্ষ (৩য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (১ম দল)">মুতাওয়াসসিতাহ ২য় (১ম দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (২য় দল)">মুতাওয়াসসিতাহ ২য় (২য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (৩য় দল)">মুতাওয়াসসিতাহ ২য় (৩য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (৪র্থ দল)">মুতাওয়াসসিতাহ ২য় (৪র্থ দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম (১ম দল)">মুতাওয়াসসিতাহ ১ম (১ম দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম (২য় দল)">মুতাওয়াসসিতাহ ১ম (২য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম (৩য় দল)">মুতাওয়াসসিতাহ ১ম (৩য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল)">মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল)</option>
+                            <option value="মুতাওয়াসসিতাহ (৫ম দল)">মুতাওয়াসসিতাহ (৫ম দল)</option>
+                            <option value="খুছুছী (১ম দল)">খুছুছী (১ম দল)</option>
+                            <option value="খুছুছী (২য় দল)">খুছুছী (২য় দল)</option>
+                            <option value="খুছুছী (৩য় দল)">খুছুছী (৩য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৫ম (১ম দল)">ইবতেদাইয়্যাহ ৫ম (১ম দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৫ম (২য় দল)">ইবতেদাইয়্যাহ ৫ম (২য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৪র্থ (১ম দল)">ইবতেদাইয়্যাহ ৪র্থ (১ম দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৪র্থ (২য় দল)">ইবতেদাইয়্যাহ ৪র্থ (২য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)">ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৩য় (১ম দল)">ইবতেদাইয়্যাহ ৩য় (১ম দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৩য় (২য় দল)">ইবতেদাইয়্যাহ ৩য় (২য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)">ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা রহীমা)">হিফ্‌জ খানা (হাফেজা রহীমা)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা সামিরা)">হিফ্‌জ খানা (হাফেজা সামিরা)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা আয়েশা)">হিফ্‌জ খানা (হাফেজা আয়েশা)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা মারয়াম)">হিফ্‌জ খানা (হাফেজা মারয়াম)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা সুমাইয়া)">হিফ্‌জ খানা (হাফেজা সুমাইয়া)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা নাঈমা)">হিফ্‌জ খানা (হাফেজা নাঈমা)</option>
+                            <option value="হিফ্‌জ খানা (৩০ পারা)">হিফ্‌জ খানা (৩০ পারা)</option>
+                            <option value="হিফজ নাজেরা (উম্মে হাবীবা)">হিফজ নাজেরা (উম্মে হাবীবা)</option>
+                            <option value="হিফজ নাজেরা (আলেমা ফারজানা)">হিফজ নাজেরা (আলেমা ফারজানা)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold theme-text-muted mb-1">শিক্ষার্থীর আইডি</label>
+                        <input type="text" id="new-std-id" class="w-full border rounded-lg p-2 bg-transparent theme-text outline-none focus:border-green-500" placeholder="যেমন: 105">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold theme-text-muted mb-1">নাম</label>
+                        <input type="text" id="new-std-name" class="w-full border rounded-lg p-2 bg-transparent theme-text outline-none focus:border-green-500" placeholder="নাম লিখুন">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold theme-text-muted mb-1">পিতার নাম</label>
+                        <input type="text" id="new-std-fname" class="w-full border rounded-lg p-2 bg-transparent theme-text outline-none focus:border-green-500" placeholder="পিতার নাম">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold theme-text-muted mb-1">মোবাইল নাম্বার</label>
+                        <input type="tel" id="new-std-phone" class="w-full border rounded-lg p-2 bg-transparent theme-text outline-none focus:border-green-500" placeholder="017...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold theme-text-muted mb-1">ঠিকানা</label>
+                        <input type="text" id="new-std-addr" class="w-full border rounded-lg p-2 bg-transparent theme-text outline-none focus:border-green-500" placeholder="জেলা/উপজেলা">
+                    </div>
+                    <button onclick="saveStudent()" class="w-full bg-green-600 text-white font-bold py-3 rounded-lg mt-2 active:scale-95 shadow-md">সংরক্ষণ করুন</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login/Create Account Modal -->
+    <div id="login-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-end sm:items-center justify-center sm:p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-t-2xl sm:rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform translate-y-full sm:translate-y-0 sm:scale-95 transition-transform duration-300">
+            <div class="p-4 border-b flex justify-between items-center bg-green-50 dark:bg-gray-800">
+                <h3 class="font-bold theme-text text-base" id="auth-title">লগইন করুন</h3>
+                <button onclick="closeModal('login-modal')" class="w-8 h-8 theme-card rounded-full theme-text font-bold border">✕</button>
+            </div>
+            <div class="p-5 space-y-4" id="auth-form-container">
+                <div class="flex justify-center mb-2">
+                    <div class="bg-gray-100 dark:bg-gray-700 p-1 rounded-lg inline-flex">
+                        <button onclick="toggleAuthMode('login')" id="btn-mode-login" class="px-4 py-1.5 rounded-md bg-white dark:bg-gray-600 shadow-sm text-sm font-bold theme-text transition-all">লগইন</button>
+                        <button onclick="toggleAuthMode('register')" id="btn-mode-register" class="px-4 py-1.5 rounded-md text-sm font-medium theme-text-muted transition-all">ক্রিয়েট একাউন্ট</button>
+                    </div>
+                </div>
+                <div id="register-fields" class="hidden space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold theme-text-muted mb-1">নাম</label>
+                        <input type="text" class="w-full border rounded-lg p-2.5 text-sm outline-none focus:border-green-500 bg-transparent theme-text" placeholder="আপনার নাম">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold theme-text-muted mb-1">ইমেইল</label>
+                    <input type="email" id="auth-email" class="w-full border rounded-lg p-2.5 text-sm outline-none focus:border-green-500 bg-transparent theme-text" placeholder="user@example.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold theme-text-muted mb-1">পাসওয়ার্ড</label>
+                    <input type="password" id="auth-pass" class="w-full border rounded-lg p-2.5 text-sm outline-none focus:border-green-500 bg-transparent theme-text" placeholder="••••••••">
+                </div>
+                <button onclick="handleLogin()" id="auth-submit-btn" class="w-full bg-green-600 text-white font-bold py-2.5 rounded-lg active:scale-95 transition-transform">লগইন করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
+            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 class="font-bold theme-text">⚙️ সেটিং (পাসওয়ার্ড পরিবর্তন)</h3>
+                <button onclick="closeModal('settings-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold">✕</button>
+            </div>
+            <div class="p-5 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold theme-text-muted mb-1">বর্তমান পাসওয়ার্ড</label>
+                    <input type="password" class="w-full border rounded-lg p-2.5 text-sm outline-none bg-transparent theme-text">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold theme-text-muted mb-1">নতুন পাসওয়ার্ড</label>
+                    <input type="password" class="w-full border rounded-lg p-2.5 text-sm outline-none bg-transparent theme-text">
+                </div>
+                <button onclick="showToast('পাসওয়ার্ড পরিবর্তন সফল হয়েছে'); closeModal('settings-modal');" class="w-full bg-green-600 text-white font-bold py-2.5 rounded-lg active:scale-95">সংরক্ষণ করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div id="about-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
+        <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200 text-center">
+            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h3 class="font-bold theme-text text-left">ℹ️ এবাউট</h3>
+                <button onclick="closeModal('about-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold">✕</button>
+            </div>
+            <div class="p-6">
+                <div class="w-20 h-20 bg-green-100 rounded-full mx-auto flex items-center justify-center text-4xl mb-3 border-2 border-green-300">👨‍💻</div>
+                <h2 class="text-lg font-bold theme-text">ডেভেলপার ইনফো</h2>
+                <p class="text-sm theme-text-muted mt-2">এই ড্যাশবোর্ডটি আধুনিক প্রযুক্তি ব্যবহার করে তৈরি করা হয়েছে। এটি মাদ্রাসার শিক্ষক, শিক্ষার্থী এবং অ্যাডমিনদের কাজকে আরও সহজ ও দ্রুত করার উদ্দেশ্যে ডিজাইন করা হয়েছে।</p>
+                <div class="mt-4 pt-4 border-t text-xs theme-text-muted">
+                    ভার্সন: 2.০  <br>
+                    স্বত্ব: জামেয়া ইমদাদিয়া মাদানীনগর
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="calc-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-end sm:items-center justify-center sm:p-4 opacity-0 transition-opacity">
+    <div class="theme-card rounded-t-2xl sm:rounded-2xl w-full max-w-md h-[85vh] sm:h-auto sm:max-h-[90vh] shadow-2xl flex flex-col overflow-hidden transform translate-y-full sm:translate-y-0 sm:scale-95 transition-transform duration-300">   
+        <div class="p-4 border-b bg-green-600 text-white flex justify-between items-center shrink-0">
+            <h3 class="font-bold text-lg flex items-center gap-2">🧮 খানা ও বেতন ক্যালকুলেটর</h3>
+            <button onclick="closeModal('calc-modal')" class="w-8 h-8 bg-white/20 rounded-full text-white font-bold hover:bg-white/30">✕</button>
+        </div>
+        
+        <div class="p-4 overflow-y-auto hide-scroll flex-1 bg-gray-50 dark:bg-gray-900">
+            <div class="flex bg-gray-200 dark:bg-gray-700 p-1 rounded-lg mb-4 text-sm font-medium">
+                <button onclick="switchCalcTab('half')" id="tab-half" class="flex-1 py-1.5 rounded-md bg-white dark:bg-gray-600 shadow-sm text-green-700 dark:text-green-400">হাফ খানা</button>
+                <button onclick="switchCalcTab('full')" id="tab-full" class="flex-1 py-1.5 rounded-md text-gray-500 dark:text-gray-300">ফুল খানা</button>
+                <button onclick="switchCalcTab('wakto')" id="tab-wakto" class="flex-1 py-1.5 rounded-md text-gray-500 dark:text-gray-300">ওয়াক্ত ভিত্তিক</button>
+            </div>
+
+            <div id="calc-half" class="calc-section space-y-4">
+                <div>
+                    <label class="block text-sm font-bold theme-text-muted mb-1">ক্যাটাগরি নির্বাচন করুন (মাসিক রেট):</label>
+                    <select id="half-khana-val" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text">
+                        <option value="2300">২৩০০ টাকা</option>
+                        <option value="2450">২৪৫০ টাকা</option>
+                        <option value="2900">২৯০০ টাকা</option>
+                        <option value="3050">৩০৫০ টাকা</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold theme-text-muted mb-1">কত দিন খেয়েছে? (সর্বোচ্চ ৩০ দিন):</label>
+                    <input type="number" id="half-khana-days" value="30" max="30" min="0" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="যেমন: ২৫">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold theme-text-muted mb-1">টিঊশন ফি / অন্যান্য (ম্যানুয়ালি):</label>
+                    <input type="number" id="half-tuition" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="পরিমাণ লিখুন (৳)">
+                </div>
+            </div>
+
+            <div id="calc-full" class="calc-section space-y-4 hidden">
+                <div class="bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 p-3 rounded-lg text-sm font-bold border border-blue-200 flex justify-between">
+                    <span>মূল দাম (মাসিক):</span> <span>৩,৩০০ টাকা</span>
+                </div>
+
+                <label class="block text-sm font-bold theme-text-muted pt-2">অতিরিক্ত স্পেশাল আইটেম যোগ করুন:</label>
+                <div class="space-y-3 text-sm">
+                    <div class="flex items-center gap-3 theme-card p-3 border rounded-xl">
+                        <input type="checkbox" id="full-sp-m" class="w-4 h-4 text-green-600 rounded"> 
+                        <span class="flex-1 font-medium theme-text">সকালে (+১৫০ ৳)</span>
+                        <input type="number" id="full-sp-m-count" class="w-16 border rounded p-1 text-center outline-none bg-transparent theme-text" placeholder="দিন" min="1" disabled>
+                    </div>
+                    <div class="flex items-center gap-3 theme-card p-3 border rounded-xl">
+                        <input type="checkbox" id="full-sp-n" class="w-4 h-4 text-green-600 rounded"> 
+                        <span class="flex-1 font-medium theme-text">দুপুরে (+৫০০ ৳)</span>
+                        <input type="number" id="full-sp-n-count" class="w-16 border rounded p-1 text-center outline-none bg-transparent theme-text" placeholder="দিন" min="1" disabled>
+                    </div>
+                    <div class="flex items-center gap-3 theme-card p-3 border rounded-xl">
+                        <input type="checkbox" id="full-sp-e" class="w-4 h-4 text-green-600 rounded"> 
+                        <span class="flex-1 font-medium theme-text">রাত্রে (+৬০০ ৳)</span>
+                        <input type="number" id="full-sp-e-count" class="w-16 border rounded p-1 text-center outline-none bg-transparent theme-text" placeholder="দিন" min="1" disabled>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold theme-text-muted mb-1">কত দিন খেয়েছে? (সর্বোচ্চ ৩০ দিন):</label>
+                    <input type="number" id="full-khana-days" value="30" max="30" min="0" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="যেমন: ৩০">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold theme-text-muted mb-1">টিঊশন ফি / অন্যান্য (ম্যানুয়ালি):</label>
+                    <input type="number" id="full-tuition" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="পরিমাণ লিখুন (৳)">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold theme-text-muted mb-1">বোনের বেতন/ভাতা (যদি থাকে):</label>
+                    <input type="number" id="full-sister-salary" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="পরিমাণ লিখুন (৳)">
+                </div>
+            </div>
+
+            <div id="calc-wakto" class="calc-section space-y-4 hidden">
+                <div>
+                    <label class="block text-sm font-bold theme-text-muted mb-1">ওয়াক্ত নির্বাচন করুন (মাসিক রেট):</label>
+                    <select id="wakto-select" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text">
+                        <option value="700">সকাল (৭০০ ৳)</option>
+                        <option value="1000">দুপুর (১০০০ ৳)</option>
+                        <option value="700">রাত্রি (৭০০ ৳)</option>
+                        <option value="1700">সকাল + দুপুর (১৭০০ ৳)</option>
+                        <option value="1400">সকাল + রাত্রি (১৪০০ ৳)</option>
+                        <option value="1700">দুপুর + রাত্রি (১৭০০ ৳)</option>
+                        <option value="2400">সকাল + দুপুর + রাত্রি (২৪০০ ৳)</option>
+                    </select>
+                </div>
+
+                <label class="block text-sm font-bold theme-text-muted pt-2">স্পেশাল আইটেম যোগ করুন:</label>
+                <div class="space-y-3 text-sm">
+                    <div class="flex items-center gap-3 theme-card p-3 border rounded-xl">
+                        <input type="checkbox" id="wak-sp-m" class="w-4 h-4 text-green-600 rounded"> 
+                        <span class="flex-1 font-medium theme-text">সকাল স্পেশাল (+১৫০ ৳)</span>
+                        <input type="number" id="wak-sp-m-count" class="w-16 border rounded p-1 text-center outline-none bg-transparent theme-text" placeholder="দিন" min="1" disabled>
+                    </div>
+                    <div class="flex items-center gap-3 theme-card p-3 border rounded-xl">
+                        <input type="checkbox" id="wak-sp-n" class="w-4 h-4 text-green-600 rounded"> 
+                        <span class="flex-1 font-medium theme-text">দুপুর স্পেশাল (+৫০০ ৳)</span>
+                        <input type="number" id="wak-sp-n-count" class="w-16 border rounded p-1 text-center outline-none bg-transparent theme-text" placeholder="দিন" min="1" disabled>
+                    </div>
+                    <div class="flex items-center gap-3 theme-card p-3 border rounded-xl">
+                        <input type="checkbox" id="wak-sp-e" class="w-4 h-4 text-green-600 rounded"> 
+                        <span class="flex-1 font-medium theme-text">রাত্রি স্পেশাল (+৬০০ ৳)</span>
+                        <input type="number" id="wak-sp-e-count" class="w-16 border rounded p-1 text-center outline-none bg-transparent theme-text" placeholder="দিন" min="1" disabled>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold theme-text-muted mb-1">কত দিন খেয়েছে? (সর্বোচ্চ ৩০ দিন):</label>
+                    <input type="number" id="wakto-days" value="30" max="30" min="0" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="যেমন: ৩০">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold theme-text-muted mb-1">টিঊশন ফি / অন্যান্য (ম্যানুয়ালি):</label>
+                    <input type="number" id="wakto-tuition" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="পরিমাণ লিখুন (৳)">
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4 border-t theme-card shrink-0">
+            <button onclick="calculateTotal()" class="w-full bg-green-600 text-white font-bold py-3 rounded-xl mb-3 active:scale-95 transition-transform text-lg shadow-md">হিসাব করুন</button>
+            <div class="flex justify-between items-center bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-300 p-3 rounded-xl border border-green-200 dark:border-green-800">
+                <span class="font-bold">সর্বমোট:</span>
+                <span id="calc-total" class="font-bold text-xl">০ ৳</span>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <script>
+        /* Utils */
+        const toBanglaNum = (num) => num.toString().replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+        const parseTimeStr = (str, baseDate = new Date()) => {
+            let [h, m] = str.split(':');
+            let d = new Date(baseDate);
+            d.setHours(parseInt(h), parseInt(m), 0, 0);
+            return d;
+        };
+        const formatTimeAmPm = (dateObj) => {
+            let h = dateObj.getHours();
+            let m = dateObj.getMinutes();
+            h = h % 12 || 12;
+            return `${toBanglaNum(h.toString().padStart(2, '0'))}:${toBanglaNum(m.toString().padStart(2,'0'))}`; 
+        };
+
+        /* Toast System */
+        window.showToast = (msg) => {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        };
+
+        /* Modal & Dropdown System */
+        let activeModal = null;
+        window.openModal = (id, param = null) => {
+            if(activeModal) closeModal(activeModal);
+            const modal = document.getElementById(id);
+            if(!modal) return;
+            
+            if(id === 'notification-alert-modal' || id === 'notification-modal') {
+                const badge = document.getElementById('notification-badge');
+                if(badge) badge.classList.add('hidden');
+            }
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                if(modal.children[0]) {
+                    modal.children[0].classList.remove('translate-y-full', 'scale-95');
+                    modal.children[0].classList.add('translate-y-0', 'scale-100');
+                }
+            }, 10);
+            activeModal = id;
+            
+            if(id === 'donation-modal' && param) {
+                document.getElementById('donation-title').innerText = param + ' प्रदान';
+            }
+        };
+
+        window.closeModal = (id) => {
+            const modal = document.getElementById(id);
+            if(!modal) return;
+            modal.classList.add('opacity-0');
+            if(modal.children[0]) {
+                modal.children[0].classList.remove('translate-y-0', 'scale-100');
+                modal.children[0].classList.add('scale-95');
+                if(window.innerWidth < 640) modal.children[0].classList.add('translate-y-full');
+            }
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                if(activeModal === id) activeModal = null;
+            }, 300); 
+        };
+
+        window.closeAllModals = () => { if(activeModal) closeModal(activeModal); };
+
+        /* Theme Management */
+        window.setTheme = (themeName) => {
+            document.body.setAttribute('data-theme', themeName);
+            if (themeName === 'dark' || themeName === 'night') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            showToast('থিম পরিবর্তন করা হয়েছে');
+            closeProfileMenu();
+        };
+
+        /* Profile Menu Logic */
+        window.toggleProfileMenu = (e) => {
+            e.stopPropagation();
+            const menu = document.getElementById('profile-dropdown');
+            menu.classList.toggle('hidden');
+        };
+        window.closeProfileMenu = () => {
+            document.getElementById('profile-dropdown').classList.add('hidden');
+        };
+        document.addEventListener('click', (e) => {
+            if(!e.target.closest('#profile-dropdown') && !e.target.closest('#profile-trigger')) {
+                closeProfileMenu();
+            }
+            if(!e.target.closest('#shared-action-menu') && !e.target.closest('button[onclick^="showActionMenu"]')) {
+                hideActionMenu();
+            }
+        });
+
+        /* Login / Register Toggle */
+        window.toggleAuthMode = (mode) => {
+            const btnL = document.getElementById('btn-mode-login');
+            const btnR = document.getElementById('btn-mode-register');
+            const regFields = document.getElementById('register-fields');
+            const submitBtn = document.getElementById('auth-submit-btn');
+            
+            if(mode === 'login') {
+                btnL.className = "px-4 py-1.5 rounded-md bg-white dark:bg-gray-600 shadow-sm text-sm font-bold theme-text transition-all";
+                btnR.className = "px-4 py-1.5 rounded-md text-sm font-medium theme-text-muted transition-all";
+                regFields.classList.add('hidden');
+                submitBtn.innerText = "লগইন করুন";
+            } else {
+                btnR.className = "px-4 py-1.5 rounded-md bg-white dark:bg-gray-600 shadow-sm text-sm font-bold theme-text transition-all";
+                btnL.className = "px-4 py-1.5 rounded-md text-sm font-medium theme-text-muted transition-all";
+                regFields.classList.remove('hidden');
+                submitBtn.innerText = "একাউন্ট তৈরি করুন";
+            }
+        };
+        window.handleLogin = () => {
+            showToast('সফলভাবে সম্পূর্ণ হয়েছে');
+            closeModal('login-modal');
+        };
+
+        /* Date & Calendar Logic */
+        function getBanglaDate(date) {
+            const day = date.getDate(); const month = date.getMonth(); const year = date.getFullYear();
+            let bMonth = ""; let bDay = 0; let bYear = year - 593; let season = "";
+            if (month === 5) {
+                if (day <= 14) { bMonth = "জ্যৈষ্ঠ"; bDay = day + 17; season = "গ্রীষ্মকাল"; } 
+                else { bMonth = "আষাঢ়"; bDay = day - 14; season = "বর্ষাকাল"; }
+            } else if (month === 6) { 
+                if (day <= 15) { bMonth = "আষাঢ়"; bDay = day + 16; season = "বর্ষাকাল"; } 
+                else { bMonth = "শ্রাবণ"; bDay = day - 15; season = "বর্ষাকাল"; }
+            } else {
+                const bNames = ["পৌষ", "মাঘ", "ফাল্গুন", "চৈত্র", "বৈশাখ", "জ্যৈষ্ঠ", "আষাঢ়", "শ্রাবণ", "ভাদ্র", "আশ্বিন", "কার্তিক", "অগ্রহায়ণ"];
+                bMonth = bNames[month]; bDay = day;
+            }
+            return { day: toBanglaNum(bDay), month: bMonth, year: toBanglaNum(bYear), season: season };
+        }
+
+        function updateDates(date) {
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById('display-month-year').innerText = `▼ ${new Intl.DateTimeFormat('bn-BD', options).format(date)}`;
+            const hijriFormatter = new Intl.DateTimeFormat('bn-BD-u-ca-islamic-nu-beng', { day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('display-hijri').innerText = hijriFormatter.format(date) + ' হি.';
+            const bangla = getBanglaDate(date);
+            const weekday = new Intl.DateTimeFormat('bn-BD', { weekday: 'long' }).format(date);
+            document.getElementById('display-bangla').innerText = `${weekday}, ${bangla.day} ${bangla.month} ${bangla.year} বঙ্গাব্দ${bangla.season ? ', '+bangla.season : ''}`;
+        }
+
+        /* Notice Board and Alerts */
+        let notices = [
+            { id: 1, title: "পরীক্ষার রুটিন প্রকাশ", desc: "আগামী শনিবার থেকে মাদ্রাসার অর্ধবার্ষিক পরীক্ষা শুরু হবে। সকল শিক্ষার্থীকে যথাসময়ে উপস্থিত থাকার নির্দেশ দেওয়া হলো।", date: "২৩ জুন, ২০২৬" },
+            { id: 2, title: "ছুটির ঘোষণা", desc: "ঈদুল আজহা উপলক্ষে মাদ্রাসা আগামী রবিবার থেকে মোট ১০ দিন বন্ধ থাকবে।", date: "২০ জুন, ২০২৬" }
+        ];
+
+        let alerts = [
+            { id: 101, title: "পরীক্ষার রুটিন প্রকাশ হয়েছে" }
+        ];
+
+        function renderNotices() {
+            const container = document.getElementById('notification-list');
+            if(!container) return;
+            if(notices.length === 0) {
+                container.innerHTML = '<p class="text-center theme-text-muted py-4 text-xs">কোনো নোটিশ নেই</p>';
+            } else {
+                container.innerHTML = notices.map(n => `
+                    <div class="p-3 theme-card rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
+                        <div class="flex justify-between items-start gap-2 mb-1">
+                            <h4 class="font-bold theme-text text-sm">${n.title}</h4>
+                            <span class="text-[10px] theme-text-muted bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded whitespace-nowrap">${n.date}</span>
+                        </div>
+                        <p class="theme-text-muted text-xs leading-relaxed">${n.desc}</p>
+                    </div>
+                `).join('');
+            }
+            renderAlerts();
+        }
+
+        function renderAlerts() {
+            const container = document.getElementById('notification-alert-list');
+            const badge = document.getElementById('notification-badge');
+            if(!container) return;
+            
+            if(alerts.length === 0) {
+                container.innerHTML = '<p class="text-center theme-text-muted py-4 text-xs">কোনো নতুন নোটিফিকেশন নেই</p>';
+                if(badge) badge.classList.add('hidden');
+            } else {
+                container.innerHTML = alerts.map(a => `
+                    <div class="p-3 theme-card rounded-xl border dark:border-gray-700 flex justify-between items-center shadow-sm">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <span class="font-bold theme-text text-sm">${a.title}</span>
+                        </div>
+                        <button onclick="deleteAlert(${a.id})" class="text-red-400 hover:text-red-600 text-xs bg-red-50 dark:bg-red-900/30 p-1.5 rounded-lg active:scale-95">ডিলিট</button>
+                    </div>
+                `).join('');
+                if(badge) {
+                    badge.innerText = toBanglaNum(alerts.length);
+                    badge.classList.remove('hidden');
+                }
+            }
+        }
+
+        window.deleteAlert = (id) => {
+            alerts = alerts.filter(a => a.id !== id);
+            renderAlerts();
+            if(alerts.length === 0) closeModal('notification-alert-modal');
+        };
+
+        window.submitDonation = () => {
+            const trxId = document.getElementById('trx-id').value;
+            if(!trxId) { showToast("ট্রানজেকশন আইডি দিন"); return; }
+            showToast("ধন্যবাদ! আপনার পেমেন্ট যাচাই করা হচ্ছে।");
+            document.getElementById('trx-id').value = '';
+            closeModal('donation-modal');
+        };
+
+        /* Location System */
+        window.getLocationGPS = () => {
+            if (navigator.geolocation) {
+                showToast('জিপিএস সিগন্যাল খোঁজা হচ্ছে...');
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        currentLat = position.coords.latitude;
+                        currentLng = position.coords.longitude;
+                        document.getElementById('location-text').innerText = "অটোমেটিক";
+                        fetchPrayerTimes();
+                        closeModal('location-modal');
+                        showToast('লোকেশন আপডেট হয়েছে');
+                    },
+                    (error) => { showToast('লোকেশন পারমিশন দেওয়া হয়নি'); }
+                );
+            }
+        };
+
+        window.setManualLocation = () => {
+            const val = document.getElementById('manual-location').value.split(',');
+            currentLat = parseFloat(val[0]);
+            currentLng = parseFloat(val[1]);
+            document.getElementById('location-text').innerText = val[2];
+            fetchPrayerTimes();
+            closeModal('location-modal');
+        };
+
+        /* Action Menu Logic & Recycle Bin */
+        let currentActionTarget = { type: null, id: null };
+        let recycleBin = [];
+
+        window.showActionMenu = (e, type, id) => {
+            e.stopPropagation();
+            currentActionTarget = { type, id };
+            const menu = document.getElementById('shared-action-menu');
+            menu.classList.remove('hidden');
+            
+            const rect = e.target.getBoundingClientRect();
+            menu.style.top = `${rect.bottom + window.scrollY}px`;
+            if(type === 'student') {
+                menu.style.left = `${rect.left + window.scrollX}px`;
+                menu.style.right = 'auto';
+            } else {
+                menu.style.right = `${window.innerWidth - rect.right}px`;
+                menu.style.left = 'auto';
+            }
+        };
+        
+        window.hideActionMenu = () => {
+            document.getElementById('shared-action-menu').classList.add('hidden');
+        };
+
+        document.getElementById('action-edit-btn').addEventListener('click', () => {
+            hideActionMenu();
+            if(currentActionTarget.type === 'note') editNote(currentActionTarget.id);
+            else if(currentActionTarget.type === 'student') editStudent(currentActionTarget.id);
+        });
+
+        document.getElementById('action-delete-btn').addEventListener('click', () => {
+            hideActionMenu();
+            if(currentActionTarget.type === 'note') deleteNote(currentActionTarget.id);
+            else if(currentActionTarget.type === 'student') deleteStudent(currentActionTarget.id);
+        });
+
+        window.openRecycleBin = () => {
+            closeProfileMenu();
+            renderRecycleBin();
+            openModal('recycle-bin-modal');
+        };
+
+        window.renderRecycleBin = () => {
+            const container = document.getElementById('recycle-bin-list');
+            if(recycleBin.length === 0) {
+                container.innerHTML = '<p class="text-center theme-text-muted py-8 text-sm">রিসাইকেল বিন খালি</p>';
+                return;
+            }
+            container.innerHTML = recycleBin.map((item, index) => `
+                <div class="theme-card p-3 rounded-xl border shadow-sm flex justify-between items-center gap-2">
+                    <div class="flex-1 overflow-hidden">
+                        <p class="text-[10px] font-bold text-red-500 mb-0.5">${item.type === 'note' ? '📝 নোট' : '🎓 শিক্ষার্থী'}</p>
+                        <p class="text-xs theme-text truncate">${item.type === 'note' ? item.data.text : item.data.name}</p>
+                    </div>
+                    <button onclick="restoreItem(${index})" class="bg-green-100 text-green-700 px-3 py-1.5 rounded-lg text-xs font-bold active:scale-95 shrink-0 whitespace-nowrap">রিস্টোর</button>
+                </div>
+            `).join('');
+        };
+
+        window.restoreItem = (index) => {
+            let item = recycleBin.splice(index, 1)[0];
+            if(item.type === 'note') {
+                notesList.unshift(item.data);
+                if(document.getElementById('note-modal').classList.contains('hidden') === false) renderNotes();
+            } else if(item.type === 'student') {
+                mockStudents.push(item.data);
+                if(document.getElementById('admin-modal').classList.contains('hidden') === false) renderStudentList();
+            }
+            renderRecycleBin();
+            showToast("পুনруд্বার সফল হয়েছে");
+        };
+
+        /* Enhanced Prayer API System */
+        let currentLat = 23.0159; let currentLng = 89.2272;
+        let prayerPhases = [];
+        let prayerInterval = null;
+
+        async function fetchPrayerTimes() {
+            const date = new Date();
+            const url = `https://api.aladhan.com/v1/timings/${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}?latitude=${currentLat}&longitude=${currentLng}&method=1`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const t = data.data.timings;
+                
+                let now = new Date();
+                
+                const fajr = parseTimeStr(t.Fajr);
+                const sunrise = parseTimeStr(t.Sunrise);
+                const sunriseMakruhEnd = new Date(sunrise.getTime() + 15*60000);
+                const dhuhr = parseTimeStr(t.Dhuhr);
+                const zawalStart = new Date(dhuhr.getTime() - 10*60000);
+                const asr = parseTimeStr(t.Asr);
+                const sunset = parseTimeStr(t.Sunset);
+                const sunsetMakruhStart = new Date(sunset.getTime() - 15*60000);
+                const maghrib = parseTimeStr(t.Maghrib);
+                const isha = parseTimeStr(t.Isha);
+                
+                const tahajjudStart = new Date(now); tahajjudStart.setHours(0,0,0,0);
+                const nextMidnight = new Date(now); nextMidnight.setDate(nextMidnight.getDate()+1); nextMidnight.setHours(0,0,0,0);
+
+                // Dynamically injecting Sunrise & Sunset onto the top boxes
+                document.getElementById('sunrise-time').innerText = formatTimeAmPm(sunrise);
+                document.getElementById('sunset-time').innerText = formatTimeAmPm(sunset);
+
+                prayerPhases = [
+                    { id: 'Tahajjud', name: 'তাহাজ্জুদ', start: tahajjudStart, isMakruh: false },
+                    { id: 'Fajr', name: 'ফজর', start: fajr, isMakruh: false },
+                    { id: 'Makruh1', name: 'মাকরুহ (সূর্যোদয়)', start: sunrise, isMakruh: true },
+                    { id: 'Ishraq', name: 'ইসরাক ও চাশত', start: sunriseMakruhEnd, isMakruh: false },
+                    { id: 'Makruh2', name: 'মাকরুহ (যাওয়াল)', start: zawalStart, isMakruh: true },
+                    { id: 'Dhuhr', name: 'যোহর', start: dhuhr, isMakruh: false },
+                    { id: 'Asr', name: 'আসর', start: asr, isMakruh: false },
+                    { id: 'Makruh3', name: 'মাকরুহ (সূর্যাস্ত)', start: sunsetMakruhStart, isMakruh: true },
+                    { id: 'Maghrib', name: 'মাগরিব', start: maghrib, isMakruh: false },
+                    { id: 'Isha', name: 'ইশা', start: isha, isMakruh: false },
+                    { id: 'NextTahajjud', name: 'তাহাজ্জুদ', start: nextMidnight, isMakruh: false }
+                ];
+                
+                renderPrayerTimeline();
+                updatePrayerProgress();
+                
+                if(prayerInterval) clearInterval(prayerInterval);
+                prayerInterval = setInterval(updatePrayerProgress, 1000); 
+
+            } catch (err) { console.error("Prayer API error", err); }
+        }
+
+        function renderPrayerTimeline() {
+            const grid = document.getElementById('prayer-timeline-grid');
+            let visiblePhases = prayerPhases.slice(0, prayerPhases.length - 1);
+            grid.innerHTML = visiblePhases.map(p => `
+                <div class="px-3 py-2 flex flex-col items-center justify-center min-w-[70px] opacity-70 transition-all ${p.isMakruh ? 'makruh-bg text-red-800 dark:text-red-200' : ''}" id="phase-${p.id}">
+                    <span class="text-[10px] mb-0.5 font-bold whitespace-nowrap">${p.name}</span>
+                    <span class="text-xs font-mono">${formatTimeAmPm(p.start)}</span>
+                </div>
+            `).join('');
+        }
+
+        function updatePrayerProgress() {
+            if(!prayerPhases.length) return;
+            const nowTime = new Date().getTime();
+            let currentP = null; let nextP = null;
+            
+            for(let i=0; i<prayerPhases.length-1; i++) {
+                if(nowTime >= prayerPhases[i].start.getTime() && nowTime < prayerPhases[i+1].start.getTime()) {
+                    currentP = prayerPhases[i];
+                    nextP = prayerPhases[i+1];
+                    break;
+                }
+            }
+            if(!currentP) { currentP = prayerPhases[0]; nextP = prayerPhases[1]; }
+
+            // 1. Update Current Prayer Name
+            const nameEl = document.getElementById('current-prayer-name');
+            nameEl.innerText = currentP.name;
+            
+            // 2. Update Dynamic Time Range (e.g. ০৩:৫২ - ০৫:১৮)
+            document.getElementById('current-prayer-range').innerText = `${formatTimeAmPm(currentP.start)} - ${formatTimeAmPm(nextP.start)}`;
+
+            // 3. Update Makruh / Active status design dynamically
+            const statusDot = document.getElementById('status-dot');
+            if(currentP.isMakruh) {
+                nameEl.className = "font-bold text-2xl text-red-500 tracking-wide leading-tight";
+                statusDot.className = "w-3 h-3 rounded-full bg-red-500 animate-pulse";
+            } else {
+                nameEl.className = "font-bold text-2xl text-green-600 tracking-wide leading-tight";
+                statusDot.className = "w-3 h-3 rounded-full bg-green-500 animate-pulse";
+            }
+            
+            // Highlight in grid timeline
+            prayerPhases.slice(0, prayerPhases.length - 1).forEach(p => {
+                let el = document.getElementById('phase-'+p.id);
+                if(p.id === currentP.id) {
+                    el.classList.remove('opacity-70');
+                    el.classList.add('opacity-100', 'bg-white', 'dark:bg-gray-800', 'shadow-inner');
+                    el.style.borderBottom = '3px solid #22c55e';
+                    if(p.isMakruh) el.style.borderBottom = '3px solid #ef4444';
+                } else {
+                    el.classList.add('opacity-70');
+                    el.classList.remove('opacity-100', 'bg-white', 'dark:bg-gray-800', 'shadow-inner');
+                    el.style.borderBottom = 'none';
+                }
+            });
+
+            // 4. Progress Bar Fill
+            let totalDuration = nextP.start.getTime() - currentP.start.getTime();
+            let elapsed = nowTime - currentP.start.getTime();
+            let percentage = (elapsed / totalDuration) * 100;
+            
+            let progBar = document.getElementById('prayer-progress');
+            progBar.style.width = `${Math.min(100, Math.max(0, percentage))}%`;
+            if(currentP.isMakruh) progBar.className = 'bg-red-500 h-full rounded-full transition-all duration-1000';
+            else progBar.className = 'bg-green-500 h-full rounded-full transition-all duration-1000';
+
+            // 5. Transform standard digital countdown to exact Bangla String ("১ ঘণ্টা ৬ মিনিট বাকি")
+            let remainingMs = nextP.start.getTime() - nowTime;
+            let rmHours = Math.floor(remainingMs / (1000 * 60 * 60));
+            let rmMinutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+            
+            let remainingString = "";
+            if (rmHours > 0) {
+                remainingString += `${toBanglaNum(rmHours)} ঘণ্টা `;
+            }
+            remainingString += `${toBanglaNum(rmMinutes)} মিনিট বাকি`;
+            document.getElementById('time-remaining-text').innerText = remainingString;
+        }
+
+        /* Calculator Logic */
+let currentCalcTab = 'half';
+
+window.switchCalcTab = (tab) => {
+    currentCalcTab = tab;
+    document.querySelectorAll('.calc-section').forEach(el => el.classList.add('hidden'));
+    
+    let targetSec = document.getElementById('calc-' + tab);
+    if(targetSec) targetSec.classList.remove('hidden');
+    
+    ['half', 'full', 'wakto'].forEach(t => {
+        let btn = document.getElementById('tab-' + t);
+        if(btn) {
+            if(t === tab) btn.className = `flex-1 py-1.5 rounded-md bg-white dark:bg-gray-600 shadow-sm text-green-700 dark:text-green-400 font-bold transition-colors`;
+            else btn.className = `flex-1 py-1.5 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 transition-colors`;
+        }
+    });
+    calculateTotal();
+};
+
+// স্পেশাল আইটেমের টিকবক্স ও ইনপুট ফিল্ড সচল/অচল করার লজিক
+['m', 'n', 'e'].forEach(p => {
+    // ফুল খানার স্পেশাল আইটেম
+    let fp = document.getElementById('full-sp-' + p);
+    if(fp) {
+        fp.addEventListener('change', (e) => {
+            let inp = document.getElementById(`full-sp-${p}-count`);
+            if(inp) {
+                inp.disabled = !e.target.checked;
+                inp.value = e.target.checked ? '1' : '';
+            }
+            calculateTotal();
+        });
+    }
+    
+    // ওয়াক্ত ভিত্তিক স্পেশাল আইটেম
+    let wp = document.getElementById('wak-sp-' + p);
+    if(wp) {
+        wp.addEventListener('change', (e) => {
+            let inp = document.getElementById(`wak-sp-${p}-count`);
+            if(inp) {
+                inp.disabled = !e.target.checked;
+                inp.value = e.target.checked ? '1' : '';
+            }
+            calculateTotal();
+        });
+    }
+});
+
+// মডালের যেকোনো ইনপুট পরিবর্তন হলে সাথে সাথে হিসাব আপডেট হবে
+document.querySelectorAll('#calc-modal input, #calc-modal select').forEach(el => {
+    el.addEventListener('input', calculateTotal); 
+    el.addEventListener('change', calculateTotal);
+});
+
+function calculateTotal() {
+    let total = 0;
+    
+    // ১. হাফ খানা হিসাব
+    if(currentCalcTab === 'half') {
+        let monthlyRate = parseInt(document.getElementById('half-khana-val').value) || 0;
+        let days = parseInt(document.getElementById('half-khana-days').value) || 0;
+        let tuition = parseInt(document.getElementById('half-tuition').value) || 0;
+        if(days > 30) days = 30;
+        
+        total = Math.round((monthlyRate / 30) * days) + tuition;
+        
+    // ২. ফুল খানা হিসাব
+    } else if (currentCalcTab === 'full') {
+        let baseMonthly = 3300; 
+        let days = parseInt(document.getElementById('full-khana-days').value) || 0;
+        let tuition = parseInt(document.getElementById('full-tuition').value) || 0;
+        let sisterSalary = parseInt(document.getElementById('full-sister-salary').value) || 0;
+        if(days > 30) days = 30;
+        
+        total = Math.round((baseMonthly / 30) * days) + sisterSalary + tuition;
+
+        if(document.getElementById('full-sp-m')?.checked) total += 150 * (parseInt(document.getElementById('full-sp-m-count').value) || 1);
+        if(document.getElementById('full-sp-n')?.checked) total += 500 * (parseInt(document.getElementById('full-sp-n-count').value) || 1);
+        if(document.getElementById('full-sp-e')?.checked) total += 600 * (parseInt(document.getElementById('full-sp-e-count').value) || 1);
+        
+    // ৩. ওয়াক্ত ভিত্তিক হিসাব (নতুন ড্রপডাউন অনুযায়ী সংশোধিত)
+    } else if (currentCalcTab === 'wakto') {
+        let monthlyRate = parseInt(document.getElementById('wakto-select').value) || 0;
+        let days = parseInt(document.getElementById('wakto-days').value) || 0;
+        let tuition = parseInt(document.getElementById('wakto-tuition').value) || 0;
+        if(days > 30) days = 30;
+        
+        total = Math.round((monthlyRate / 30) * days) + tuition;
+        
+        if(document.getElementById('wak-sp-m')?.checked) total += 150 * (parseInt(document.getElementById('wak-sp-m-count').value) || 1);
+        if(document.getElementById('wak-sp-n')?.checked) total += 500 * (parseInt(document.getElementById('wak-sp-n-count').value) || 1);
+        if(document.getElementById('wak-sp-e')?.checked) total += 600 * (parseInt(document.getElementById('wak-sp-e-count').value) || 1);
+    }
+    
+    // আউটপুট প্রদর্শন (toBanglaNum ফাংশনটি সুরক্ষিত রাখা হয়েছে)
+    let totalEl = document.getElementById('calc-total');
+    if(totalEl) {
+        if(typeof toBanglaNum === 'function') {
+            totalEl.innerText = toBanglaNum(total) + " ৳";
+        } else {
+            totalEl.innerText = total + " ৳";
+        }
+    }
+}
+
+        /* Notepad Notes System */
+        let notesList = [
+            { id: 1, text: "কাল সকালে বাজার থেকে কলম আনতে হবে", time: "সকাল ১০:৩০", completed: false }
+        ];
+
+        window.renderNotes = () => {
+            const container = document.getElementById('note-list-container');
+            if(notesList.length === 0) {
+                container.innerHTML = '<p class="text-center theme-text-muted py-10">কোনো নোট নেই। উপরে + এ ক্লিক করে নোট যোগ করুন।</p>';
+                return;
+            }
+            container.innerHTML = notesList.map(n => `
+                <div class="p-4 rounded-xl border flex gap-3 shadow-sm transition-all duration-300 theme-card">
+                    <input type="checkbox" onchange="toggleNoteStatus(${n.id})" class="w-5 h-5 mt-0.5 rounded text-yellow-500 accent-yellow-500 cursor-pointer" ${n.completed ? 'checked' : ''}>
+                    <div class="flex-1">
+                        <p class="${n.completed ? 'text-gray-400 line-through' : 'theme-text'} text-sm leading-relaxed whitespace-pre-wrap">${n.text}</p>
+                        <div class="flex justify-between items-center mt-2 relative">
+                            <p class="text-[10px] theme-text-muted">${n.time}</p>
+                            <button onclick="showActionMenu(event, 'note', ${n.id})" class="text-gray-400 hover:text-yellow-600 px-2 py-1 font-bold">⋮</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        window.toggleNoteStatus = (id) => { let n = notesList.find(x => x.id === id); if(n) { n.completed = !n.completed; renderNotes(); } };
+        
+        window.deleteNote = (id) => { 
+            let idx = notesList.findIndex(n => n.id === id);
+            if(idx > -1) {
+                recycleBin.push({ type: 'note', data: notesList[idx], deletedAt: new Date() });
+                notesList.splice(idx, 1);
+                renderNotes(); 
+                showToast("নোট রিসাইকেল বিনে পাঠানো হয়েছে"); 
+            }
+        };
+
+        window.openAddNoteForm = () => {
+            document.getElementById('note-form-title').innerText = "নতুন নোট";
+            document.getElementById('editing-note-id').value = "";
+            document.getElementById('new-note-text').value = "";
+            document.getElementById('add-note-form').classList.remove('hidden'); document.getElementById('add-note-form').classList.add('flex');
+            document.getElementById('new-note-text').focus();
+        };
+
+        window.editNote = (id) => {
+            let note = notesList.find(n => n.id === id);
+            if(note) {
+                document.getElementById('note-form-title').innerText = "নোট এডিট করুন";
+                document.getElementById('editing-note-id').value = id;
+                document.getElementById('new-note-text').value = note.text;
+                document.getElementById('add-note-form').classList.remove('hidden'); document.getElementById('add-note-form').classList.add('flex');
+            }
+        };
+
+        window.closeAddNoteForm = () => { document.getElementById('add-note-form').classList.add('hidden'); document.getElementById('add-note-form').classList.remove('flex'); };
+
+        window.saveNote = () => {
+            let text = document.getElementById('new-note-text').value.trim();
+            let editId = document.getElementById('editing-note-id').value;
+            if(!text) return;
+            let now = new Date(); let timeStr = formatTimeAmPm(now);
+            if(editId) {
+                let note = notesList.find(n => n.id == editId);
+                if(note) { note.text = text; note.time = "এডিট: " + timeStr; }
+                showToast("নোট আপডেট হয়েছে");
+            } else {
+                notesList.unshift({ id: Date.now(), text: text, time: "আজ " + timeStr, completed: false });
+                showToast("নোট সংরক্ষিত হয়েছে");
+            }
+            closeAddNoteForm(); renderNotes();
+        };
+
+        /* Admin Flow */
+        let mockStudents = [
+            { id: '3241', name: 'মোছা: মাহজুবা খাতুন', fname: 'মো: আব্দুল হক', addr: 'জয়পুর', status: 'Active', cls: 'তাকমীল', phone: '01712852739' },
+    { id: '3244', name: 'মিস লাইলী খাতুন', fname: 'মোঃ আজমুল সালাম', addr: 'মাঝলাউড়ী', status: 'Active', cls: 'তাকমীল', phone: '01964791560' },
+    { id: '3246', name: 'মারুফা আক্তার', fname: 'মোঃ ফারুক হোসেন', addr: 'হাঁসাডাংগা', status: 'Active', cls: 'তাকমীল', phone: '01724469835' },
+    { id: '3247', name: 'মোছাঃ হাফসা খাতুন', fname: 'মোঃ মুজিবুর রহমান', addr: 'গোপালপুর', status: 'Active', cls: 'তাকমীল', phone: '01937874777' },
+    { id: '3248', name: 'আফসানা তাসনীম', fname: 'মোঃ হারুন আর রশিদ', addr: 'চিনাটোলা', status: 'Active', cls: 'তাকমীল', phone: '01629579848' },
+    { id: '32410', name: 'খাদিজা', fname: 'শুকুরালী সানা', addr: 'গোপালপুর', status: 'Active', cls: 'তাকমীল', phone: '01930661740' },
+    { id: '32413', name: 'তাসলিমা খাতুন', fname: 'আশরাফ আলী', addr: 'নাগোরঘোপ', status: 'Active', cls: 'তাকমীল', phone: '01778768271' },
+    { id: '32415', name: 'আফিয়া হুমায়রা', fname: 'মোঃ Shahাদাৎ হোসেন', addr: 'মশ্বিমনগর', status: 'Active', cls: 'তাকমীল', phone: '01303042089' },
+    { id: '32416', name: 'ইতি আক্তার', fname: 'মোঃ আবুল কাশেম', addr: 'মোবারকপুর', status: 'Active', cls: 'তাকমীল', phone: '01740423090' },
+    { id: '32417', name: 'উমামা তাঝকিয়্যাহ', fname: 'মাসউদ আলম', addr: 'দূগার্পুর', status: 'Active', cls: 'তাকমীল', phone: '01936011201' },
+    { id: '32419', name: 'শামীমা খাতুন', fname: 'মোঃ নুরনবী', addr: 'মামুদকাটি', status: 'Active', cls: 'তাকমীল', phone: '01317894880' },
+    { id: '32420', name: 'জয়নব খাতুন', fname: 'মরহুম বাবলুর রহমান', addr: 'হাকোবা', status: 'Active', cls: 'তাকমীল', phone: '01718700873' },
+    { id: '32421', name: 'মোছাঃ রাবেয়া খাতুন', fname: 'মোঃ আজাহারুল ইসলাম', addr: 'মঙ্গলকোট', status: 'Active', cls: 'তাকমীল', phone: '01732791624' },
+    { id: '32422', name: 'মোছা: জান্নাতুল ফেরদাউস তানহা', fname: 'মো: মনোয়ার হোসেন', addr: 'ঝিকরগাছা', status: 'Active', cls: 'তাকমীল', phone: '01970512977' },
+    { id: '32423', name: 'হাবিবা খাতুন', fname: 'মোঃ মুনসুর আলী', addr: 'লাউড়ী', status: 'Active', cls: 'তাকমীল', phone: '01791855885' },
+    { id: '32424', name: 'রুবিয়া খাতুন', fname: 'মোঃ শফিকুল ইসলাম', addr: 'কামালপুর', status: 'Active', cls: 'তাকমীল', phone: '01902338532' },
+    { id: '32426', name: 'রাবিয়া বসরী', fname: 'মো: আব্দুল গফ্‌ফার', addr: 'সূবর্ণখালী', status: 'Active', cls: 'তাকমীল', phone: '01926947968' },
+    { id: '32427', name: 'ছাবিনা খাতুন', fname: 'শামছুর রহমান', addr: 'লক্ষণপুর', status: 'Active', cls: 'তাকমীল', phone: '01757284347' },
+    { id: '32428', name: 'জান্নাতুল ফেরদাউস মুন্নি', fname: 'আজিজুর রহমান সরদার', addr: 'শোভনা', status: 'Active', cls: 'তাকমীল', phone: '01734849722' },
+    { id: '32429', name: 'তাসকিয়া সুলতানা রিমি', fname: 'মোঃ রমজান আলী', addr: 'কাশিমপুর', status: 'Active', cls: 'তাকমীল', phone: '01782319481' },
+    { id: '32430', name: 'সাদিয়া', fname: 'নাসির উদ্দীন', addr: 'গদখালী', status: 'Active', cls: 'তাকমীল', phone: '01980985385' },
+    { id: '32431', name: 'সুরাইয়া খাতুন', fname: 'রফিকুল ইসলাম', addr: 'পায়রাডাঙ্গা', status: 'Active', cls: 'তাকমীল', phone: '01996864166' },
+    { id: '32433', name: 'উম্মে হাবিবা', fname: 'মোঃ আব্দুল হালিম', addr: 'হুমাতলা', status: 'Active', cls: 'তাকমীল', phone: '01791153654' },
+    { id: '32434', name: 'মোছাঃ আমেনা সিদ্দীকা', fname: 'মোঃ সিদ্দিকুর রহমান', addr: 'মজিদপুর', status: 'Active', cls: 'তাকমীল', phone: '01745066747' },
+    { id: '32435', name: 'হালিমা খাতুন', fname: 'মো: শাহাজান', addr: 'পাঁচপোতা', status: 'Active', cls: 'তাকমীল', phone: '01726216409' },
+    { id: '32436', name: 'মরিয়াম আক্তার', fname: 'মোঃ আব্দুস সাত্তার সরদার', addr: 'সরল', status: 'Active', cls: 'তাকমীল', phone: '01924425633' },
+    { id: '32437', name: 'মোছা: নাজমুন Nাহার', fname: 'মো: মফিজুর রহমান', addr: 'শ্যামকুড়', status: 'Active', cls: 'তাকমীল', phone: '01947278955' },
+    { id: '32438', name: 'সাদিয়া খাতুন', fname: 'বাসারুল ইসলাম', addr: 'রাঘবদাইড়', status: 'Active', cls: 'তাকমীল', phone: '01319745221' },
+    { id: '32440', name: 'মোছা: তামান্না খাতুন', fname: 'শেখ আবু সাঈদ', addr: 'খোর্দ্দ', status: 'Active', cls: 'তাকমীল', phone: '01937873550' },
+    { id: '32441', name: 'হাবিবা খাতুন', fname: 'মোঃ হাবিবুর রহমান', addr: 'জামলা', status: 'Active', cls: 'তাকমীল', phone: '01731005346' },
+    { id: '32442', name: 'বাশিরা রোশনী', fname: 'নাজমুস সাকিব', addr: 'একতারপুর', status: 'Active', cls: 'তাকমীল', phone: '01915840445' },
+    { id: '32443', name: 'ফারিহা ফারজানা', fname: 'মোঃ রেজাউল ইসলাম', addr: 'পরান্দাহ', status: 'Active', cls: 'তাকমীল', phone: '01720524676' },
+    { id: '32444', name: 'মোছাঃ মাবরুরা খাতুন (মীম)', fname: 'মোঃ নজরুল ইসলাম', addr: 'ঝাঁপা', status: 'Active', cls: 'তাকমীল', phone: '01733920365' },
+    { id: '32445', name: 'মরিয়াম খাতুন প্রিয়া', fname: 'মো: নুর ইসলাম', addr: 'মশ্বিমনগর', status: 'Active', cls: 'তাকমীল', phone: '01982392009' },
+    { id: '32449', name: 'মোছাঃ মেঘলা খাতুন মিতু', fname: 'মোঃ মুনতাজ আলী', addr: 'আগরহাটী', status: 'Active', cls: 'তাকমীল', phone: '01926177703' },
+    { id: '32450', name: 'হালিমাতুস সাদিয়া', fname: 'শেখ আঃ মমিন', addr: 'মাহমুদপুর', status: 'Active', cls: 'তাকমীল', phone: '01959803110' },
+    { id: '32451', name: 'ফারজানা আক্তার', fname: 'মনিরুল ইসলাম', addr: 'জলকর রহিতা', status: 'Active', cls: 'তাকমীল', phone: '01326948871' },
+    { id: '2547142', name: 'হাবিবা খাতুন', fname: 'শরিফুল শেখ', addr: 'উঃ গোবিন্দকাটি', status: 'Active', cls: 'তাকমীল', phone: '01305557579' },
+    { id: '2547303', name: 'ছাবিকুন্নাহার', fname: 'এবাদুল গাজী', addr: 'কাপসন্ডা', status: 'Active', cls: 'তাকমীল', phone: '01919597783' },
+    { id: '2648026', name: 'মোছা: হাফছা খাতুন', fname: 'মো: হাফিজুর রহমান', addr: 'মনোহরপুর', status: 'Active', cls: 'তাকমীল', phone: '01958492885' },
+    { id: '2648058', name: 'ফাতেমা তুজ জোহরা', fname: 'মো: রবিউল ইসলাম', addr: 'লাবসা', status: 'Active', cls: 'তাকমীল', phone: '01742049106' },
+    { id: '2648085', name: 'মোছা: বুশরা', fname: 'মো: আব্দুল গনি', addr: 'পরচক্রা তেঘরী', status: 'Active', cls: 'তাকমীল', phone: '01914652234' },
+    { id: '2648109', name: 'মোছাঃ জিনিয়া আফরোজ', fname: 'ইসরাফিল হোসেন', addr: 'পাঁচপোতা', status: 'Active', cls: 'তাকমীল', phone: '01977381956' },
+    { id: '2648257', name: 'সুমাইয়া', fname: 'মাওলানা আবু উбайদ', addr: 'দাদনতলা', status: 'Active', cls: 'তাকমীল', phone: '01713919874' },
+			
+			
+			{ id: '4241', name: 'মোছাঃ ফাহমিদা ইসলাম', fname: 'মোঃ বরкатুল ইসলাম', addr: 'বেলতা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01915909522' },
+    { id: '4247', name: 'মাইমুনা জান্নাত ফারজানা', fname: 'মাসুদ করিম', addr: 'শিকারপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01745606341' },
+    { id: '42476', name: 'আরজু খাতুন', fname: 'আজগার আলী বিশ্বাস', addr: 'বালিয়াদহা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01711211857' },
+    { id: '42487', name: 'রুবাইয়া হোসেন সুমি', fname: 'সাব্বির হোসেন', addr: 'সুফলাকাটি', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01728400311' },
+    { id: '42435', name: 'শাইরীন মেহেজাবীন', fname: 'শেখ ইমদাদ হোসেন', addr: 'দহাকুলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01753412254' },
+    { id: '42427', name: 'মোছাঃ মনিরা আক্তার মুক্তা', fname: 'মোঃ মতিয়ার রহমান', addr: 'বাগডোব', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01301344772' },
+    { id: '42411', name: 'মোছাঃ ঝর্ণা আক্তার জীম', fname: 'মোঃ ইউনুস আলী', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01915644437' },
+    { id: '4249', name: 'মোছাঃ ছামিয়া খাতুন', fname: 'মোঃ ইমরান হোসেন', addr: 'ব্রহ্মপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01988031187' },
+    { id: '42414', name: 'মোছাঃ সামিয়া আফরীন', fname: 'মোঃ হাবিবুর রহমান', addr: 'পায়রাডাঙ্গা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01918701896' },
+    { id: '424103', name: 'মোছাঃ তামান্না খাতুন', fname: 'মোঃ মাহমুদুল হাসান', addr: 'মজিদপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01703559586' },
+    { id: '42456', name: 'মোছাঃ মুন্নী খাতুন', fname: 'মোঃ মাসুদুর রহমান', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01922308432' },
+    { id: '42418', name: 'মোছাঃ নুসরাত ইয়াসমিন আনিকা', fname: 'মোঃ رফিকুল ইসলাম', addr: 'সৈয়দ মাহমুদপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01731577476' },
+    { id: '42421', name: 'নুসরাত জাহান খুশি', fname: 'মোঃ আরিফুর রহমান', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01938620981' },
+    { id: '42422', name: 'ইসরাত জাহান হাসি', fname: 'মোঃ আরিফুর রহমান', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01938620981' },
+    { id: '42412', name: 'मोছাঃ আখি খাতুন', fname: 'মোঃ আলমগীর হোসেন', addr: 'খড়িঞ্চী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01762088340' },
+    { id: '42426', name: 'ফারহানা খাতুন', fname: 'আজহারুল ইসলাম', addr: 'ইত্যা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01714849366' },
+    { id: '42423', name: 'নূসরাত জাহান', fname: 'মোঃ ওসমান গনি', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01914034461' },
+    { id: '424112', name: 'শাহারা খানম', fname: 'মো: আবু সাঈদ মোড়ল', addr: 'গোবিন্দকাটি', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01957611245' },
+    { id: '42482', name: 'মোছা: মিম আক্তার সুমি', fname: 'মো: রবিউল ইসলাম', addr: 'ঝাঁপা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01310639536' },
+    { id: '42489', name: 'মোছা: রুকাইয়া খাতুন', fname: 'মো: রফিকুল ইসলাম', addr: 'বাকোশপোল', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01937092111' },
+    { id: '42443', name: 'মোছাঃ আঁখি মনি', fname: 'আব্দুর রহিম', addr: 'কামালপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01724178169' },
+    { id: '42440', name: 'হাবিবা খাতুন', fname: 'মোঃ ঈমান আলী বিশ্বাস', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01615734534' },
+    { id: '42466', name: 'মোছাঃ সাদিয়া সুলতানা', fname: 'মোঃ আমিনুর রহমান', addr: 'সোনাতলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01739318535' },
+    { id: '2547060', name: 'খাদিজাতুল কোবরা', fname: 'মো: এরশাদ আলী', addr: 'সাতানী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01723612541' },
+    { id: '42413', name: 'মোছাঃ মাইমনা খাতুন', fname: 'মোঃ সহিদুল ইসলাম', addr: 'বাজিতপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01779792649' },
+    { id: '4248', name: 'আনিসা আক্তার', fname: 'মোঃ খলিল ফকির', addr: 'সরুলিয়া', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01716716979' },
+    { id: '42477', name: 'জান্নত ইসলাম এ্যানি', fname: 'মো: সোহেল হোসেন', addr: 'হানুয়ার', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01718974418' },
+    { id: '42474', name: 'মিস তাসনিম ঋতু', fname: 'মো: রবিউল ইসলাম গাজী', addr: 'চরকানাইদিয়া', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01863012763' },
+    { id: '42441', name: 'তামান্না তারান্নুম', fname: 'মোঃ মনিরুজ্জামান', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01834179493' },
+    { id: '4244', name: 'মিস্‌ ইয়াসমিন আক্তার', fname: 'মোঃ কামাল বিশ্বাস', addr: 'নাছিরপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01761362379' },
+    { id: '4245', name: 'মিস্‌ জেসমিন আক্তার', fname: 'মোঃ কামাল বিশ্বাস', addr: 'নাছিরপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01761362379' },
+    { id: '42447', name: 'মোছা: সিনথিয়া খাতুন', fname: 'মো: শহীদ বিশ্বাস', addr: 'টিলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01706985777' },
+    { id: '42462', name: 'ফারজানা আক্তার মৌসুমী', fname: 'মোঃ আতিয়ার রহমান', addr: 'মকমতলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01986651410' },
+    { id: '42415', name: 'মোছাঃ ফারজানা খাতুন', fname: 'মোঃ খলিলুর রহমান', addr: 'তাহেরপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01714779153' },
+    { id: '2547174', name: 'মোছাঃ হুমাইরা আক্তার', fname: 'কবিরুল ইসলাম', addr: 'চাকলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01975703913' },
+    { id: '42446', name: 'জেবা সামিহা', fname: 'মোঃ মিজানুল হাসান', addr: 'কাশিমপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01771174109' },
+    { id: '42449', name: 'তৈয়বা আলম', fname: 'মো: শহীদ আলম', addr: 'সাগরদাঁড়ী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01938925679' },
+    { id: '42445', name: 'মোছাঃ সাবিনা খাতুন', fname: 'কামরুল', addr: 'খোজালীপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01401702911' },
+    { id: '42434', name: 'সুমাইয়া খাতুন', fname: 'মোখলেছুর শেখ', addr: 'চাপারডাঙ্গী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01611768824' },
+    { id: '2648025', name: 'আমাতুল্লাহ', fname: 'মো: সিরাজুল ইসলাম', addr: 'মালতিয়া', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01917153163' },
+    { id: '2648080', name: 'মোছা: সাবরিনা ইয়াসমিন', fname: 'মো: হযরত আলী', addr: 'বেলকাটি', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01317524495' },
+    { id: '42479', name: 'মাহফুজা', fname: 'আব্দুল মোতালেব', addr: 'কামালপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01921630319' },
+    { id: '32425', name: 'سাদিয়া আফরিন', fname: 'মোঃ আঃ মান্নান সরদার', addr: 'মনোহরপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01721652452' },
+    { id: '42485', name: 'মাসুমা আক্তার জান্নাতী', fname: 'মোঃ মাছুদ রানা', addr: 'লাউড়ী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01914570957' },
+    { id: '2648134', name: 'মোছাঃ হাবিবা আক্তার', fname: 'মোঃ মোজাম্মেল হক', addr: 'জয়নগর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01920493632' },
+    { id: '2648137', name: 'মনিরা খাতুন', fname: 'আব্দুল আহাদ', addr: 'মালতিয়া', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01925323315' },
+    { id: '2648168', name: 'মোছাঃ তাজকিয়া খাতুন', fname: 'মোঃ আব্দুস সালাম', addr: 'হিজলডাঙ্গা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01766115183' },
+    { id: '2648192', name: 'মায়মুনা খাতুন', fname: 'মো: হারুন অর রশীদ', addr: 'মঙ্গলকোট', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01715448362' },
+    { id: '2648204', name: 'মোছাম্মাদ সাদিয়া সুলতানা', fname: 'মোঃ আবুল হোসেন', addr: 'ধুলিহর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01939157504' },
+    { id: '42471', name: 'মোছাঃ খাদিজা খাতুন', fname: 'মোঃ জাহিদুল ইসলাম', addr: 'শিকারপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01728261058' },
+    { id: '2648226', name: 'মিস তাহেরা তাবাসুম', fname: 'মো: মোস্তাফিজুর রহমান', addr: 'مহারাজপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01933147319' },
+    { id: '2648228', name: 'মোছাঃ মারিয়া খাতুন', fname: 'মোঃ মোসাদ্দেক', addr: 'সত্যপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01915372404' },
+    { id: '32439', name: 'মোছা: তামান্না খাতুন', fname: 'মোঃ মহিব্বুল্লাহ', addr: 'সুন্দলপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01946435299' },
+	
+	
+	{ id: '5245', name: 'মোসাঃ তামিমা পারভীন', fname: 'আছাদুজ্জামান', addr: 'আড়পাড়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01710524696' },
+    { id: '52448', name: 'মোছাঃ রুকাইয়া খাতুন', fname: 'জি.এম. নুরুজ্জামান', addr: 'নোয়ালী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01710734071' },
+    { id: '52442', name: 'নুসরাত জাহান ইভা', fname: 'আরশাদ আলী', addr: 'খেদাপাড়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01969750228' },
+    { id: '2547146', name: 'মোসাঃ আফিফা খাতুন', fname: 'মোঃ জিয়াউর রহমান', addr: 'ব্রাহ্মমডাঙ্গা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01726876225' },
+    { id: '2547253', name: 'আছিয়া খাতুন', fname: 'কামরুল সানা', addr: 'গোপালপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01911000021' },
+    { id: '2547226', name: 'সাদিয়া খাতুন', fname: 'মো: নুর আলম', addr: 'রঘুনাথপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01726552687' },
+    { id: '5243', name: 'হালিমাতুস সাদিয়া', fname: 'মোঃ খালেদুর রহমান', addr: 'তাহেরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01713901222' },
+    { id: '52496', name: 'মোছা: মাহবুবা খাতুন', fname: 'আ: কাদের', addr: 'আলতাপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01778025560' },
+    { id: '52423', name: 'লামইয়া খাতুন', fname: 'আব্দুল কাদের', addr: 'খোজালীপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01933307517' },
+    { id: '52450', name: 'ফাহিমা আফরিন ইমা', fname: 'মো: তৈয়েবুর রহমান', addr: 'মনোহরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01712036617' },
+    { id: '42410', name: 'লিজা খাতুন', fname: 'লিটন ইসলাম', addr: 'গড়ভাঙ্গা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01613296220' },
+    { id: '2547252', name: 'রানু খাতুন', fname: 'মো: গোলাম মোস্তফা', addr: 'খানবাড়ীয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01611212538' },
+    { id: '42454', name: 'উম্মে হাবিবা', fname: 'মোঃ আজিবর রহমান', addr: 'জামলা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01715855359' },
+    { id: '42470', name: 'লামিয়া সুলতানা বুসরা', fname: 'মো: হাদিউজ্জামান', addr: 'গোবিন্দপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01952910506' },
+    { id: '52456', name: 'জাকিয়া সুলতানা', fname: 'জাকির হোসন', addr: '৪/৫৬৫ চর বইতাহরিচন্ডী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01979709116' },
+    { id: '2648037', name: 'ফারজানা ইয়াছমিন সুইটি', fname: 'মো: ফারুক মোল্ল্যা', addr: 'মনিরামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01738566462' },
+    { id: '52469', name: 'সাদিয়া খাতুন', fname: 'শেখ আবু সাঈদ', addr: 'খোর্দ্দ', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01937873550' },
+    { id: '52475', name: 'মোছাঃ নাজমিন নাহার', fname: 'মোঃ জাকির হোসেন', addr: 'কদমবাড়ীয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01965414077' },
+    { id: '2547202', name: 'মোছা: রুবাইয়া সুলতানা বৃষ্টি', fname: 'মো: মাহাবুর রহমান', addr: 'রামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01771341998' },
+    { id: '52476', name: 'मोছাঃ নাজিরা খাতুন', fname: 'আ: সামাদ শেখ', addr: 'কোমরপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01747155460' },
+    { id: '52470', name: 'তাসনিয়া জাহান তন্নি', fname: 'মোঃ ছলেমান বিশ্বাস', addr: 'বেড় আকছি', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01772532683' },
+    { id: '52410', name: 'শিফা খাতুন', fname: 'মাও. রফিকুল্লাহ', addr: 'কোমরপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01935610957' },
+    { id: '52413', name: 'হাবিবা আক্তার রানু', fname: 'মোঃ জিয়াউর রহমান', addr: 'বাকোশপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01746066950' },
+    { id: '52438', name: 'মোছাঃ হুমাইরা খাতুন', fname: 'মোঃ আবুল কাশেম', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01609142261' },
+    { id: '2547333', name: 'রুমাইয়া আক্তার উর্মি', fname: 'গোলাম সরোয়ার গাজী', addr: 'চাকলা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01946055234' },
+    { id: '52445', name: 'শামীয়া আক্তার', fname: 'মোঃ নজরুল ইসলাম', addr: 'আম্রঝুটা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01950681249' },
+    { id: '52424', name: 'সুমাইয়া সুলতানা', fname: 'কাজী আব্দুস সালাম', addr: 'জুড়ানপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01859742854' },
+    { id: '42420', name: 'মোছাঃ মাহবুবা খাতুন', fname: 'মোঃ আবুল কালাম', addr: 'তাহেরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01717410458' },
+    { id: '52412', name: 'মোছা: সুমনা খাতুন', fname: 'মো: আব্দুল রহমান', addr: 'জলকর রোহিতা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01907094551' },
+    { id: '5241', name: 'মোছাঃ আমেনা আলিম', fname: 'মোঃ আব্দুল আলিম', addr: 'মনিরামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01987447178' },
+    { id: '52428', name: 'মোছাঃ সাদিয়া আক্তার (বর্শা)', fname: 'আশরাফুল', addr: 'মহিনীকাটি', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01989769139' },
+    { id: '52444', name: 'মোছাঃ উম্মে হাবিবা', fname: 'মোঃ জাহিদুল ইসলাম', addr: 'ভরতপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01728057547' },
+    { id: '52493', name: 'মোছাঃ সুরাইয়া খাতুন', fname: 'মোঃ মোমিন শেখ', addr: 'মাহমুদপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01959803110' },
+    { id: '52479', name: 'মোছাঃ সাদিয়া সুলতানা', fname: 'মোঃ আক্তারুজ্জামান', addr: 'চালুয়াহাটী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01736172064' },
+    { id: '42436', name: 'মোছাঃ সানজিদা সুলতানা তুলি', fname: 'মোঃ শহিদুল ইসলাম', addr: 'মকমতলা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01731718163' },
+    { id: '42457', name: 'শাহারা খাতুন', fname: 'মোঃ গোলাম কবির', addr: 'খোজালীপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01708096401' },
+    { id: '42499', name: 'উম্মে হাবিবা আঁখি', fname: 'মোঃ হাফিজুর রহমান', addr: 'মাদারডাঙ্গা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01979597895' },
+    { id: '42433', name: 'জান্নাতী খাতুন', fname: 'মোঃ কামাল হোসেন', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01758537406' },
+    { id: '52420', name: 'সুমাইয়া ইয়াসমিন (তন্নি)', fname: 'মির আলী', addr: 'কাশিমনগর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01760460282' },
+    { id: '52480', name: 'মোছাঃ সামিহা খাতুন', fname: 'মোঃ হাবিবুর রহমান', addr: 'বড় বসন্তপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01731921586' },
+    { id: '52435', name: 'সাবিকুন নাহার নিপু', fname: 'মোঃ নুর হোসেন', addr: 'রঘুনাথপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01712120497' },
+    { id: '2648089', name: 'মোছা: কামরুন্নাহার', fname: 'মাও: আব্দুল গফ্ফার', addr: 'বাহাদুরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01927891845' },
+    { id: '52454', name: 'মোছা: মুনিয়া আক্তার আখি', fname: 'মো: আইনাল হক', addr: 'বাসুদেবপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01916878493' },
+    { id: '2648096', name: 'সাদিয়া সুলতানা', fname: 'মুহা: আসাদুজ্জামান', addr: 'কজিডাংগা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01736426212' },
+    { id: '2648098', name: 'সুরাইয়া বিনতে সালাম', fname: 'আব্দুস সালাম', addr: 'দেউলী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01722822837' },
+    { id: '2547083', name: 'সুমাইয়া সিমি', fname: 'মো: shaiফুল ইসলাম', addr: 'গোড়পাড়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01716933043' },
+    { id: '42416', name: 'মোছাঃ আরিফা খাতুন', fname: 'মোঃ রেজাউল ইসলাম', addr: 'হাকোবা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01949289918' },
+    { id: '2648127', name: 'মনিরা খাতুন', fname: 'মুহাঃ বাকী বিল্লাহ', addr: 'শ্যামকুড়', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01921289699' },
+    { id: '52418', name: 'শারমিন আক্তার', fname: 'আজিজুর রহমান', addr: 'হোগলাডাঙ্গা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01798568811' },
+    { id: '52474', name: 'মোছাঃ বুশরা খাতুন', fname: 'মোঃ নুরুর রহমান', addr: 'তেঁতুলিয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01920232788' },
+    { id: '52417', name: 'লাবনী আক্তার', fname: 'হাসান আলী', addr: 'aminপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01759173361' },
+    { id: '52457', name: 'মোছা: রুকাইয়া খাতুন', fname: 'মোঃ মোক্তার আলী', addr: 'রেজাকাটি', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01848383276' },
+    { id: '5247', name: 'জান্নাতুল ফেরদেসৗ', fname: 'মোঃ আলতাফ হোসেন', addr: 'তোলা গোলদার পাড়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01313840509' },
+    { id: '52446', name: 'মোছাঃ ইয়াসমিন খাতুন', fname: 'মোঃ ইস্মাইল হোসেন', addr: 'শ্যামকুড়', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01940519762' },
+    { id: '42469', name: 'মোছাঃ তামিমা খাতুন', fname: 'মোঃ মাহবুর রহমান', addr: 'লাউড়ী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01930358261' },
+    { id: '52468', name: 'মোছাঃ ফারিয়া সুলতানা সেতু', fname: 'মোঃ রমজান আলী', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01728048605' },
+    { id: '2547262', name: 'লামিয়া খাতুন', fname: 'আ: কুদ্দুস খা', addr: 'জালালপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01838646605' },
+    { id: '2547263', name: 'মোছা: মিথিলা ইয়াসমিন', fname: 'মো: জালাল হোসেন', addr: 'হানুয়ার', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01776069731' },
+    { id: '42453', name: 'মোছা: বেবি খাতুন সামিয়া', fname: 'মোঃ আনছার আলী', addr: 'দিঘীরপাড়', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01746931207' },
+    { id: '52433', name: 'হুমায়রা খাতুন', fname: 'আজিবর রহমান', addr: 'আলতাপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01856063379' },
+    { id: '52432', name: 'মাহিয়া সুলতানা', fname: 'মোঃ আঃ মান্নান সরদার', addr: 'মনোহরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01721652452' },
+    { id: '52488', name: 'ফারিয়া খাতুন', fname: 'মোঃ বিল্লাল হোসেন', addr: 'তেঁতুলিয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01971088971' },
+    { id: '2648139', name: 'মোছা: আমেনা খাতুন মুনিয়া', fname: 'মো: আকবর আলী', addr: 'শ্রীরামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01720807957' },
+    { id: '42496', name: 'জাকিয়া খাতুন', fname: 'মোঃ ছিদ্দিকুর রহমান', addr: 'সুন্দলপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01730665612' },
+    { id: '52486', name: 'তাসনিম জান্নাত তারিন', fname: 'শেখ তুহিন রেজা', addr: 'রামনগর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01328405733' },
+    { id: '2648200', name: 'তাবাচ্ছুম', fname: 'মোঃ শহীদুল ইসলাম', addr: 'মনিরামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01912619647' },
+    { id: '2648202', name: 'তাজমিন নাহার খুশি', fname: 'মোঃ রফিকুল ইসলাম', addr: 'তেঁতুলিয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01960919368' },
+    { id: '42491', name: 'মোছা: ইয়াসমিন খাতুন', fname: 'মো: ইদ্রিস আলী', addr: 'মশ্বিমনগর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01902486941' },
+    { id: '42458', name: 'তাসনিম সুলতানা', fname: 'মোঃ হাদীউজ্জামান', addr: 'শ্যামকুড়', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01905818021' },
+    { id: '2648247', name: 'তাহরিমা খাতুন', fname: 'মোসলেম মোড়ল', addr: 'শিরাশনী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01351972432' },
+        ];
+
+        window.exportStudentData = () => {
+            window.print();
+        };
+
+        window.openAdminEntry = () => { openModal('admin-entry-modal'); };
+
+        window.openAdminPin = () => {
+            closeModal('admin-entry-modal');
+            setTimeout(() => {
+                openModal('admin-modal');
+                document.getElementById('admin-pin-screen').classList.remove('hidden');
+                document.getElementById('admin-dashboard-screen').classList.add('hidden');
+                document.getElementById('admin-pin').value = '';
+            }, 300);
+        };
+
+        window.verifyAdminPin = () => {
+            if(document.getElementById('admin-pin').value === '1234') {
+                document.getElementById('admin-pin-screen').classList.add('hidden');
+                document.getElementById('admin-dashboard-screen').classList.remove('hidden');
+                renderStudentList();
+            } else { showToast("ভুল পিন কোড!"); document.getElementById('admin-pin').value = ''; }
+        };
+        
+        window.toggleAdminPin = () => {
+            const input = document.getElementById('admin-pin');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        };
+
+        window.handleStatusChange = (id, selectElement) => {
+            if(selectElement.value === 'manual') {
+                document.getElementById('manual-comment-container-'+id).classList.remove('hidden');
+                document.getElementById('manual-comment-input-'+id).focus();
+            } else {
+                document.getElementById('manual-comment-container-'+id).classList.add('hidden');
+                updateStatus(id, selectElement.value);
+            }
+        };
+
+        window.updateStatus = (id, val) => {
+            let std = mockStudents.find(s => s.id === id);
+            if(std) {
+                std.status = val;
+                renderStudentList();
+            }
+        };
+
+        window.renderStudentList = () => {
+            const filter = document.getElementById('admin-class-filter').value;
+            const query = document.getElementById('admin-search').value.toLowerCase().trim();
+            const container = document.getElementById('student-list-container');
+            
+            let filtered = mockStudents.filter(s => {
+                const matchClass = filter === 'all' || s.cls === filter;
+                const matchSearch = query === '' || s.name.toLowerCase().includes(query) || s.phone.includes(query) || s.id.includes(query);
+                return matchClass && matchSearch;
+            });
+
+            if(filtered.length === 0) {
+                container.innerHTML = '<p class="text-center theme-text-muted py-8 text-sm">কোনো শিক্ষার্থী পাওয়া যায়নি</p>';
+                return;
+            }
+
+            container.innerHTML = filtered.map((s, i) => {
+                let bgClass = "theme-card";
+                if(s.status === 'কথা হয়েছে') bgClass = "bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800";
+                else if(s.status === 'ফোন বন্ধ') bgClass = "bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800";
+                else if(s.status === 'ফোন ব্যস্ত') bgClass = "bg-yellow-50 dark:bg-yellow-900/30 border-yellow-200 dark:border-yellow-800";
+                else if(s.status === 'ফোন করেছিল') bgClass = "bg-purple-50 dark:bg-purple-900/30 border-purple-200 dark:border-purple-800";
+                else if(s.status.startsWith('ম্যানুয়াল:')) bgClass = "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600";
+
+                return `
+                <div class="${bgClass} p-3 rounded-xl border shadow-sm relative flex items-start gap-2 transition-colors duration-300">
+                    <button onclick="showActionMenu(event, 'student', '${s.id}')" class="text-gray-400 hover:text-green-600 font-bold px-1 pt-1 no-print">⋮</button>
+                    
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-xs text-green-600 font-bold mb-0.5">${s.cls}</p>
+                                <h4 class="font-bold theme-text text-sm leading-tight mb-1">
+                                    ${toBanglaNum(i+1)}. [ID: ${toBanglaNum(s.id)}] ${s.name}
+                                </h4>
+                                <p class="text-[11px] theme-text-muted">পিতা: ${s.fname} | ঠিকানা: ${s.addr}</p>
+                            </div>
+                            <a href="tel:${s.phone}" class="no-print bg-green-100 text-green-700 w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-sm shadow-sm border border-green-200">📞</a>
+                        </div>
+                        <div class="flex flex-col gap-1 border-t mt-2 pt-2 dark:border-gray-600">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-bold theme-text-muted">স্ট্যাটাস:</span>
+                                <select onchange="handleStatusChange('${s.id}', this)" class="no-print flex-1 border text-[11px] p-1 rounded bg-white dark:bg-gray-700 theme-text outline-none dark:border-gray-500 shadow-sm">
+                                    <option ${s.status === 'ভর্তি সম্পন্ন' ? 'selected':''}>ভর্তি সম্পন্ন</option>
+                                    <option ${s.status === 'কথা হয়েছে' ? 'selected':''}>কথা হয়েছে</option>
+                                    <option ${s.status === 'ফোন বন্ধ' ? 'selected':''}>ফোন বন্ধ</option>
+                                    <option ${s.status === 'ফোন ব্যস্ত' ? 'selected':''}>ফোন ব্যস্ত</option>
+                                    <option ${s.status === 'ফোন করেছিল' ? 'selected':''}>ফোন করেছিল</option>
+                                    <option ${s.status.startsWith('ম্যানুয়াল:') ? 'selected':''} value="manual">অন্যান্য (ম্যানুয়াল)...</option>
+                                </select>
+                                <span class="hidden print:inline text-[11px] font-bold theme-text">${s.status}</span>
+                            </div>
+                            <div id="manual-comment-container-${s.id}" class="${s.status.startsWith('ম্যানুয়াল:') ? 'block' : 'hidden'} no-print">
+                                <input type="text" id="manual-comment-input-${s.id}" placeholder="মন্তব্য লিখে এন্টার চাপুন..." class="w-full text-[11px] p-1.5 border rounded bg-white dark:bg-gray-700 theme-text outline-none dark:border-gray-500 shadow-inner" value="${s.status.startsWith('ম্যানুয়াল:') ? s.status.replace('ম্যানুয়াল: ', '') : ''}" onchange="updateStatus('${s.id}', 'ম্যানুয়াল: ' + this.value)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+        };
+
+        /* Add / Edit Student Actions */
+        window.openAddStudentForm = () => {
+            document.getElementById('add-std-title').innerText = "নতুন শিক্ষার্থী যোগ করুন";
+            document.getElementById('edit-std-id').value = "";
+            document.getElementById('new-std-id').value = "";
+            document.getElementById('new-std-name').value = "";
+            document.getElementById('new-std-fname').value = "";
+            document.getElementById('new-std-phone').value = "";
+            document.getElementById('new-std-addr').value = "";
+            document.getElementById('add-student-screen').classList.remove('hidden');
+            document.getElementById('add-student-screen').classList.add('flex');
+        };
+
+        window.closeAddStudentForm = () => {
+            document.getElementById('add-student-screen').classList.add('hidden');
+            document.getElementById('add-student-screen').classList.remove('flex');
+        };
+
+        window.saveStudent = () => {
+            let id = document.getElementById('new-std-id').value;
+            let name = document.getElementById('new-std-name').value;
+            let cls = document.getElementById('new-std-class').value;
+            let fname = document.getElementById('new-std-fname').value;
+            let phone = document.getElementById('new-std-phone').value;
+            let addr = document.getElementById('new-std-addr').value;
+            let editId = document.getElementById('edit-std-id').value;
+
+            if(!id || !name) { showToast("আইডি এবং নাম আবশ্যক"); return; }
+
+            if(editId) {
+                let std = mockStudents.find(s => s.id === editId);
+                if(std) { std.id=id; std.name=name; std.cls=cls; std.fname=fname; std.phone=phone; std.addr=addr; }
+                showToast("আপডেট সফল হয়েছে");
+            } else {
+                mockStudents.push({ id, name, cls, fname, phone, addr, status: 'ভর্তি সম্পন্ন' });
+                showToast("শিক্ষার্থী যোগ করা হয়েছে");
+            }
+            closeAddStudentForm();
+            renderStudentList();
+        };
+
+        window.editStudent = (id) => {
+            let std = mockStudents.find(s => s.id === id);
+            if(std) {
+                document.getElementById('add-std-title').innerText = "শিক্ষার্থী এডিট করুন";
+                document.getElementById('edit-std-id').value = std.id;
+                document.getElementById('new-std-class').value = std.cls;
+                document.getElementById('new-std-id').value = std.id;
+                document.getElementById('new-std-name').value = std.name;
+                document.getElementById('new-std-fname').value = std.fname;
+                document.getElementById('new-std-phone').value = std.phone;
+                document.getElementById('new-std-addr').value = std.addr;
+                document.getElementById('add-student-screen').classList.remove('hidden');
+                document.getElementById('add-student-screen').classList.add('flex');
+            }
+        };
+
+        window.deleteStudent = (id) => {
+            let idx = mockStudents.findIndex(s => s.id === id);
+            if(idx > -1) {
+                recycleBin.push({ type: 'student', data: mockStudents[idx], deletedAt: new Date() });
+                mockStudents.splice(idx, 1);
+                renderStudentList();
+                showToast("শিক্ষার্থী রিসাইকেল বিনে পাঠানো হয়েছে");
+            }
+        };
+
+        /* Init App Data */
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date();
+            updateDates(today);
+            renderNotices();
+            fetchPrayerTimes(); 
+            
+            document.getElementById('calendar-trigger').addEventListener('click', function() {
+                const picker = document.getElementById('calendar-picker');
+                if (typeof picker.showPicker === 'function') picker.showPicker();
+                else picker.click();
+            });
+            document.getElementById('calendar-picker').addEventListener('change', function(e) {
+                const selectedDate = new Date(e.target.value);
+                if(!isNaN(selectedDate)) updateDates(selectedDate);
+            });
+        });
+    </script>
+</body>
+</html>
