@@ -1967,6 +1967,8 @@ function calculateTotal() {
             });
 		});
 <script type="module">
+	import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+   import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"; // এটি যোগ করুন
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 
@@ -1979,7 +1981,21 @@ function calculateTotal() {
     appId: "1:281211783935:web:29d80daf6fe72fe6f89aca",
     measurementId: "G-93VMQT1M3V"
   };
+const db = getFirestore(app);
 
+// এই ফাংশনটি আপনার বাটন বা সেভ ক্লিকের সাথে যুক্ত করতে হবে
+window.saveMyNote = async function(noteContent) {
+    try {
+        await addDoc(collection(db, "madrasa_notes"), {
+            content: noteContent,
+            createdAt: new Date()
+        });
+        alert("নোটটি ফায়ারবেসে সেভ হয়েছে!");
+    } catch (e) {
+        console.error("ডাটা সেভ হয়নি: ", e);
+    }
+};
+	
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 </script>
