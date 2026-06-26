@@ -43,7 +43,7 @@
         }
 
         body { 
-            font-family: 'Hind Siliguri', sans-serif; 
+            font-family: 'SutonnyOMJ', sans-serif, Hind Siliguri; 
             background-color: var(--bg-body); 
             color: var(--text-main);
             -webkit-tap-highlight-color: transparent; 
@@ -131,16 +131,15 @@
                 </button>
                 
                 <!-- Theme Submenu Toggle -->
-                <div class="relative group">
-                    <button class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center justify-between border-b">
+                <div class="relative">
+                    <button onclick="toggleThemeSubmenu(event)" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center justify-between border-b">
                         <span class="flex items-center gap-2"><span>🎨</span> থিম</span>
-                        <span class="text-xs">▶</span>
+                        <span id="theme-arrow" class="text-xs transition-transform duration-200">▶</span>
                     </button>
-                    <!-- Theme Options -->
-                    <div class="hidden group-hover:block absolute right-full top-0 w-32 theme-card rounded-xl shadow-xl border overflow-hidden mr-1">
-                        <button onclick="setTheme('default')" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-gray-100 dark:hover:bg-gray-700">ডিফল্ট</button>
-                        <button onclick="setTheme('dark')" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-gray-100 dark:hover:bg-gray-700">ডার্ক</button>
-                        <button onclick="setTheme('night')" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-gray-100 dark:hover:bg-gray-700">নাইট</button>
+                    <div id="theme-submenu" class="hidden absolute right-full top-0 w-32 theme-card rounded-xl shadow-xl border overflow-hidden mr-1 z-50">
+                        <button onclick="setTheme('default'); closeProfileMenu();" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-gray-100 dark:hover:bg-gray-700">ডিফল্ট</button>
+                        <button onclick="setTheme('dark'); closeProfileMenu();" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-gray-100 dark:hover:bg-gray-700">ডার্ক</button>
+                        <button onclick="setTheme('night'); closeProfileMenu();" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-gray-100 dark:hover:bg-gray-700">নাইট</button>
                     </div>
                 </div>
 
@@ -168,16 +167,14 @@
             
             <!-- Sunrise & Sunset Row -->
             <div class="flex justify-between items-center text-sm">
-                <!-- Sunrise Box -->
-                <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-gray-700">
+                <div class="flex items-center gap-2 theme-card px-3 py-1.5 rounded-xl border shadow-sm">
                     <span class="text-xl">☀️</span>
                     <div>
                         <p class="text-[10px] theme-text-muted font-bold">সূর্যোদয়</p>
                         <p id="sunrise-time" class="font-bold theme-text">--:--</p>
                     </div>
                 </div>
-                <!-- Sunset Box -->
-                <div class="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-gray-700">
+                <div class="flex items-center gap-2 theme-card px-3 py-1.5 rounded-xl border shadow-sm">
                     <div>
                         <p class="text-[10px] theme-text-muted font-bold text-right">সূর্যাস্ত</p>
                         <p id="sunset-time" class="font-bold theme-text">--:--</p>
@@ -223,15 +220,12 @@
         </div>
 
         <!-- Grid Menu -->
-        <section class="grid grid-cols-4 gap-3">
+        <section class="grid grid-cols-3 gap-3">
             <div onclick="openModal('routine-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
                 <span class="text-2xl mb-1">📅</span><p class="text-[10px] font-bold theme-text leading-tight">ক্লাস রুটিন</p>
             </div>
             <div onclick="openModal('sakkhat-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
                 <span class="text-2xl mb-1">🤝</span><p class="text-[10px] font-bold theme-text leading-tight">সাক্ষাত টাইম</p>
-            </div>
-            <div onclick="openModal('rat-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
-                <span class="text-2xl mb-1">📃</span><p class="text-[10px] font-bold theme-text leading-tight">খানার মূল্য</p>
             </div>
             <div onclick="openModal('calc-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
                 <span class="text-2xl mb-1">🧮</span><p class="text-[10px] font-bold theme-text leading-tight">খানা ও বেতন</p>
@@ -244,9 +238,6 @@
             </div>          
             <div onclick="openModal('donation-modal', 'দান')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
                 <span class="text-2xl mb-1">🤲</span><p class="text-[10px] font-bold theme-text leading-tight">দান</p>            
-            </div>
-            <div onclick="openModal('donation-modal', 'যাকাত')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
-                <span class="text-2xl mb-1">🏦</span><p class="text-[10px] font-bold theme-text leading-tight">যাকাত</p>
             </div>            
         </section>
     </main>
@@ -497,7 +488,7 @@
     <div id="donation-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
         <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
             <div class="p-4 border-b flex justify-between items-center bg-green-600 text-white">
-                <h3 class="font-bold text-lg" id="donation-title">दान করুন</h3>
+                <h3 class="font-bold text-lg" id="donation-title">দান করুন</h3>
                 <button onclick="closeModal('donation-modal')" class="w-8 h-8 bg-white/20 rounded-full text-white font-bold hover:bg-white/30">✕</button>
             </div>
             <div class="p-5 space-y-4 bg-gray-50 dark:bg-gray-900">
@@ -574,7 +565,6 @@
     </div>
 
     <!-- Admin Entry Modal -->
-
     <div id="admin-entry-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
         <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
             <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
@@ -607,7 +597,7 @@
                 <button onclick="closeModal('admin-modal')" class="absolute top-4 right-4 w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300 font-bold hover:bg-gray-300">✕</button>
                 <div class="w-16 h-16 bg-gray-200 dark:bg-gray-800 rounded-full flex items-center justify-center text-3xl mb-4">🛡️</div>
                 <h3 class="font-bold text-xl theme-text mb-2">অ্যাডমিন প্যানেল</h3>
-                <p class="text-xs theme-text-muted mb-6 text-center">প্রवेश করতে পিন কোড দিন (Demo: 1234)</p>
+                <p class="text-xs theme-text-muted mb-6 text-center">প্রবেশ করতে পিন কোড দিন (Demo: 1234)</p>
                 
                 <div class="relative w-full max-w-xs mb-4">
                     <input type="password" id="admin-pin" class="w-full border-2 text-center text-2xl tracking-[0.5em] p-3 rounded-xl outline-none focus:border-green-500 pr-10 bg-transparent theme-text" placeholder="••••">
@@ -718,7 +708,7 @@
                             <option value="ইবতেদাইয়্যাহ ৫ম (২য় দল)">ইবতেদাইয়্যাহ ৫ম (২য় দল)</option>
                             <option value="ইবতেদাইয়্যাহ ৪র্থ (১ম দল)">ইবতেদাইয়্যাহ ৪র্থ (১ম দল)</option>
                             <option value="ইবতেদাইয়্যাহ ৪র্থ (২য় দল)">ইবতেদাইয়্যাহ ৪র্থ (২য় দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)">ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)</option>
+                            <option value="ইবteদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)">ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)</option>
                             <option value="ইবতেদাইয়্যাহ ৩য় (১ম দল)">ইবতেদাইয়্যাহ ৩য় (১ম দল)</option>
                             <option value="ইবতেদাইয়্যাহ ৩য় (২য় দল)">ইবতেদাইয়্যাহ ৩য় (২য় দল)</option>
                             <option value="ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)">ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)</option>
@@ -1116,7 +1106,7 @@
             document.getElementById('display-bangla').innerText = `${weekday}, ${bangla.day} ${bangla.month} ${bangla.year} বঙ্গাব্দ${bangla.season ? ', '+bangla.season : ''}`;
         }
 
-        /* Notice Board and Alerts */
+        /* Notice Board and Alerts - Synced with Firebase */
         let notices = [
             { id: 1, title: "পরীক্ষার রুটিন প্রকাশ", desc: "আগামী শনিবার থেকে মাদ্রাসার অর্ধবার্ষিক পরীক্ষা শুরু হবে। সকল শিক্ষার্থীকে যথাসময়ে উপস্থিত থাকার নির্দেশ দেওয়া হলো।", date: "২৩ জুন, ২০২৬" },
             { id: 2, title: "ছুটির ঘোষণা", desc: "ঈদুল আজহা উপলক্ষে মাদ্রাসা আগামী রবিবার থেকে মোট ১০ দিন বন্ধ থাকবে।", date: "২০ জুন, ২০২৬" }
@@ -1269,19 +1259,6 @@
                     <button onclick="restoreItem(${index})" class="bg-green-100 text-green-700 px-3 py-1.5 rounded-lg text-xs font-bold active:scale-95 shrink-0 whitespace-nowrap">রিস্টোর</button>
                 </div>
             `).join('');
-        };
-
-        window.restoreItem = (index) => {
-            let item = recycleBin.splice(index, 1)[0];
-            if(item.type === 'note') {
-                notesList.unshift(item.data);
-                if(document.getElementById('note-modal').classList.contains('hidden') === false) renderNotes();
-            } else if(item.type === 'student') {
-                mockStudents.push(item.data);
-                if(document.getElementById('admin-modal').classList.contains('hidden') === false) renderStudentList();
-            }
-            renderRecycleBin();
-            showToast("পুনруд্বার সফল হয়েছে");
         };
 
         /* Enhanced Prayer API System */
@@ -1526,7 +1503,7 @@ function calculateTotal() {
     }
 }
 
-        /* Notepad Notes System */
+        /* Notepad Notes System - Synced with Firebase */
         let notesList = [
             { id: 1, text: "কাল সকালে বাজার থেকে কলম আনতে হবে", time: "সকাল ১০:৩০", completed: false }
         ];
@@ -1551,18 +1528,6 @@ function calculateTotal() {
             `).join('');
         };
 
-        window.toggleNoteStatus = (id) => { let n = notesList.find(x => x.id === id); if(n) { n.completed = !n.completed; renderNotes(); } };
-        
-        window.deleteNote = (id) => { 
-            let idx = notesList.findIndex(n => n.id === id);
-            if(idx > -1) {
-                recycleBin.push({ type: 'note', data: notesList[idx], deletedAt: new Date() });
-                notesList.splice(idx, 1);
-                renderNotes(); 
-                showToast("নোট রিসাইকেল বিনে পাঠানো হয়েছে"); 
-            }
-        };
-
         window.openAddNoteForm = () => {
             document.getElementById('note-form-title').innerText = "নতুন নোট";
             document.getElementById('editing-note-id').value = "";
@@ -1572,7 +1537,7 @@ function calculateTotal() {
         };
 
         window.editNote = (id) => {
-            let note = notesList.find(n => n.id === id);
+            let note = notesList.find(n => n.id == id);
             if(note) {
                 document.getElementById('note-form-title').innerText = "নোট এডিট করুন";
                 document.getElementById('editing-note-id').value = id;
@@ -1583,195 +1548,177 @@ function calculateTotal() {
 
         window.closeAddNoteForm = () => { document.getElementById('add-note-form').classList.add('hidden'); document.getElementById('add-note-form').classList.remove('flex'); };
 
-        window.saveNote = () => {
-            let text = document.getElementById('new-note-text').value.trim();
-            let editId = document.getElementById('editing-note-id').value;
-            if(!text) return;
-            let now = new Date(); let timeStr = formatTimeAmPm(now);
-            if(editId) {
-                let note = notesList.find(n => n.id == editId);
-                if(note) { note.text = text; note.time = "এডিট: " + timeStr; }
-                showToast("নোট আপডেট হয়েছে");
-            } else {
-                notesList.unshift({ id: Date.now(), text: text, time: "আজ " + timeStr, completed: false });
-                showToast("নোট সংরক্ষিত হয়েছে");
-            }
-            closeAddNoteForm(); renderNotes();
-        };
-
-        /* Admin Flow */
+        /* Admin Flow - Synced with Firebase */
         let mockStudents = [
             { id: '3241', name: 'মোছা: মাহজুবা খাতুন', fname: 'মো: আব্দুল হক', addr: 'জয়পুর', status: 'Active', cls: 'তাকমীল', phone: '01712852739' },
-    { id: '3244', name: 'মিস লাইলী খাতুন', fname: 'মোঃ আজমুল সালাম', addr: 'মাঝলাউড়ী', status: 'Active', cls: 'তাকমীল', phone: '01964791560' },
-    { id: '3246', name: 'মারুফা আক্তার', fname: 'মোঃ ফারুক হোসেন', addr: 'হাঁসাডাংগা', status: 'Active', cls: 'তাকমীল', phone: '01724469835' },
-    { id: '3247', name: 'মোছাঃ হাফসা খাতুন', fname: 'মোঃ মুজিবুর রহমান', addr: 'গোপালপুর', status: 'Active', cls: 'তাকমীল', phone: '01937874777' },
-    { id: '3248', name: 'আফসানা তাসনীম', fname: 'মোঃ হারুন আর রশিদ', addr: 'চিনাটোলা', status: 'Active', cls: 'তাকমীল', phone: '01629579848' },
-    { id: '32410', name: 'খাদিজা', fname: 'শুকুরালী সানা', addr: 'গোপালপুর', status: 'Active', cls: 'তাকমীল', phone: '01930661740' },
-    { id: '32413', name: 'তাসলিমা খাতুন', fname: 'আশরাফ আলী', addr: 'নাগোরঘোপ', status: 'Active', cls: 'তাকমীল', phone: '01778768271' },
-    { id: '32415', name: 'আফিয়া হুমায়রা', fname: 'মোঃ Shahাদাৎ হোসেন', addr: 'মশ্বিমনগর', status: 'Active', cls: 'তাকমীল', phone: '01303042089' },
-    { id: '32416', name: 'ইতি আক্তার', fname: 'মোঃ আবুল কাশেম', addr: 'মোবারকপুর', status: 'Active', cls: 'তাকমীল', phone: '01740423090' },
-    { id: '32417', name: 'উমামা তাঝকিয়্যাহ', fname: 'মাসউদ আলম', addr: 'দূগার্পুর', status: 'Active', cls: 'তাকমীল', phone: '01936011201' },
-    { id: '32419', name: 'শামীমা খাতুন', fname: 'মোঃ নুরনবী', addr: 'মামুদকাটি', status: 'Active', cls: 'তাকমীল', phone: '01317894880' },
-    { id: '32420', name: 'জয়নব খাতুন', fname: 'মরহুম বাবলুর রহমান', addr: 'হাকোবা', status: 'Active', cls: 'তাকমীল', phone: '01718700873' },
-    { id: '32421', name: 'মোছাঃ রাবেয়া খাতুন', fname: 'মোঃ আজাহারুল ইসলাম', addr: 'মঙ্গলকোট', status: 'Active', cls: 'তাকমীল', phone: '01732791624' },
-    { id: '32422', name: 'মোছা: জান্নাতুল ফেরদাউস তানহা', fname: 'মো: মনোয়ার হোসেন', addr: 'ঝিকরগাছা', status: 'Active', cls: 'তাকমীল', phone: '01970512977' },
-    { id: '32423', name: 'হাবিবা খাতুন', fname: 'মোঃ মুনসুর আলী', addr: 'লাউড়ী', status: 'Active', cls: 'তাকমীল', phone: '01791855885' },
-    { id: '32424', name: 'রুবিয়া খাতুন', fname: 'মোঃ শফিকুল ইসলাম', addr: 'কামালপুর', status: 'Active', cls: 'তাকমীল', phone: '01902338532' },
-    { id: '32426', name: 'রাবিয়া বসরী', fname: 'মো: আব্দুল গফ্‌ফার', addr: 'সূবর্ণখালী', status: 'Active', cls: 'তাকমীল', phone: '01926947968' },
-    { id: '32427', name: 'ছাবিনা খাতুন', fname: 'শামছুর রহমান', addr: 'লক্ষণপুর', status: 'Active', cls: 'তাকমীল', phone: '01757284347' },
-    { id: '32428', name: 'জান্নাতুল ফেরদাউস মুন্নি', fname: 'আজিজুর রহমান সরদার', addr: 'শোভনা', status: 'Active', cls: 'তাকমীল', phone: '01734849722' },
-    { id: '32429', name: 'তাসকিয়া সুলতানা রিমি', fname: 'মোঃ রমজান আলী', addr: 'কাশিমপুর', status: 'Active', cls: 'তাকমীল', phone: '01782319481' },
-    { id: '32430', name: 'সাদিয়া', fname: 'নাসির উদ্দীন', addr: 'গদখালী', status: 'Active', cls: 'তাকমীল', phone: '01980985385' },
-    { id: '32431', name: 'সুরাইয়া খাতুন', fname: 'রফিকুল ইসলাম', addr: 'পায়রাডাঙ্গা', status: 'Active', cls: 'তাকমীল', phone: '01996864166' },
-    { id: '32433', name: 'উম্মে হাবিবা', fname: 'মোঃ আব্দুল হালিম', addr: 'হুমাতলা', status: 'Active', cls: 'তাকমীল', phone: '01791153654' },
-    { id: '32434', name: 'মোছাঃ আমেনা সিদ্দীকা', fname: 'মোঃ সিদ্দিকুর রহমান', addr: 'মজিদপুর', status: 'Active', cls: 'তাকমীল', phone: '01745066747' },
-    { id: '32435', name: 'হালিমা খাতুন', fname: 'মো: শাহাজান', addr: 'পাঁচপোতা', status: 'Active', cls: 'তাকমীল', phone: '01726216409' },
-    { id: '32436', name: 'মরিয়াম আক্তার', fname: 'মোঃ আব্দুস সাত্তার সরদার', addr: 'সরল', status: 'Active', cls: 'তাকমীল', phone: '01924425633' },
-    { id: '32437', name: 'মোছা: নাজমুন Nাহার', fname: 'মো: মফিজুর রহমান', addr: 'শ্যামকুড়', status: 'Active', cls: 'তাকমীল', phone: '01947278955' },
-    { id: '32438', name: 'সাদিয়া খাতুন', fname: 'বাসারুল ইসলাম', addr: 'রাঘবদাইড়', status: 'Active', cls: 'তাকমীল', phone: '01319745221' },
-    { id: '32440', name: 'মোছা: তামান্না খাতুন', fname: 'শেখ আবু সাঈদ', addr: 'খোর্দ্দ', status: 'Active', cls: 'তাকমীল', phone: '01937873550' },
-    { id: '32441', name: 'হাবিবা খাতুন', fname: 'মোঃ হাবিবুর রহমান', addr: 'জামলা', status: 'Active', cls: 'তাকমীল', phone: '01731005346' },
-    { id: '32442', name: 'বাশিরা রোশনী', fname: 'নাজমুস সাকিব', addr: 'একতারপুর', status: 'Active', cls: 'তাকমীল', phone: '01915840445' },
-    { id: '32443', name: 'ফারিহা ফারজানা', fname: 'মোঃ রেজাউল ইসলাম', addr: 'পরান্দাহ', status: 'Active', cls: 'তাকমীল', phone: '01720524676' },
-    { id: '32444', name: 'মোছাঃ মাবরুরা খাতুন (মীম)', fname: 'মোঃ নজরুল ইসলাম', addr: 'ঝাঁপা', status: 'Active', cls: 'তাকমীল', phone: '01733920365' },
-    { id: '32445', name: 'মরিয়াম খাতুন প্রিয়া', fname: 'মো: নুর ইসলাম', addr: 'মশ্বিমনগর', status: 'Active', cls: 'তাকমীল', phone: '01982392009' },
-    { id: '32449', name: 'মোছাঃ মেঘলা খাতুন মিতু', fname: 'মোঃ মুনতাজ আলী', addr: 'আগরহাটী', status: 'Active', cls: 'তাকমীল', phone: '01926177703' },
-    { id: '32450', name: 'হালিমাতুস সাদিয়া', fname: 'শেখ আঃ মমিন', addr: 'মাহমুদপুর', status: 'Active', cls: 'তাকমীল', phone: '01959803110' },
-    { id: '32451', name: 'ফারজানা আক্তার', fname: 'মনিরুল ইসলাম', addr: 'জলকর রহিতা', status: 'Active', cls: 'তাকমীল', phone: '01326948871' },
-    { id: '2547142', name: 'হাবিবা খাতুন', fname: 'শরিফুল শেখ', addr: 'উঃ গোবিন্দকাটি', status: 'Active', cls: 'তাকমীল', phone: '01305557579' },
-    { id: '2547303', name: 'ছাবিকুন্নাহার', fname: 'এবাদুল গাজী', addr: 'কাপসন্ডা', status: 'Active', cls: 'তাকমীল', phone: '01919597783' },
-    { id: '2648026', name: 'মোছা: হাফছা খাতুন', fname: 'মো: হাফিজুর রহমান', addr: 'মনোহরপুর', status: 'Active', cls: 'তাকমীল', phone: '01958492885' },
-    { id: '2648058', name: 'ফাতেমা তুজ জোহরা', fname: 'মো: রবিউল ইসলাম', addr: 'লাবসা', status: 'Active', cls: 'তাকমীল', phone: '01742049106' },
-    { id: '2648085', name: 'মোছা: বুশরা', fname: 'মো: আব্দুল গনি', addr: 'পরচক্রা তেঘরী', status: 'Active', cls: 'তাকমীল', phone: '01914652234' },
-    { id: '2648109', name: 'মোছাঃ জিনিয়া আফরোজ', fname: 'ইসরাফিল হোসেন', addr: 'পাঁচপোতা', status: 'Active', cls: 'তাকমীল', phone: '01977381956' },
-    { id: '2648257', name: 'সুমাইয়া', fname: 'মাওলানা আবু উбайদ', addr: 'দাদনতলা', status: 'Active', cls: 'তাকমীল', phone: '01713919874' },
-			
+            { id: '3244', name: 'মিস লাইলী খাতুন', fname: 'মোঃ আজমুল সালাম', addr: 'মাঝলাউড়ী', status: 'Active', cls: 'তাকমীল', phone: '01964791560' },
+            { id: '3246', name: 'মারুফা আক্তার', fname: 'মোঃ ফারুক হোসেন', addr: 'হাঁসাডাংগা', status: 'Active', cls: 'তাকমীল', phone: '01724469835' },
+            { id: '3247', name: 'মোছাঃ হাফসা খাতুন', fname: 'মোঃ মুজিবুর রহমান', addr: 'গোপালপুর', status: 'Active', cls: 'তাকমীল', phone: '01937874777' },
+            { id: '3248', name: 'আফসানা তাসনীম', fname: 'মোঃ হারুন আর রশিদ', addr: 'চিনাটোলা', status: 'Active', cls: 'তাকমীল', phone: '01629579848' },
+            { id: '32410', name: 'খাদিজা', fname: 'শুকুরালী সানা', addr: 'গোপালপুর', status: 'Active', cls: 'তাকমীল', phone: '01930661740' },
+            { id: '32413', name: 'তাসলিমা খাতুন', fname: 'আশরাফ আলী', addr: 'নাগোরघোপ', status: 'Active', cls: 'তাকমীল', phone: '01778768271' },
+            { id: '32415', name: 'আফিয়া হুমায়রা', fname: 'মোঃ Shahাদাৎ হোসেন', addr: 'মশ্বিমনগর', status: 'Active', cls: 'তাকমীল', phone: '01303042089' },
+            { id: '32416', name: 'ইতি আক্তার', fname: 'মোঃ আবুল কাশেম', addr: 'মোবারকপুর', status: 'Active', cls: 'তাকমীল', phone: '01740423090' },
+            { id: '32417', name: 'উমামা তাঝকিয়্যাহ', fname: 'মাসউদ আলম', addr: 'দূগার্পুর', status: 'Active', cls: 'তাকমীল', phone: '01936011201' },
+            { id: '32419', name: 'শামীমা খাতুন', fname: 'মোঃ নুরনবী', addr: 'মামুদকাটি', status: 'Active', cls: 'তাকমীল', phone: '01317894880' },
+            { id: '32420', name: 'জয়নব খাতুন', fname: 'মরহুম বাবলুর রহমান', addr: 'হাকোবা', status: 'Active', cls: 'তাকমীল', phone: '01718700873' },
+            { id: '32421', name: 'মোছাঃ রাবেয়া খাতুন', fname: 'মোঃ আজাহারুল ইসলাম', addr: 'মঙ্গলকোট', status: 'Active', cls: 'তাকমীল', phone: '01732791624' },
+            { id: '32422', name: 'মোছা: জান্নাতুল ফেরদাউস তানহা', fname: 'মো: মনোয়ার হোসেন', addr: 'ঝিকরগাছা', status: 'Active', cls: 'তাকমীল', phone: '01970512977' },
+            { id: '32423', name: 'হাবিবা খাতুন', fname: 'মোঃ মুনসুর আলী', addr: 'লাউড়ী', status: 'Active', cls: 'তাকমীল', phone: '01791855885' },
+            { id: '32424', name: 'রুবিয়া খাতুন', fname: 'মোঃ শফিকুল ইসলাম', addr: 'কামালপুর', status: 'Active', cls: 'তাকমীল', phone: '01902338532' },
+            { id: '32426', name: 'রাবিয়া বসরী', fname: 'মো: আব্দুল গফ্‌ফার', addr: 'সূবর্ণখালী', status: 'Active', cls: 'তাকমীল', phone: '01926947968' },
+            { id: '32427', name: 'ছাবিনা খাতুন', fname: 'শামছুর রহমান', addr: 'লক্ষণপুর', status: 'Active', cls: 'তাকমীল', phone: '01757284347' },
+            { id: '32428', name: 'জান্নাতুল ফেরদাউস মুন্নি', fname: 'আজিজুর রহমান সরদার', addr: 'শোভনা', status: 'Active', cls: 'তাকমীল', phone: '01734849722' },
+            { id: '32429', name: 'তাসকিয়া সুলতানা রিমি', fname: 'মোঃ রমজান আলী', addr: 'কাশিমপুর', status: 'Active', cls: 'তাকমীল', phone: '01782319481' },
+            { id: '32430', name: 'সাদিয়া', fname: 'নাসির উদ্দীন', addr: 'গদখালী', status: 'Active', cls: 'তাকমীল', phone: '01980985385' },
+            { id: '32431', name: 'সুরাইয়া খাতুন', fname: 'রফিকুল ইসলাম', addr: 'পায়রাডাঙ্গা', status: 'Active', cls: 'তাকমীল', phone: '01996864166' },
+            { id: '32433', name: 'উম্মে হাবিবা', fname: 'মোঃ আব্দুল হালিম', addr: 'হুমাতলা', status: 'Active', cls: 'তাকমীল', phone: '01791153654' },
+            { id: '32434', name: 'মোছাঃ আমেনা সিদ্দীকা', fname: 'মোঃ সিদ্দিকুর রহমান', addr: 'মজিদপুর', status: 'Active', cls: 'তাকমীল', phone: '01745066747' },
+            { id: '32435', name: 'হালিমা খাতুন', fname: 'মো: শাহাজান', addr: 'পাঁচপোতা', status: 'Active', cls: 'তাকমীল', phone: '01726216409' },
+            { id: '32436', name: 'মরিয়াম আক্তার', fname: 'মোঃ আব্দুস সাত্তার সরদার', addr: 'সরল', status: 'Active', cls: 'তাকমীল', phone: '01924425633' },
+            { id: '32437', name: 'মোছা: নাজমুন Nাহার', fname: 'মো: মফিজুর রহমান', addr: 'শ্যামকুড়', status: 'Active', cls: 'তাকমীল', phone: '01947278955' },
+            { id: '32438', name: 'সাদিয়া খাতুন', fname: 'বাসারুল ইসলাম', addr: 'রাঘবদাইড়', status: 'Active', cls: 'তাকমীল', phone: '01319745221' },
+            { id: '32440', name: 'মোছা: তামান্না খাতুন', fname: 'শেখ আবু সাঈদ', addr: 'খোর্দ্দ', status: 'Active', cls: 'তাকমীল', phone: '01937873550' },
+            { id: '32441', name: 'হাবিবা খাতুন', fname: 'মোঃ হাবিবুর রহমান', addr: 'জামলা', status: 'Active', cls: 'তাকমীল', phone: '01731005346' },
+            { id: '32442', name: 'বাশিরা রোশনী', fname: 'নাজমুস সাকিব', addr: 'একতারপুর', status: 'Active', cls: 'তাকমীল', phone: '01915840445' },
+            { id: '32443', name: 'ফারিহা ফারজানা', fname: 'মোঃ রেজাউল ইসলাম', addr: 'পরান্দাহ', status: 'Active', cls: 'তাকমীল', phone: '01720524676' },
+            { id: '32444', name: 'মোছাঃ মাবরুরা খাতুন (মীম)', fname: 'মোঃ নজরুল ইসলাম', addr: 'ঝাঁপা', status: 'Active', cls: 'তাকমীল', phone: '01733920365' },
+            { id: '32445', name: 'মরিয়াম খাতুন প্রিয়া', fname: 'মো: নুর ইসলাম', addr: 'মশ্বিমনগর', status: 'Active', cls: 'তাকমীল', phone: '01982392009' },
+            { id: '32449', name: 'মোছাঃ মেঘলা খাতুন মিতু', fname: 'মোঃ মুনতাজ আলী', addr: 'আগরহাটী', status: 'Active', cls: 'তাকমীল', phone: '01926177703' },
+            { id: '32450', name: 'হালিমাতুস সাদিয়া', fname: 'শেখ আঃ মমিন', addr: 'মাহমুদপুর', status: 'Active', cls: 'তাকমীল', phone: '01959803110' },
+            { id: '32451', name: 'ফারজানা আক্তার', fname: 'মনিরুল ইসলাম', addr: 'জলকর রহিতা', status: 'Active', cls: 'তাকমীল', phone: '01326948871' },
+            { id: '2547142', name: 'হাবিবা খাতুন', fname: 'শরিফুল শেখ', addr: 'উঃ গোবিন্দকাটি', status: 'Active', cls: 'তাকমীল', phone: '01305557579' },
+            { id: '2547303', name: 'ছাবিকুন্নাহার', fname: 'এবাদুল গাজী', addr: 'কাপসন্ডা', status: 'Active', cls: 'তাকমীল', phone: '01919597783' },
+            { id: '2648026', name: 'মোছা: হাফছা খাতুন', fname: 'মো: হাফিজুর রহমান', addr: 'মনোহরপুর', status: 'Active', cls: 'তাকমীল', phone: '01958492885' },
+            { id: '2648058', name: 'ফাতেমা তুজ জোহরা', fname: 'মো: রবিউল ইসলাম', addr: 'লাবসা', status: 'Active', cls: 'তাকমীল', phone: '01742049106' },
+            { id: '2648085', name: 'মোছা: বুশরা', fname: 'মো: আব্দুল গনি', addr: 'পরচক্রা তেঘরী', status: 'Active', cls: 'তাকমীল', phone: '01914652234' },
+            { id: '2648109', name: 'মোছাঃ জিনিয়া আফরোজ', fname: 'ইসরাফিল হোসেন', addr: 'পাঁচপোতা', status: 'Active', cls: 'তাকমীল', phone: '01977381956' },
+            { id: '2648257', name: 'সুমাইয়া', fname: 'মাওলানা আবু উбайদ', addr: 'দাদনতলা', status: 'Active', cls: 'তাকমীল', phone: '01713919874' },
 			
 			{ id: '4241', name: 'মোছাঃ ফাহমিদা ইসলাম', fname: 'মোঃ বরкатুল ইসলাম', addr: 'বেলতা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01915909522' },
-    { id: '4247', name: 'মাইমুনা জান্নাত ফারজানা', fname: 'মাসুদ করিম', addr: 'শিকারপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01745606341' },
-    { id: '42476', name: 'আরজু খাতুন', fname: 'আজগার আলী বিশ্বাস', addr: 'বালিয়াদহা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01711211857' },
-    { id: '42487', name: 'রুবাইয়া হোসেন সুমি', fname: 'সাব্বির হোসেন', addr: 'সুফলাকাটি', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01728400311' },
-    { id: '42435', name: 'শাইরীন মেহেজাবীন', fname: 'শেখ ইমদাদ হোসেন', addr: 'দহাকুলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01753412254' },
-    { id: '42427', name: 'মোছাঃ মনিরা আক্তার মুক্তা', fname: 'মোঃ মতিয়ার রহমান', addr: 'বাগডোব', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01301344772' },
-    { id: '42411', name: 'মোছাঃ ঝর্ণা আক্তার জীম', fname: 'মোঃ ইউনুস আলী', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01915644437' },
-    { id: '4249', name: 'মোছাঃ ছামিয়া খাতুন', fname: 'মোঃ ইমরান হোসেন', addr: 'ব্রহ্মপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01988031187' },
-    { id: '42414', name: 'মোছাঃ সামিয়া আফরীন', fname: 'মোঃ হাবিবুর রহমান', addr: 'পায়রাডাঙ্গা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01918701896' },
-    { id: '424103', name: 'মোছাঃ তামান্না খাতুন', fname: 'মোঃ মাহমুদুল হাসান', addr: 'মজিদপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01703559586' },
-    { id: '42456', name: 'মোছাঃ মুন্নী খাতুন', fname: 'মোঃ মাসুদুর রহমান', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01922308432' },
-    { id: '42418', name: 'মোছাঃ নুসরাত ইয়াসমিন আনিকা', fname: 'মোঃ رফিকুল ইসলাম', addr: 'সৈয়দ মাহমুদপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01731577476' },
-    { id: '42421', name: 'নুসরাত জাহান খুশি', fname: 'মোঃ আরিফুর রহমান', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01938620981' },
-    { id: '42422', name: 'ইসরাত জাহান হাসি', fname: 'মোঃ আরিফুর রহমান', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01938620981' },
-    { id: '42412', name: 'मोছাঃ আখি খাতুন', fname: 'মোঃ আলমগীর হোসেন', addr: 'খড়িঞ্চী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01762088340' },
-    { id: '42426', name: 'ফারহানা খাতুন', fname: 'আজহারুল ইসলাম', addr: 'ইত্যা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01714849366' },
-    { id: '42423', name: 'নূসরাত জাহান', fname: 'মোঃ ওসমান গনি', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01914034461' },
-    { id: '424112', name: 'শাহারা খানম', fname: 'মো: আবু সাঈদ মোড়ল', addr: 'গোবিন্দকাটি', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01957611245' },
-    { id: '42482', name: 'মোছা: মিম আক্তার সুমি', fname: 'মো: রবিউল ইসলাম', addr: 'ঝাঁপা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01310639536' },
-    { id: '42489', name: 'মোছা: রুকাইয়া খাতুন', fname: 'মো: রফিকুল ইসলাম', addr: 'বাকোশপোল', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01937092111' },
-    { id: '42443', name: 'মোছাঃ আঁখি মনি', fname: 'আব্দুর রহিম', addr: 'কামালপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01724178169' },
-    { id: '42440', name: 'হাবিবা খাতুন', fname: 'মোঃ ঈমান আলী বিশ্বাস', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01615734534' },
-    { id: '42466', name: 'মোছাঃ সাদিয়া সুলতানা', fname: 'মোঃ আমিনুর রহমান', addr: 'সোনাতলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01739318535' },
-    { id: '2547060', name: 'খাদিজাতুল কোবরা', fname: 'মো: এরশাদ আলী', addr: 'সাতানী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01723612541' },
-    { id: '42413', name: 'মোছাঃ মাইমনা খাতুন', fname: 'মোঃ সহিদুল ইসলাম', addr: 'বাজিতপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01779792649' },
-    { id: '4248', name: 'আনিসা আক্তার', fname: 'মোঃ খলিল ফকির', addr: 'সরুলিয়া', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01716716979' },
-    { id: '42477', name: 'জান্নত ইসলাম এ্যানি', fname: 'মো: সোহেল হোসেন', addr: 'হানুয়ার', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01718974418' },
-    { id: '42474', name: 'মিস তাসনিম ঋতু', fname: 'মো: রবিউল ইসলাম গাজী', addr: 'চরকানাইদিয়া', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01863012763' },
-    { id: '42441', name: 'তামান্না তারান্নুম', fname: 'মোঃ মনিরুজ্জামান', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01834179493' },
-    { id: '4244', name: 'মিস্‌ ইয়াসমিন আক্তার', fname: 'মোঃ কামাল বিশ্বাস', addr: 'নাছিরপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01761362379' },
-    { id: '4245', name: 'মিস্‌ জেসমিন আক্তার', fname: 'মোঃ কামাল বিশ্বাস', addr: 'নাছিরপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01761362379' },
-    { id: '42447', name: 'মোছা: সিনথিয়া খাতুন', fname: 'মো: শহীদ বিশ্বাস', addr: 'টিলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01706985777' },
-    { id: '42462', name: 'ফারজানা আক্তার মৌসুমী', fname: 'মোঃ আতিয়ার রহমান', addr: 'মকমতলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01986651410' },
-    { id: '42415', name: 'মোছাঃ ফারজানা খাতুন', fname: 'মোঃ খলিলুর রহমান', addr: 'তাহেরপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01714779153' },
-    { id: '2547174', name: 'মোছাঃ হুমাইরা আক্তার', fname: 'কবিরুল ইসলাম', addr: 'চাকলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01975703913' },
-    { id: '42446', name: 'জেবা সামিহা', fname: 'মোঃ মিজানুল হাসান', addr: 'কাশিমপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01771174109' },
-    { id: '42449', name: 'তৈয়বা আলম', fname: 'মো: শহীদ আলম', addr: 'সাগরদাঁড়ী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01938925679' },
-    { id: '42445', name: 'মোছাঃ সাবিনা খাতুন', fname: 'কামরুল', addr: 'খোজালীপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01401702911' },
-    { id: '42434', name: 'সুমাইয়া খাতুন', fname: 'মোখলেছুর শেখ', addr: 'চাপারডাঙ্গী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01611768824' },
-    { id: '2648025', name: 'আমাতুল্লাহ', fname: 'মো: সিরাজুল ইসলাম', addr: 'মালতিয়া', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01917153163' },
-    { id: '2648080', name: 'মোছা: সাবরিনা ইয়াসমিন', fname: 'মো: হযরত আলী', addr: 'বেলকাটি', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01317524495' },
-    { id: '42479', name: 'মাহফুজা', fname: 'আব্দুল মোতালেব', addr: 'কামালপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01921630319' },
-    { id: '32425', name: 'سাদিয়া আফরিন', fname: 'মোঃ আঃ মান্নান সরদার', addr: 'মনোহরপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01721652452' },
-    { id: '42485', name: 'মাসুমা আক্তার জান্নাতী', fname: 'মোঃ মাছুদ রানা', addr: 'লাউড়ী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01914570957' },
-    { id: '2648134', name: 'মোছাঃ হাবিবা আক্তার', fname: 'মোঃ মোজাম্মেল হক', addr: 'জয়নগর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01920493632' },
-    { id: '2648137', name: 'মনিরা খাতুন', fname: 'আব্দুল আহাদ', addr: 'মালতিয়া', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01925323315' },
-    { id: '2648168', name: 'মোছাঃ তাজকিয়া খাতুন', fname: 'মোঃ আব্দুস সালাম', addr: 'হিজলডাঙ্গা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01766115183' },
-    { id: '2648192', name: 'মায়মুনা খাতুন', fname: 'মো: হারুন অর রশীদ', addr: 'মঙ্গলকোট', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01715448362' },
-    { id: '2648204', name: 'মোছাম্মাদ সাদিয়া সুলতানা', fname: 'মোঃ আবুল হোসেন', addr: 'ধুলিহর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01939157504' },
-    { id: '42471', name: 'মোছাঃ খাদিজা খাতুন', fname: 'মোঃ জাহিদুল ইসলাম', addr: 'শিকারপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01728261058' },
-    { id: '2648226', name: 'মিস তাহেরা তাবাসুম', fname: 'মো: মোস্তাফিজুর রহমান', addr: 'مহারাজপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01933147319' },
-    { id: '2648228', name: 'মোছাঃ মারিয়া খাতুন', fname: 'মোঃ মোসাদ্দেক', addr: 'সত্যপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01915372404' },
-    { id: '32439', name: 'মোছা: তামান্না খাতুন', fname: 'মোঃ মহিব্বুল্লাহ', addr: 'সুন্দলপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01946435299' },
+            { id: '4247', name: 'মাইমুনা জান্নাত ফারজানা', fname: 'মাসুদ করিম', addr: 'শিকারপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01745606341' },
+            { id: '42476', name: 'আরজু খাতুন', fname: 'আজগার আলী বিশ্বাস', addr: 'বালিয়াদহা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01711211857' },
+            { id: '42487', name: 'রুবাইয়া হোসেন সুমি', fname: 'সাব্বির হোসেন', addr: 'সুফলাকাটি', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01728400311' },
+            { id: '42435', name: 'শাইরীন মেহেজাবীন', fname: 'শেখ ইমদাদ হোসেন', addr: 'দহাকুলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01753412254' },
+            { id: '42427', name: 'মোছাঃ মনিরা আক্তার মুক্তা', fname: 'মোঃ মতিয়ার রহমান', addr: 'বাগডোব', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01301344772' },
+            { id: '42411', name: 'মোছাঃ ঝর্ণা আক্তার জীম', fname: 'মোঃ ইউনুস আলী', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01915644437' },
+            { id: '4249', name: 'মোছাঃ ছামিয়া খাতুন', fname: 'মোঃ ইমরান হোসেন', addr: 'ব্রহ্মপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01988031187' },
+            { id: '42414', name: 'মোছাঃ সামিয়া আফরীন', fname: 'মোঃ হাবিবুর রহমান', addr: 'পায়রাডাঙ্গা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01918701896' },
+            { id: '424103', name: 'মোছাঃ তামান্না খাতুন', fname: 'মোঃ মাহমুদুল হাসান', addr: 'মজিদপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01703559586' },
+            { id: '42456', name: 'মোছাঃ মুন্নী খাতুন', fname: 'মোঃ মাসুদুর রহমান', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01922308432' },
+            { id: '42418', name: 'মোছাঃ নুসরাত ইয়াসমিন আনিকা', fname: 'মোঃ রফিকুল ইসলাম', addr: 'سৈয়দ মাহমুদপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01731577476' },
+            { id: '42421', name: 'নুসরাত জাহান খুশি', fname: 'মোঃ আরিফুর রহমান', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01938620981' },
+            { id: '42422', name: 'ইসরাত জাহান হাসি', fname: 'মোঃ আরিফুর রহমান', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01938620981' },
+            { id: '42412', name: 'मोছাঃ আখি খাতুন', fname: 'মোঃ আলমগীর হোসেন', addr: 'খড়িঞ্চী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01762088340' },
+            { id: '42426', name: 'ফারহানা খাতুন', fname: 'আজহারুল ইসলাম', addr: 'ইত্যা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01714849366' },
+            { id: '42423', name: 'নূসরাত জাহান', fname: 'মোঃ ওসমান গনি', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01914034461' },
+            { id: '424112', name: 'শাহারা খানম', fname: 'মো: আবু সাঈদ মোড়ল', addr: 'গোবিন্দকাটি', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01957611245' },
+            { id: '42482', name: 'মোছা: মিম আক্তার সুমি', fname: 'মো: রবিউল ইসলাম', addr: 'ঝাঁপা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01310639536' },
+            { id: '42489', name: 'মোছা: রুকাইয়া খাতুন', fname: 'মো: রফিকুল ইসলাম', addr: 'বাকোশপোল', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01937092111' },
+            { id: '42443', name: 'মোছাঃ আঁখি মনি', fname: 'আব্দুর রহিম', addr: 'কামালপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01724178169' },
+            { id: '42440', name: 'হাবিবা খাতুন', fname: 'মোঃ ঈমান আলী বিশ্বাস', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01615734534' },
+            { id: '42466', name: 'মোছাঃ সাদিয়া সুলতানা', fname: 'মোঃ আমিনুর রহমান', addr: 'সোনাতলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01739318535' },
+            { id: '2547060', name: 'খাদিজাতুল কোবরা', fname: 'মো: এরশাদ আলী', addr: 'সাতানী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01723612541' },
+            { id: '42413', name: 'মোছাঃ মাইমনা খাতুন', fname: 'মোঃ সহিদুল ইসলাম', addr: 'বাজিতপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01779792649' },
+            { id: '4248', name: 'আনিসা আক্তার', fname: 'মোঃ খলিল ফকির', addr: 'সরুলিয়া', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01716716979' },
+            { id: '42477', name: 'জান্নত ইসলাম এ্যানি', fname: 'মো: সোহেল হোসেন', addr: 'হানুয়ার', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01718974418' },
+            { id: '42474', name: 'মিস তাসনিম ঋতু', fname: 'মো: রবিউল ইসলাম গাজী', addr: 'চরকানাইদিয়া', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01863012763' },
+            { id: '42441', name: 'তামান্না তারান্নুম', fname: 'মোঃ মনিরুজ্জামান', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01834179493' },
+            { id: '4244', name: 'মিস্‌ ইয়াসমিন আক্তার', fname: 'মোঃ কামাল বিশ্বাস', addr: 'নাছিরপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01761362379' },
+            { id: '4245', name: 'মিস্‌ জেসমিন আক্তার', fname: 'মোঃ কামাল বিশ্বাস', addr: 'নাছিরপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01761362379' },
+            { id: '42447', name: 'মোছা: সিনথিয়া খাতুন', fname: 'মো: শহীদ বিশ্বাস', addr: 'টিলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01706985777' },
+            { id: '42462', name: 'ফারজানা আক্তার মৌসুমী', fname: 'মোঃ আতিয়ার রহমান', addr: 'মকমতলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01986651410' },
+            { id: '42415', name: 'মোছাঃ ফারজানা খাতুন', fname: 'মোঃ খলিলুর রহমান', addr: 'তাহেরপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01714779153' },
+            { id: '2547174', name: 'মোছাঃ হুমাইরা আক্তার', fname: 'কবিরুল ইসলাম', addr: 'চাকলা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01975703913' },
+            { id: '42446', name: 'জেবা সামিহা', fname: 'মোঃ মিজানুল হাসান', addr: 'কাশিমপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01771174109' },
+            { id: '42449', name: 'তৈয়বা আলম', fname: 'মো: শহীদ আলম', addr: 'সাগরদাঁড়ী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01938925679' },
+            { id: '42445', name: 'মোছাঃ সাবিনা খাতুন', fname: 'কামরুল', addr: 'খোজালীপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01401702911' },
+            { id: '42434', name: 'সুমাইয়া খাতুন', fname: 'মোখলেছুর শেখ', addr: 'চাপারডাঙ্গী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01611768824' },
+            { id: '2648025', name: 'আমাতুল্লাহ', fname: 'মো: সিরাজুল ইসলাম', addr: 'মালতিয়া', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01917153163' },
+            { id: '2648080', name: 'মোছা: সাবরিনা ইয়াসমিন', fname: 'মো: হযরত আলী', addr: 'বেলকাটি', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01317524495' },
+            { id: '42479', name: 'মাহফুজা', fname: 'আব্দুল মোতালেব', addr: 'কামালপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01921630319' },
+            { id: '32425', name: 'সাদিয়া আফরিন', fname: 'মোঃ আঃ মান্নান সরদার', addr: 'মনোহরপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01721652452' },
+            { id: '42485', name: 'মাসুমা আক্তার জান্নাতী', fname: 'মোঃ মাছুদ রানা', addr: 'লাউড়ী', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01914570957' },
+            { id: '2648134', name: 'মোছাঃ হাবিবা আক্তার', fname: 'মোঃ মোজাম্মেল হক', addr: 'জয়নগর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01920493632' },
+            { id: '2648137', name: 'মনিরা খাতুন', fname: 'আব্দুল আহাদ', addr: 'মালতিয়া', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01925323315' },
+            { id: '2648168', name: 'মোছাঃ তাজকিয়া খাতুন', fname: 'মোঃ আব্দুস সালাম', addr: 'হিজলডাঙ্গা', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01766115183' },
+            { id: '2648192', name: 'মায়মুনা খাতুন', fname: 'মো: হারুন অর রশীদ', addr: 'মঙ্গলকোট', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01715448362' },
+            { id: '2648204', name: 'মোছাম্মাদ সাদিয়া সুলতানা', fname: 'মোঃ আবুল হোসেন', addr: 'ধুলিহর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01939157504' },
+            { id: '42471', name: 'মোছাঃ খাদিজা খাতুন', fname: 'মোঃ জাহিদুল ইসলাম', addr: 'শিকারপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01728261058' },
+            { id: '2648226', name: 'মিস তাহেরা তাবাসুম', fname: 'মো: মোস্তাফিজুর রহমান', addr: 'মহারাজপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01933147319' },
+            { id: '2648228', name: 'মোছাঃ মারিয়া খাতুন', fname: 'মোঃ মোসাদ্দেক', addr: 'সত্যপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01915372404' },
+            { id: '32439', name: 'মোছা: তামান্না খাতুন', fname: 'মোঃ মহিব্বুল্লাহ', addr: 'সুন্দলপুর', status: 'Active', cls: 'ফজীলাত ২য়', phone: '01946435299' },
 	
-	
-	{ id: '5245', name: 'মোসাঃ তামিমা পারভীন', fname: 'আছাদুজ্জামান', addr: 'আড়পাড়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01710524696' },
-    { id: '52448', name: 'মোছাঃ রুকাইয়া খাতুন', fname: 'জি.এম. নুরুজ্জামান', addr: 'নোয়ালী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01710734071' },
-    { id: '52442', name: 'নুসরাত জাহান ইভা', fname: 'আরশাদ আলী', addr: 'খেদাপাড়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01969750228' },
-    { id: '2547146', name: 'মোসাঃ আফিফা খাতুন', fname: 'মোঃ জিয়াউর রহমান', addr: 'ব্রাহ্মমডাঙ্গা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01726876225' },
-    { id: '2547253', name: 'আছিয়া খাতুন', fname: 'কামরুল সানা', addr: 'গোপালপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01911000021' },
-    { id: '2547226', name: 'সাদিয়া খাতুন', fname: 'মো: নুর আলম', addr: 'রঘুনাথপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01726552687' },
-    { id: '5243', name: 'হালিমাতুস সাদিয়া', fname: 'মোঃ খালেদুর রহমান', addr: 'তাহেরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01713901222' },
-    { id: '52496', name: 'মোছা: মাহবুবা খাতুন', fname: 'আ: কাদের', addr: 'আলতাপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01778025560' },
-    { id: '52423', name: 'লামইয়া খাতুন', fname: 'আব্দুল কাদের', addr: 'খোজালীপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01933307517' },
-    { id: '52450', name: 'ফাহিমা আফরিন ইমা', fname: 'মো: তৈয়েবুর রহমান', addr: 'মনোহরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01712036617' },
-    { id: '42410', name: 'লিজা খাতুন', fname: 'লিটন ইসলাম', addr: 'গড়ভাঙ্গা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01613296220' },
-    { id: '2547252', name: 'রানু খাতুন', fname: 'মো: গোলাম মোস্তফা', addr: 'খানবাড়ীয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01611212538' },
-    { id: '42454', name: 'উম্মে হাবিবা', fname: 'মোঃ আজিবর রহমান', addr: 'জামলা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01715855359' },
-    { id: '42470', name: 'লামিয়া সুলতানা বুসরা', fname: 'মো: হাদিউজ্জামান', addr: 'গোবিন্দপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01952910506' },
-    { id: '52456', name: 'জাকিয়া সুলতানা', fname: 'জাকির হোসন', addr: '৪/৫৬৫ চর বইতাহরিচন্ডী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01979709116' },
-    { id: '2648037', name: 'ফারজানা ইয়াছমিন সুইটি', fname: 'মো: ফারুক মোল্ল্যা', addr: 'মনিরামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01738566462' },
-    { id: '52469', name: 'সাদিয়া খাতুন', fname: 'শেখ আবু সাঈদ', addr: 'খোর্দ্দ', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01937873550' },
-    { id: '52475', name: 'মোছাঃ নাজমিন নাহার', fname: 'মোঃ জাকির হোসেন', addr: 'কদমবাড়ীয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01965414077' },
-    { id: '2547202', name: 'মোছা: রুবাইয়া সুলতানা বৃষ্টি', fname: 'মো: মাহাবুর রহমান', addr: 'রামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01771341998' },
-    { id: '52476', name: 'मोছাঃ নাজিরা খাতুন', fname: 'আ: সামাদ শেখ', addr: 'কোমরপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01747155460' },
-    { id: '52470', name: 'তাসনিয়া জাহান তন্নি', fname: 'মোঃ ছলেমান বিশ্বাস', addr: 'বেড় আকছি', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01772532683' },
-    { id: '52410', name: 'শিফা খাতুন', fname: 'মাও. রফিকুল্লাহ', addr: 'কোমরপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01935610957' },
-    { id: '52413', name: 'হাবিবা আক্তার রানু', fname: 'মোঃ জিয়াউর রহমান', addr: 'বাকোশপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01746066950' },
-    { id: '52438', name: 'মোছাঃ হুমাইরা খাতুন', fname: 'মোঃ আবুল কাশেম', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01609142261' },
-    { id: '2547333', name: 'রুমাইয়া আক্তার উর্মি', fname: 'গোলাম সরোয়ার গাজী', addr: 'চাকলা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01946055234' },
-    { id: '52445', name: 'শামীয়া আক্তার', fname: 'মোঃ নজরুল ইসলাম', addr: 'আম্রঝুটা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01950681249' },
-    { id: '52424', name: 'সুমাইয়া সুলতানা', fname: 'কাজী আব্দুস সালাম', addr: 'জুড়ানপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01859742854' },
-    { id: '42420', name: 'মোছাঃ মাহবুবা খাতুন', fname: 'মোঃ আবুল কালাম', addr: 'তাহেরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01717410458' },
-    { id: '52412', name: 'মোছা: সুমনা খাতুন', fname: 'মো: আব্দুল রহমান', addr: 'জলকর রোহিতা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01907094551' },
-    { id: '5241', name: 'মোছাঃ আমেনা আলিম', fname: 'মোঃ আব্দুল আলিম', addr: 'মনিরামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01987447178' },
-    { id: '52428', name: 'মোছাঃ সাদিয়া আক্তার (বর্শা)', fname: 'আশরাফুল', addr: 'মহিনীকাটি', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01989769139' },
-    { id: '52444', name: 'মোছাঃ উম্মে হাবিবা', fname: 'মোঃ জাহিদুল ইসলাম', addr: 'ভরতপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01728057547' },
-    { id: '52493', name: 'মোছাঃ সুরাইয়া খাতুন', fname: 'মোঃ মোমিন শেখ', addr: 'মাহমুদপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01959803110' },
-    { id: '52479', name: 'মোছাঃ সাদিয়া সুলতানা', fname: 'মোঃ আক্তারুজ্জামান', addr: 'চালুয়াহাটী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01736172064' },
-    { id: '42436', name: 'মোছাঃ সানজিদা সুলতানা তুলি', fname: 'মোঃ শহিদুল ইসলাম', addr: 'মকমতলা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01731718163' },
-    { id: '42457', name: 'শাহারা খাতুন', fname: 'মোঃ গোলাম কবির', addr: 'খোজালীপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01708096401' },
-    { id: '42499', name: 'উম্মে হাবিবা আঁখি', fname: 'মোঃ হাফিজুর রহমান', addr: 'মাদারডাঙ্গা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01979597895' },
-    { id: '42433', name: 'জান্নাতী খাতুন', fname: 'মোঃ কামাল হোসেন', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01758537406' },
-    { id: '52420', name: 'সুমাইয়া ইয়াসমিন (তন্নি)', fname: 'মির আলী', addr: 'কাশিমনগর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01760460282' },
-    { id: '52480', name: 'মোছাঃ সামিহা খাতুন', fname: 'মোঃ হাবিবুর রহমান', addr: 'বড় বসন্তপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01731921586' },
-    { id: '52435', name: 'সাবিকুন নাহার নিপু', fname: 'মোঃ নুর হোসেন', addr: 'রঘুনাথপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01712120497' },
-    { id: '2648089', name: 'মোছা: কামরুন্নাহার', fname: 'মাও: আব্দুল গফ্ফার', addr: 'বাহাদুরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01927891845' },
-    { id: '52454', name: 'মোছা: মুনিয়া আক্তার আখি', fname: 'মো: আইনাল হক', addr: 'বাসুদেবপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01916878493' },
-    { id: '2648096', name: 'সাদিয়া সুলতানা', fname: 'মুহা: আসাদুজ্জামান', addr: 'কজিডাংগা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01736426212' },
-    { id: '2648098', name: 'সুরাইয়া বিনতে সালাম', fname: 'আব্দুস সালাম', addr: 'দেউলী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01722822837' },
-    { id: '2547083', name: 'সুমাইয়া সিমি', fname: 'মো: shaiফুল ইসলাম', addr: 'গোড়পাড়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01716933043' },
-    { id: '42416', name: 'মোছাঃ আরিফা খাতুন', fname: 'মোঃ রেজাউল ইসলাম', addr: 'হাকোবা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01949289918' },
-    { id: '2648127', name: 'মনিরা খাতুন', fname: 'মুহাঃ বাকী বিল্লাহ', addr: 'শ্যামকুড়', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01921289699' },
-    { id: '52418', name: 'শারমিন আক্তার', fname: 'আজিজুর রহমান', addr: 'হোগলাডাঙ্গা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01798568811' },
-    { id: '52474', name: 'মোছাঃ বুশরা খাতুন', fname: 'মোঃ নুরুর রহমান', addr: 'তেঁতুলিয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01920232788' },
-    { id: '52417', name: 'লাবনী আক্তার', fname: 'হাসান আলী', addr: 'aminপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01759173361' },
-    { id: '52457', name: 'মোছা: রুকাইয়া খাতুন', fname: 'মোঃ মোক্তার আলী', addr: 'রেজাকাটি', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01848383276' },
-    { id: '5247', name: 'জান্নাতুল ফেরদেসৗ', fname: 'মোঃ আলতাফ হোসেন', addr: 'তোলা গোলদার পাড়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01313840509' },
-    { id: '52446', name: 'মোছাঃ ইয়াসমিন খাতুন', fname: 'মোঃ ইস্মাইল হোসেন', addr: 'শ্যামকুড়', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01940519762' },
-    { id: '42469', name: 'মোছাঃ তামিমা খাতুন', fname: 'মোঃ মাহবুর রহমান', addr: 'লাউড়ী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01930358261' },
-    { id: '52468', name: 'মোছাঃ ফারিয়া সুলতানা সেতু', fname: 'মোঃ রমজান আলী', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01728048605' },
-    { id: '2547262', name: 'লামিয়া খাতুন', fname: 'আ: কুদ্দুস খা', addr: 'জালালপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01838646605' },
-    { id: '2547263', name: 'মোছা: মিথিলা ইয়াসমিন', fname: 'মো: জালাল হোসেন', addr: 'হানুয়ার', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01776069731' },
-    { id: '42453', name: 'মোছা: বেবি খাতুন সামিয়া', fname: 'মোঃ আনছার আলী', addr: 'দিঘীরপাড়', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01746931207' },
-    { id: '52433', name: 'হুমায়রা খাতুন', fname: 'আজিবর রহমান', addr: 'আলতাপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01856063379' },
-    { id: '52432', name: 'মাহিয়া সুলতানা', fname: 'মোঃ আঃ মান্নান সরদার', addr: 'মনোহরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01721652452' },
-    { id: '52488', name: 'ফারিয়া খাতুন', fname: 'মোঃ বিল্লাল হোসেন', addr: 'তেঁতুলিয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01971088971' },
-    { id: '2648139', name: 'মোছা: আমেনা খাতুন মুনিয়া', fname: 'মো: আকবর আলী', addr: 'শ্রীরামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01720807957' },
-    { id: '42496', name: 'জাকিয়া খাতুন', fname: 'মোঃ ছিদ্দিকুর রহমান', addr: 'সুন্দলপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01730665612' },
-    { id: '52486', name: 'তাসনিম জান্নাত তারিন', fname: 'শেখ তুহিন রেজা', addr: 'রামনগর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01328405733' },
-    { id: '2648200', name: 'তাবাচ্ছুম', fname: 'মোঃ শহীদুল ইসলাম', addr: 'মনিরামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01912619647' },
-    { id: '2648202', name: 'তাজমিন নাহার খুশি', fname: 'মোঃ রফিকুল ইসলাম', addr: 'তেঁতুলিয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01960919368' },
-    { id: '42491', name: 'মোছা: ইয়াসমিন খাতুন', fname: 'মো: ইদ্রিস আলী', addr: 'মশ্বিমনগর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01902486941' },
-    { id: '42458', name: 'তাসনিম সুলতানা', fname: 'মোঃ হাদীউজ্জামান', addr: 'শ্যামকুড়', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01905818021' },
-    { id: '2648247', name: 'তাহরিমা খাতুন', fname: 'মোসলেম মোড়ল', addr: 'শিরাশনী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01351972432' },
+			{ id: '5245', name: 'মোসাঃ তামিমা পারভীন', fname: 'আছাদুজ্জামান', addr: 'আড়পাড়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01710524696' },
+            { id: '52448', name: 'মোছাঃ রুকাইয়া খাতুন', fname: 'জি.এম. নুরুজ্জামান', addr: 'নোয়ালী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01710734071' },
+            { id: '52442', name: 'নুসরাত জাহান ইভা', fname: 'আরশাদ আলী', addr: 'খেদাপাড়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01969750228' },
+            { id: '2547146', name: 'মোসাঃ আফিফা খাতুন', fname: 'মোঃ জিয়াউর রহমান', addr: 'ব্রাহ্মমডাঙ্গা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01726876225' },
+            { id: '2547253', name: 'আছিয়া খাতুন', fname: 'কামরুল সানা', addr: 'গোপালপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01911000021' },
+            { id: '2547226', name: 'সাদিয়া খাতুন', fname: 'মো: নুর আলম', addr: 'রঘুনাথপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01726552687' },
+            { id: '5243', name: 'হালিমাতুস সাদিয়া', fname: 'মোঃ খালেদুর রহমান', addr: 'তাহেরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01713901222' },
+            { id: '52496', name: 'মোছা: মাহবুবা খাতুন', fname: 'আ: কাদের', addr: 'আলতাপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01778025560' },
+            { id: '52423', name: 'লামইয়া খাতুন', fname: 'আব্দুল কাদের', addr: 'খোজালীপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01933307517' },
+            { id: '52450', name: 'ফাহিমা আফরিন ইমা', fname: 'মো: তৈয়েবুর রহমান', addr: 'মনোহরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01712036617' },
+            { id: '42410', name: 'লিজা খাতুন', fname: 'লিটন ইসলাম', addr: 'গড়ভাঙ্গা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01613296220' },
+            { id: '2547252', name: 'রানু খাতুন', fname: 'মো: গোলাম মোস্তফা', addr: 'খানবাড়ীয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01611212538' },
+            { id: '42454', name: 'উম্মে হাবিবা', fname: 'মোঃ আজিবর রহমান', addr: 'জামলা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01715855359' },
+            { id: '42470', name: 'লামিয়া সুলতানা বুসরা', fname: 'মো: হাদিউজ্জামান', addr: 'গোবিন্দপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01952910506' },
+            { id: '52456', name: 'জাকিয়া সুলতানা', fname: 'জাকির হোসন', addr: '৪/৫৬৫ চর বইতাহরিচন্ডী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01979709116' },
+            { id: '2648037', name: 'ফারজানা ইয়াছমিন সুইটি', fname: 'মো: ফারুক মোল্ল্যা', addr: 'মনিরামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01738566462' },
+            { id: '52469', name: 'সাদিয়া খাতুন', fname: 'শেখ আবু সাঈদ', addr: 'খোর্দ্দ', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01937873550' },
+            { id: '52475', name: 'মোছাঃ নাজমিন নাহার', fname: 'মোঃ জাকির হোসেন', addr: 'কদমবাড়ীয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01965414077' },
+            { id: '2547202', name: 'মোছা: রুবাইয়া সুলতানা বৃষ্টি', fname: 'মো: মাহাবুর রহমান', addr: 'রামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01771341998' },
+            { id: '52476', name: 'মোছাঃ নাজিরা খাতুন', fname: 'আ: সামাদ শেখ', addr: 'কোমরপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01747155460' },
+            { id: '52470', name: 'তাসনিয়া জাহান তন্নি', fname: 'মোঃ ছলেমান বিশ্বাস', addr: 'বেড় আকছি', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01772532683' },
+            { id: '52410', name: 'শিফা খাতুন', fname: 'মাও. রফিকুল্লাহ', addr: 'কোমরপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01935610957' },
+            { id: '52413', name: 'হাবিবা আক্তার রানু', fname: 'মোঃ জিয়াউর রহমান', addr: 'বাকোশপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01746066950' },
+            { id: '52438', name: 'মোছাঃ হুমাইরা খাতুন', fname: 'মোঃ আবুল কাশেম', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01609142261' },
+            { id: '2547333', name: 'রুমাইয়া আক্তার উর্মি', fname: 'গোলাম সরোয়ার গাজী', addr: 'চাকলা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01946055234' },
+            { id: '52445', name: 'শামীয়া আক্তার', fname: 'মোঃ নজরুল ইসলাম', addr: 'আম্রঝুটা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01950681249' },
+            { id: '52424', name: 'সুমাইয়া সুলতানা', fname: 'কাজী আব্দুস সালাম', addr: 'জুড়ানপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01859742854' },
+            { id: '42420', name: 'মোছাঃ মাহবুবা খাতুন', fname: 'মোঃ আবুল কালাম', addr: 'তাহেরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01717410458' },
+            { id: '52412', name: 'মোছা: সুমনা খাতুন', fname: 'মো: আব্দুল রহমান', addr: 'জলকর রোহিতা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01907094551' },
+            { id: '5241', name: 'মোছাঃ আমেনা আলিম', fname: 'মোঃ আব্দুল আলিম', addr: 'মনিরামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01987447178' },
+            { id: '52428', name: 'মোছাঃ সাদিয়া আক্তার (বর্শা)', fname: 'আশরাফুল', addr: 'মহিনীকাটি', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01989769139' },
+            { id: '52444', name: 'মোছাঃ উম্মে হাবিবা', fname: 'মোঃ জাহিদুল ইসলাম', addr: 'ভরতপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01728057547' },
+            { id: '52493', name: 'মোছাঃ সুরাইয়া খাতুন', fname: 'মোঃ মোমিন শেখ', addr: 'মাহমুদপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01959803110' },
+            { id: '52479', name: 'মোছাঃ সাদিয়া সুলতানা', fname: 'মোঃ আক্তারুজ্জামান', addr: 'চালুয়াহাটী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01736172064' },
+            { id: '42436', name: 'মোছাঃ সানজিদা সুলতানা তুলি', fname: 'মোঃ শহিদুল ইসলাম', addr: 'মকমতলা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01731718163' },
+            { id: '42457', name: 'শাহারা খাতুন', fname: 'মোঃ গোলাম কবির', addr: 'খোজালীপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01708096401' },
+            { id: '42499', name: 'উম্মে হাবিবা আঁখি', fname: 'মোঃ হাফিজুর রহমান', addr: 'মাদারডাঙ্গা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01979597895' },
+            { id: '42433', name: 'জান্নাতী খাতুন', fname: 'মোঃ কামাল হোসেন', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01758537406' },
+            { id: '52420', name: 'সুমাইয়া ইয়াসমিন (তন্নি)', fname: 'মির আলী', addr: 'কাশিমনগর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01760460282' },
+            { id: '52480', name: 'মোছাঃ সামিহা খাতুন', fname: 'মোঃ হাবিবুর রহমান', addr: 'বড় বসন্তপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01731921586' },
+            { id: '52435', name: 'সাবিকুন নাহার নিপু', fname: 'মোঃ নুর হোসেন', addr: 'রঘুনাথপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01712120497' },
+            { id: '2648089', name: 'মোছা: কামরুন্নাহার', fname: 'মাও: আব্দুল গফ্ফার', addr: 'বাহাদুরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01927891845' },
+            { id: '52454', name: 'মোছা: মুনিয়া আক্তার আখি', fname: 'মো: আইনাল হক', addr: 'বাসুদেবপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01916878493' },
+            { id: '2648096', name: 'সাদিয়া সুলতানা', fname: 'মুহা: আসাদুজ্জামান', addr: 'কজিডাংগা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01736426212' },
+            { id: '2648098', name: 'সুরাইয়া বিনতে সালাম', fname: 'আব্দুস সালাম', addr: 'দেউলী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01722822837' },
+            { id: '2547083', name: 'সুমাইয়া সিমি', fname: 'মো: শাইফুল ইসলাম', addr: 'গোড়পাড়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01716933043' },
+            { id: '42416', name: 'মোছাঃ আরিফা খাতুন', fname: 'মোঃ রেজাউল ইসলাম', addr: 'হাকোবা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01949289918' },
+            { id: '2648127', name: 'মনিরা খাতুন', fname: 'মুহাঃ বাকী বিল্লাহ', addr: 'শ্যামকুড়', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01921289699' },
+            { id: '52418', name: 'শারমিন আক্তার', fname: 'আজিজুর রহমান', addr: 'হোগলাডাঙ্গা', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01798568811' },
+            { id: '52474', name: 'মোছাঃ বুশরা খাতুন', fname: 'মোঃ নুরুর রহমান', addr: 'তেঁতুলিয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01920232788' },
+            { id: '52417', name: 'লাবনী আক্তার', fname: 'হাসান আলী', addr: 'আমিনপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01759173361' },
+            { id: '52457', name: 'মোছা: রুকাইয়া খাতুন', fname: 'মোঃ মোক্তার আলী', addr: 'রেজাকাটি', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01848383276' },
+            { id: '5247', name: 'জান্নাতুল ফেরদেসৗ', fname: 'মোঃ আলতাফ হোসেন', addr: 'তোলা গোলদার পাড়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01313840509' },
+            { id: '52446', name: 'মোছাঃ ইয়াসমিন খাতুন', fname: 'মোঃ ইস্মাইল হোসেন', addr: 'শ্যামকুড়', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01940519762' },
+            { id: '42469', name: 'মোছাঃ তামিমা খাতুন', fname: 'মোঃ মাহবুর রহমান', addr: 'لاউড়ী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01930358261' },
+            { id: '52468', name: 'মোছাঃ ফারিয়া সুলতানা সেতু', fname: 'মোঃ রমজান আলী', addr: 'বিজয়রামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01728048605' },
+            { id: '2547262', name: 'লামিয়া খাতুন', fname: 'আ: কুদ্দুস খা', addr: 'জালালপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01838646605' },
+            { id: '2547263', name: 'মোছা: মিথিলা ইয়াসমিন', fname: 'মো: জালাল হোসেন', addr: 'হানুয়ার', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01776069731' },
+            { id: '42453', name: 'মোছা: বেবি খাতুন সামিয়া', fname: 'মোঃ আনছার আলী', addr: 'দিঘীরপাড়', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01746931207' },
+            { id: '52433', name: 'হুমায়রা খাতুন', fname: 'আজিবর রহমান', addr: 'আলতাপোল', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01856063379' },
+            { id: '52432', name: 'মাহিয়া সুলতানা', fname: 'মোঃ আঃ মান্নান সরদার', addr: 'মনোহরপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01721652452' },
+            { id: '52488', name: 'ফারিয়া খাতুন', fname: 'মোঃ বিল্লাল হোসেন', addr: 'তেঁতুলিয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01971088971' },
+            { id: '2648139', name: 'মোছা: আমেনা খাতুন মুনিয়া', fname: 'মো: আকবর আলী', addr: 'শ্রীরামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01720807957' },
+            { id: '42496', name: 'জাকিয়া খাতুন', fname: 'মোঃ ছিদ্দিকুর রহমান', addr: 'সুন্দলপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01730665612' },
+            { id: '52486', name: 'তাসনিম জান্নাত তারিন', fname: 'শেখ তুহিন রেজা', addr: 'রামনগর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01328405733' },
+            { id: '2648200', name: 'তাবাচ্ছুম', fname: 'মোঃ শহীদুল ইসলাম', addr: 'মনিরামপুর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01912619647' },
+            { id: '2648202', name: 'তাজমিন নাহার খুশি', fname: 'মোঃ রফিকুল ইসলাম', addr: 'তেঁতুলিয়া', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01960919368' },
+            { id: '42491', name: 'মোছা: ইয়াসমিন খাতুন', fname: 'মো: ইদ্রিস আলী', addr: 'মশ্বিমনগর', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01902486941' },
+            { id: '42458', name: 'তাসনিম সুলতানা', fname: 'মোঃ হাদীউজ্জামান', addr: 'শ্যামকুড়', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01905818021' },
+            { id: '2648247', name: 'তাহরিমা খাতুন', fname: 'মোসলেম মোড়ল', addr: 'শিরাশনী', status: 'Active', cls: 'ফজীলাত ১ম', phone: '01351972432' },
         ];
 
         window.exportStudentData = () => {
@@ -1813,14 +1760,6 @@ function calculateTotal() {
             }
         };
 
-        window.updateStatus = (id, val) => {
-            let std = mockStudents.find(s => s.id === id);
-            if(std) {
-                std.status = val;
-                renderStudentList();
-            }
-        };
-
         window.renderStudentList = () => {
             const filter = document.getElementById('admin-class-filter').value;
             const query = document.getElementById('admin-search').value.toLowerCase().trim();
@@ -1843,7 +1782,7 @@ function calculateTotal() {
                 else if(s.status === 'ফোন বন্ধ') bgClass = "bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800";
                 else if(s.status === 'ফোন ব্যস্ত') bgClass = "bg-yellow-50 dark:bg-yellow-900/30 border-yellow-200 dark:border-yellow-800";
                 else if(s.status === 'ফোন করেছিল') bgClass = "bg-purple-50 dark:bg-purple-900/30 border-purple-200 dark:border-purple-800";
-                else if(s.status.startsWith('ম্যানুয়াল:')) bgClass = "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600";
+                else if(s.status && s.status.startsWith('ম্যানুয়াল:')) bgClass = "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600";
 
                 return `
                 <div class="${bgClass} p-3 rounded-xl border shadow-sm relative flex items-start gap-2 transition-colors duration-300">
@@ -1869,12 +1808,12 @@ function calculateTotal() {
                                     <option ${s.status === 'ফোন বন্ধ' ? 'selected':''}>ফোন বন্ধ</option>
                                     <option ${s.status === 'ফোন ব্যস্ত' ? 'selected':''}>ফোন ব্যস্ত</option>
                                     <option ${s.status === 'ফোন করেছিল' ? 'selected':''}>ফোন করেছিল</option>
-                                    <option ${s.status.startsWith('ম্যানুয়াল:') ? 'selected':''} value="manual">অন্যান্য (ম্যানুয়াল)...</option>
+                                    <option ${s.status && s.status.startsWith('ম্যানুয়াল:') ? 'selected':''} value="manual">অন্যান্য (ম্যানুয়াল)...</option>
                                 </select>
-                                <span class="hidden print:inline text-[11px] font-bold theme-text">${s.status}</span>
+                                <span class="hidden print:inline text-[11px] font-bold theme-text">${s.status || 'ভর্তি সম্পন্ন'}</span>
                             </div>
-                            <div id="manual-comment-container-${s.id}" class="${s.status.startsWith('ম্যানুয়াল:') ? 'block' : 'hidden'} no-print">
-                                <input type="text" id="manual-comment-input-${s.id}" placeholder="মন্তব্য লিখে এন্টার চাপুন..." class="w-full text-[11px] p-1.5 border rounded bg-white dark:bg-gray-700 theme-text outline-none dark:border-gray-500 shadow-inner" value="${s.status.startsWith('ম্যানুয়াল:') ? s.status.replace('ম্যানুয়াল: ', '') : ''}" onchange="updateStatus('${s.id}', 'ম্যানুয়াল: ' + this.value)">
+                            <div id="manual-comment-container-${s.id}" class="${s.status && s.status.startsWith('ম্যানুয়াল:') ? 'block' : 'hidden'} no-print">
+                                <input type="text" id="manual-comment-input-${s.id}" placeholder="মন্তব্য লিখে এন্টার চাপুন..." class="w-full text-[11px] p-1.5 border rounded bg-white dark:bg-gray-700 theme-text outline-none dark:border-gray-500 shadow-inner" value="${s.status && s.status.startsWith('ম্যানুয়াল:') ? s.status.replace('ম্যানুয়াল: ', '') : ''}" onchange="updateStatus('${s.id}', 'ম্যানুয়াল: ' + this.value)">
                             </div>
                         </div>
                     </div>
@@ -1900,29 +1839,6 @@ function calculateTotal() {
             document.getElementById('add-student-screen').classList.remove('flex');
         };
 
-        window.saveStudent = () => {
-            let id = document.getElementById('new-std-id').value;
-            let name = document.getElementById('new-std-name').value;
-            let cls = document.getElementById('new-std-class').value;
-            let fname = document.getElementById('new-std-fname').value;
-            let phone = document.getElementById('new-std-phone').value;
-            let addr = document.getElementById('new-std-addr').value;
-            let editId = document.getElementById('edit-std-id').value;
-
-            if(!id || !name) { showToast("আইডি এবং নাম আবশ্যক"); return; }
-
-            if(editId) {
-                let std = mockStudents.find(s => s.id === editId);
-                if(std) { std.id=id; std.name=name; std.cls=cls; std.fname=fname; std.phone=phone; std.addr=addr; }
-                showToast("আপডেট সফল হয়েছে");
-            } else {
-                mockStudents.push({ id, name, cls, fname, phone, addr, status: 'ভর্তি সম্পন্ন' });
-                showToast("শিক্ষার্থী যোগ করা হয়েছে");
-            }
-            closeAddStudentForm();
-            renderStudentList();
-        };
-
         window.editStudent = (id) => {
             let std = mockStudents.find(s => s.id === id);
             if(std) {
@@ -1938,16 +1854,20 @@ function calculateTotal() {
                 document.getElementById('add-student-screen').classList.add('flex');
             }
         };
-
-        window.deleteStudent = (id) => {
-            let idx = mockStudents.findIndex(s => s.id === id);
-            if(idx > -1) {
-                recycleBin.push({ type: 'student', data: mockStudents[idx], deletedAt: new Date() });
-                mockStudents.splice(idx, 1);
-                renderStudentList();
-                showToast("শিক্ষার্থী রিসাইকেল বিনে পাঠানো হয়েছে");
+		
+		function toggleThemeSubmenu(event) {
+            event.stopPropagation(); // যেন মেইন প্রোফাইল মেনু বন্ধ না হয়ে যায়
+            const submenu = document.getElementById('theme-submenu');
+            const arrow = document.getElementById('theme-arrow');
+            
+            if (submenu.classList.contains('hidden')) {
+                submenu.classList.remove('hidden');
+                arrow.style.transform = 'rotate(90deg)'; // ক্লিক করলে তীর চিহ্ন নিচে ঘুরবে
+            } else {
+                submenu.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
             }
-        };
+	    };
 
         /* Init App Data */
         document.addEventListener('DOMContentLoaded', () => {
@@ -1965,39 +1885,253 @@ function calculateTotal() {
                 const selectedDate = new Date(e.target.value);
                 if(!isNaN(selectedDate)) updateDates(selectedDate);
             });
-		});
-<script type="module">
-	import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-   import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"; // এটি যোগ করুন
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyD2rGccvT16z-nlXzM9wRXdTzTfRRICHjk",
-    authDomain: "madrasa-app-91dd6.firebaseapp.com",
-    projectId: "madrasa-app-91dd6",
-    storageBucket: "madrasa-app-91dd6.appspot.com",
-    messagingSenderId: "281211783935",
-    appId: "1:281211783935:web:29d80daf6fe72fe6f89aca",
-    measurementId: "G-93VMQT1M3V"
-  };
-const db = getFirestore(app);
-
-// এই ফাংশনটি আপনার বাটন বা সেভ ক্লিকের সাথে যুক্ত করতে হবে
-window.saveMyNote = async function(noteContent) {
-    try {
-        await addDoc(collection(db, "madrasa_notes"), {
-            content: noteContent,
-            createdAt: new Date()
         });
-        alert("নোটটি ফায়ারবেসে সেভ হয়েছে!");
-    } catch (e) {
-        console.error("ডাটা সেভ হয়নি: ", e);
-    }
-};
-	
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+    </script> <!-- FIXED MISSING SCRIPT CLOSING TAG HERE -->
+
+    <!-- ================= FIREBASE CONNECTIVITY ENGINE ================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDocs, updateDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyD2rGccvT16z-nlXzM9wRXdTzTfRRICHjk",
+            authDomain: "madrasa-app-91dd6.firebaseapp.com",
+            projectId: "madrasa-app-91dd6",
+            storageBucket: "madrasa-app-91dd6.appspot.com",
+            messagingSenderId: "281211783935",
+            appId: "1:281211783935:web:29d80daf6fe72fe6f89aca",
+            measurementId: "G-93VMQT1M3V"
+        };
+
+        // Init Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- SEED DATABASE IF EMPTY (No data gets lost) ---
+        async function checkAndSeedDatabase() {
+            try {
+                // Seed Students
+                const studentsCol = collection(db, "students");
+                const studentSnap = await getDocs(studentsCol);
+                if (studentSnap.empty) {
+                    showToast("ডাটাবেজ প্রথমবার সিঙ্ক হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...");
+                    for (let s of mockStudents) {
+                        await setDoc(doc(db, "students", String(s.id)), s);
+                    }
+                    showToast("শিক্ষার্থী তালিকা ফায়ারবেসে সফলভাবে ব্যাকআপ হয়েছে!");
+                }
+
+                // Seed Notices
+                const noticesCol = collection(db, "notices");
+                const noticeSnap = await getDocs(noticesCol);
+                if (noticeSnap.empty) {
+                    for (let n of notices) {
+                        await setDoc(doc(db, "notices", String(n.id)), n);
+                    }
+                }
+            } catch (e) {
+                console.error("Database seeding error: ", e);
+            }
+        }
+        checkAndSeedDatabase();
+
+        // --- REAL-TIME LISTENERS (Sync everything automatically) ---
+        
+        // 1. Live Sync Notes
+        onSnapshot(collection(db, "notes"), (snapshot) => {
+            notesList = [];
+            snapshot.forEach((doc) => {
+                notesList.push({ id: doc.id, ...doc.data() });
+            });
+            notesList.sort((a, b) => b.id - a.id); // Show latest notes first
+            renderNotes();
+        });
+
+        // 2. Live Sync Students
+        onSnapshot(collection(db, "students"), (snapshot) => {
+            mockStudents = [];
+            snapshot.forEach((doc) => {
+                mockStudents.push({ id: doc.id, ...doc.data() });
+            });
+            // Re-render only if admin panel is open
+            if (!document.getElementById('admin-modal').classList.contains('hidden')) {
+                renderStudentList();
+            }
+        });
+
+        // 3. Live Sync Notices
+        onSnapshot(collection(db, "notices"), (snapshot) => {
+            notices = [];
+            snapshot.forEach((doc) => {
+                notices.push({ id: doc.id, ...doc.data() });
+            });
+            renderNotices();
+        });
+
+        // 4. Live Sync Recycle Bin
+        onSnapshot(collection(db, "recycleBin"), (snapshot) => {
+            recycleBin = [];
+            snapshot.forEach((doc) => {
+                recycleBin.push({ id: doc.id, ...doc.data() });
+            });
+            if (!document.getElementById('recycle-bin-modal').classList.contains('hidden')) {
+                renderRecycleBin();
+            }
+        });
+
+        // --- OVERRIDE SYSTEM ACTIONS TO SYNC TO CLOUD ---
+
+        // A. Notepad Override
+        window.saveNote = async () => {
+            let text = document.getElementById('new-note-text').value.trim();
+            let editId = document.getElementById('editing-note-id').value;
+            if(!text) return;
+            
+            let now = new Date(); 
+            let timeStr = formatTimeAmPm(now);
+            
+            try {
+                if(editId) {
+                    await updateDoc(doc(db, "notes", String(editId)), {
+                        text: text,
+                        time: "এডিট: " + timeStr
+                    });
+                    showToast("নোট আপডেট হয়েছে");
+                } else {
+                    const newId = String(Date.now());
+                    await setDoc(doc(db, "notes", newId), {
+                        text: text,
+                        time: "আজ " + timeStr,
+                        completed: false
+                    });
+                    showToast("নোট ডাটাবেজে সেভ হয়েছে");
+                }
+                closeAddNoteForm();
+            } catch (e) {
+                console.error("Save note error: ", e);
+            }
+        };
+
+        window.toggleNoteStatus = async (id) => {
+            let note = notesList.find(x => x.id == id);
+            if(note) {
+                try {
+                    await updateDoc(doc(db, "notes", String(id)), {
+                        completed: !note.completed
+                    });
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        };
+
+        window.deleteNote = async (id) => {
+            let note = notesList.find(n => n.id == id);
+            if(note) {
+                try {
+                    await setDoc(doc(db, "recycleBin", "note_" + id), {
+                        type: 'note',
+                        data: note,
+                        deletedAt: Date.now()
+                    });
+                    await deleteDoc(doc(db, "notes", String(id)));
+                    showToast("নোট রিসাইকেল বিনে পাঠানো হয়েছে");
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        };
+
+        // B. Student Admissions Override
+        window.saveStudent = async () => {
+            let id = document.getElementById('new-std-id').value.trim();
+            let name = document.getElementById('new-std-name').value.trim();
+            let cls = document.getElementById('new-std-class').value;
+            let fname = document.getElementById('new-std-fname').value.trim();
+            let phone = document.getElementById('new-std-phone').value.trim();
+            let addr = document.getElementById('new-std-addr').value.trim();
+            let editId = document.getElementById('edit-std-id').value;
+
+            if(!id || !name) { showToast("আইডি এবং নাম আবশ্যক"); return; }
+
+            try {
+                if(editId) {
+                    await updateDoc(doc(db, "students", String(editId)), {
+                        id: id,
+                        name: name,
+                        cls: cls,
+                        fname: fname,
+                        phone: phone,
+                        addr: addr
+                    });
+                    showToast("আপডেট সফল হয়েছে");
+                } else {
+                    await setDoc(doc(db, "students", String(id)), {
+                        id: id,
+                        name: name,
+                        cls: cls,
+                        fname: fname,
+                        phone: phone,
+                        addr: addr,
+                        status: 'ভর্তি সম্পন্ন'
+                    });
+                    showToast("শিক্ষার্থী যোগ করা হয়েছে");
+                }
+                closeAddStudentForm();
+                renderStudentList();
+            } catch (e) {
+                console.error(e);
+                showToast("সেভ করতে সমস্যা হয়েছে");
+            }
+        };
+
+        window.updateStatus = async (id, val) => {
+            try {
+                await updateDoc(doc(db, "students", String(id)), {
+                    status: val
+                });
+                showToast("স্ট্যাটাস আপডেট হয়েছে");
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
+        window.deleteStudent = async (id) => {
+            let std = mockStudents.find(s => s.id == id);
+            if(std) {
+                try {
+                    await setDoc(doc(db, "recycleBin", "std_" + id), {
+                        type: 'student',
+                        data: std,
+                        deletedAt: Date.now()
+                    });
+                    await deleteDoc(doc(db, "students", String(id)));
+                    showToast("শিক্ষার্থী রিসাইকেল বিনে পাঠানো হয়েছে");
+                    renderStudentList();
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        };
+
+        // C. Recycle Bin Actions
+        window.restoreItem = async (index) => {
+            let item = recycleBin[index];
+            if(item) {
+                try {
+                    if(item.type === 'note') {
+                        await setDoc(doc(db, "notes", String(item.data.id)), item.data);
+                    } else if(item.type === 'student') {
+                        await setDoc(doc(db, "students", String(item.data.id)), item.data);
+                    }
+                    await deleteDoc(doc(db, "recycleBin", item.id));
+                    showToast("পুনরুদ্ধার সফল হয়েছে");
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        };
+    </script>
 </body>
 </html>
