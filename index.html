@@ -16,62 +16,76 @@
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
         
         :root {
-            --bg-body: #eef2f5;
+            --bg-body: #f0fdf4; /* Light Mint White background */
             --bg-card: #ffffff;
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
-            --border-color: #e5e7eb;
+            --text-main: #064e3b; /* Deep emerald text */
+            --text-muted: #047857; /* Medium emerald text */
+            --border-color: #bbf7d0; /* Soft green border */
             --header-bg: #ffffff;
+            --primary-color: #10b981;
         }
 
-        /* Dark Theme Variables */
+        /* Dark Theme Variables - Deep Luxury Emerald */
         body[data-theme="dark"] {
-            --bg-body: #111827;
-            --bg-card: #1f2937;
-            --text-main: #f9fafb;
-            --text-muted: #9ca3af;
-            --border-color: #374151;
-            --header-bg: #1f2937;
+            --bg-body: #061f17; 
+            --bg-card: #0a2f24; 
+            --text-main: #ecfdf5; 
+            --text-muted: #a7f3d0; 
+            --border-color: #065f46; 
+            --header-bg: #0a2f24;
+            --primary-color: #34d399;
         }
 
-        /* Night Theme Variables */
+        /* Night Theme Variables - True Pitch Black with Emerald Accents */
         body[data-theme="night"] {
             --bg-body: #000000;
             --bg-card: #0a0a0a;
-            --text-main: #d4d4d4;
-            --text-muted: #737373;
-            --border-color: #262626;
-            --header-bg: #0a0a0a;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --border-color: #1f2937;
+            --header-bg: #000000;
+            --primary-color: #10b981;
         }
 
         body { 
-            font-family: 'Hind Siliguri', sans-serif; 
+            font-family: 'SolaimanLipi', sans-serif; 
             background-color: var(--bg-body); 
             color: var(--text-main);
             -webkit-tap-highlight-color: transparent; 
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
         
-        .theme-card { background-color: var(--bg-card); border-color: var(--border-color); color: var(--text-main); }
-        .theme-header { background-color: var(--header-bg); border-color: var(--border-color); }
-        .theme-text { color: var(--text-main); }
-        .theme-text-muted { color: var(--text-muted); }
+        .theme-card { 
+            background-color: var(--bg-card) !important; 
+            border-color: var(--border-color) !important; 
+            color: var(--text-main) !important; 
+        }
+        .theme-header { 
+            background-color: var(--header-bg) !important; 
+            border-color: var(--border-color) !important; 
+        }
+        .theme-text { 
+            color: var(--text-main) !important; 
+        }
+        .theme-text-muted { 
+            color: var(--text-muted) !important; 
+        }
+        .theme-gradient {
+            background: linear-gradient(to bottom, var(--bg-card), var(--bg-body)) !important;
+            border-color: var(--border-color) !important;
+        }
 
-        .modal-overlay { background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); }
+        .modal-overlay { background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); }
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         
         /* Custom Toast */
         #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
-        .toast { background: #333; color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 14px; opacity: 0; transition: opacity 0.3s, transform 0.3s; transform: translateY(-20px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .toast { background: var(--primary-color); color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 14px; opacity: 0; transition: opacity 0.3s, transform 0.3s; transform: translateY(-20px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .toast.show { opacity: 1; transform: translateY(0); }
-
-        /* Digital Clock Font */
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-        .digital-clock { font-family: 'Share Tech Mono', monospace; }
         
-        .makruh-bg { background: repeating-linear-gradient(45deg, #fee2e2, #fee2e2 10px, #fecaca 10px, #fecaca 20px); }
-        body[data-theme="dark"] .makruh-bg, body[data-theme="night"] .makruh-bg { background: repeating-linear-gradient(45deg, #7f1d1d, #7f1d1d 10px, #991b1b 10px, #991b1b 20px); }
+        .makruh-bg { background: repeating-linear-gradient(45deg, rgba(254, 226, 226, 0.4), rgba(254, 226, 226, 0.4) 10px, rgba(254, 202, 202, 0.4) 10px, rgba(254, 202, 202, 0.4) 20px); }
+        body[data-theme="dark"] .makruh-bg, body[data-theme="night"] .makruh-bg { background: repeating-linear-gradient(45deg, rgba(127, 29, 29, 0.4), rgba(127, 29, 29, 0.4) 10px, rgba(153, 27, 27, 0.4) 10px, rgba(153, 27, 27, 0.4) 20px); }
         
         /* Print Styles */
         @media print {
@@ -90,14 +104,15 @@
     <!-- Print Area -->
     <div id="print-container" class="hidden"></div>
 
-    <!-- Hidden Input File for Uploading Madrasa Logo -->
-    <input type="file" id="logo-file-input" onchange="handleLogoSelect(event)" accept="image/png, image/jpeg, image/jpg" class="hidden">
+    <!-- Hidden Input Files for Uploading Separate Logos -->
+    <input type="file" id="logo-header-input" onchange="handleLogoSelect(event, 'header')" accept="image/*" class="hidden">
+    <input type="file" id="logo-about-input" onchange="handleLogoSelect(event, 'about')" accept="image/*" class="hidden">
 
     <!-- Header -->
     <header class="theme-header p-4 text-center shadow-sm border-b flex flex-col items-center justify-center">
         <div class="flex items-center gap-3">
             <!-- Dynamic Logo Upload Container (Header) -->
-            <div onclick="triggerLogoUpload()" class="w-11 h-11 rounded-full bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/40 dark:to-green-900/40 flex items-center justify-center border border-green-300 dark:border-green-800 text-green-700 shadow-sm shrink-0 overflow-hidden cursor-pointer relative group">
+            <div onclick="triggerLogoUpload('header')" class="w-11 h-11 rounded-full bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/40 dark:to-green-900/40 flex items-center justify-center border border-green-300 dark:border-green-800 text-green-700 shadow-sm shrink-0 overflow-hidden cursor-pointer relative group">
                 <img id="madrasa-logo-header" class="w-full h-full object-cover hidden" alt="Logo">
                 <svg id="madrasa-logo-svg" class="w-7 h-7 text-green-600 dark:text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="currentColor" fill-opacity="0.08"/>
@@ -114,7 +129,7 @@
     </header>
 
     <!-- Top Bar -->
-    <div class="px-4 py-3 flex justify-between items-center theme-card shadow-sm mt-1 relative no-print">
+    <div class="px-4 py-3 flex justify-between items-center theme-card shadow-sm mt-1 relative no-print border-b">
         <div id="calendar-trigger" class="flex items-center theme-text-muted font-medium cursor-pointer hover:text-green-600 transition-colors select-none text-sm">
             <span id="display-month-year">▼ লোড হচ্ছে...</span>
             <input type="date" id="calendar-picker" class="w-0 h-0 absolute opacity-0 pointer-events-none">
@@ -128,47 +143,47 @@
         </div>
 
         <div class="flex items-center gap-3 relative">
-            <div onclick="openModal('location-modal')" class="bg-green-50 border border-green-200 text-green-700 text-[11px] px-2.5 py-1 rounded-full flex items-center gap-1 cursor-pointer active:scale-95 transition-transform">
+            <div onclick="openModal('location-modal')" class="bg-green-50 border border-green-200 dark:bg-emerald-950/20 dark:border-emerald-800 text-green-700 dark:text-emerald-400 text-[11px] px-2.5 py-1 rounded-full flex items-center gap-1 cursor-pointer active:scale-95 transition-transform">
                 <span id="location-text">মনিরামপুর</span> <span class="text-[10px]">▼</span>
             </div>
             
             <!-- Profile Trigger -->
-            <div onclick="toggleProfileMenu(event)" id="profile-trigger" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-300 cursor-pointer active:scale-95">
+            <div onclick="toggleProfileMenu(event)" id="profile-trigger" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-emerald-950 flex items-center justify-center overflow-hidden border border-gray-300 dark:border-emerald-800 cursor-pointer active:scale-95">
                 <span id="profile-icon" class="text-lg">👤</span>
             </div>
             
             <!-- Main Profile Dropdown Menu -->
             <div id="profile-dropdown" class="hidden absolute right-0 top-10 w-48 theme-card rounded-xl shadow-xl border z-50 overflow-hidden transform origin-top-right transition-all">
-                <button id="profile-login-btn" onclick="openModal('login-modal'); closeProfileMenu();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center gap-2 border-b">
+                <button id="profile-login-btn" onclick="openModal('login-modal'); closeProfileMenu();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-[var(--bg-body)] flex items-center gap-2 border-b border-[var(--border-color)]">
                     <span>🔐</span> লগইন / রেজিস্টার
                 </button>
-                <button id="profile-logout-btn" onclick="handleVisitorLogout(); closeProfileMenu();" class="hidden w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 flex items-center gap-2 border-b">
+                <button id="profile-logout-btn" onclick="handleVisitorLogout(); closeProfileMenu();" class="hidden w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 flex items-center gap-2 border-b border-[var(--border-color)]">
                     <span>🚪</span> লগআউট করুন
                 </button>
-                <button onclick="openRecycleBin();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center gap-2 border-b">
+                <button onclick="openRecycleBin();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-[var(--bg-body)] flex items-center gap-2 border-b border-[var(--border-color)]">
                     <span>🗑️</span> রিসাইকেল বিন
                 </button>
-                <button onclick="openHistoryModal();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center gap-2 border-b">
+                <button onclick="openHistoryModal();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-[var(--bg-body)] flex items-center gap-2 border-b border-[var(--border-color)]">
                     <span>🕒</span> হিস্টোরি
                 </button>
                 
                 <!-- Theme Submenu Toggle -->
                 <div class="relative">
-                    <button onclick="toggleThemeSubmenu(event)" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center justify-between border-b">
+                    <button onclick="toggleThemeSubmenu(event)" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-[var(--bg-body)] flex items-center justify-between border-b border-[var(--border-color)]">
                         <span class="flex items-center gap-2"><span>🎨</span> থিম</span>
                         <span id="theme-arrow" class="text-xs transition-transform duration-200">▶</span>
                     </button>
                     <div id="theme-submenu" class="hidden absolute right-full top-0 w-32 theme-card rounded-xl shadow-xl border overflow-hidden mr-1 z-50">
-                        <button onclick="setTheme('default'); closeProfileMenu();" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-gray-100 dark:hover:bg-gray-700">ডিফল্ট</button>
-                        <button onclick="setTheme('dark'); closeProfileMenu();" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-gray-100 dark:hover:bg-gray-700">ডার্ক</button>
-                        <button onclick="setTheme('night'); closeProfileMenu();" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-gray-100 dark:hover:bg-gray-700">নাইট</button>
+                        <button onclick="setTheme('default'); closeProfileMenu();" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-[var(--bg-body)]">ডিফল্ট</button>
+                        <button onclick="setTheme('dark'); closeProfileMenu();" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-[var(--bg-body)]">ডার্ক</button>
+                        <button onclick="setTheme('night'); closeProfileMenu();" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-[var(--bg-body)]">নাইট</button>
                     </div>
                 </div>
 
-                <button onclick="openModal('settings-modal'); closeProfileMenu();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center gap-2 border-b">
+                <button onclick="openModal('settings-modal'); closeProfileMenu();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-[var(--bg-body)] flex items-center gap-2 border-b border-[var(--border-color)]">
                     <span>⚙️</span> সেটিং
                 </button>
-                <button onclick="openModal('about-modal'); closeProfileMenu();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-green-50 flex items-center gap-2">
+                <button onclick="openModal('about-modal'); closeProfileMenu();" class="w-full text-left px-4 py-2.5 text-sm theme-text hover:bg-[var(--bg-body)] flex items-center gap-2">
                     <span>ℹ️</span> এবাউট
                 </button>
             </div>
@@ -178,9 +193,9 @@
     <!-- Main Content -->
     <main class="p-4 space-y-4 no-print">
         
-        <!-- Date Display -->
-        <div class="theme-card p-3 rounded-xl shadow-sm text-center border">
-            <h2 id="display-hijri" class="text-green-600 font-bold text-lg">লোড হচ্ছে...</h2>
+        <!-- Date Display (No Clock, Simple & Elegance) -->
+        <div class="theme-gradient p-4 rounded-xl shadow-sm text-center border relative overflow-hidden">
+            <h2 id="display-hijri" class="text-green-600 dark:text-green-400 font-bold text-lg">로드 হচ্ছে...</h2>
             <p id="display-bangla" class="theme-text-muted text-[13px] mt-0.5">তারিখ গণনা করা হচ্ছে...</p>
         </div>
 
@@ -217,7 +232,7 @@
             </div>
 
             <!-- Progress Bar -->
-            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden shadow-inner">
+            <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2 overflow-hidden shadow-inner">
                 <div id="prayer-progress" class="bg-green-500 h-full rounded-full transition-all duration-1000" style="width: 0%"></div>
             </div>
 
@@ -233,8 +248,8 @@
             </div>
 
             <!-- Scrollable Timeline Grid Container -->
-            <div id="prayer-timeline-grid-container" class="overflow-x-auto hide-scroll border-t pt-2 dark:border-gray-700">
-                <div class="flex w-max min-w-full divide-x dark:divide-gray-700 theme-text-muted" id="prayer-timeline-grid">
+            <div id="prayer-timeline-grid-container" class="overflow-x-auto hide-scroll border-t pt-2 border-[var(--border-color)]">
+                <div class="flex w-max min-w-full divide-x divide-[var(--border-color)] theme-text-muted animate-fade-in" id="prayer-timeline-grid">
                     <!-- Injected via JS -->
                 </div>
             </div>
@@ -242,47 +257,47 @@
 
         <!-- Grid Menu -->
         <section class="grid grid-cols-3 gap-3">
-            <div onclick="openModal('routine-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
+            <div onclick="openModal('routine-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-[var(--bg-body)]">
                 <span class="text-2xl mb-1">📅</span><p class="text-[10px] font-bold theme-text leading-tight">ক্লাস রুটিন</p>
             </div>
-            <div onclick="openModal('sakkhat-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
-                <span class="text-2xl mb-1">🤝</span><p class="text-[10px] font-bold theme-text leading-tight">সাক্ষাত টাইম</p>
+            <div onclick="openModal('sakkhat-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-[var(--bg-body)]">
+                <span class="text-2xl mb-1">🤝</span><p class="text-[10px] font-bold theme-text leading-tight">শিক্ষার্থীর অভিভাবক স্বাক্ষাত টাইম</p>
             </div>
-            <div onclick="openModal('calc-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
+            <div onclick="openModal('calc-modal')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-[var(--bg-body)]">
                 <span class="text-2xl mb-1">🧮</span><p class="text-[10px] font-bold theme-text leading-tight">খানা ও বেতন</p>
             </div>
-            <div onclick="openModal('note-modal'); renderNotes();" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
+            <div onclick="openModal('note-modal'); renderNotes();" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-[var(--bg-body)]">
                 <span class="text-2xl mb-1">📝</span><p class="text-[10px] font-bold theme-text leading-tight">নোট</p>
             </div>  
-            <div onclick="openModal('notification-modal')" id="notice-board-trigger" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800 relative">    
+            <div onclick="openModal('notification-modal')" id="notice-board-trigger" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-[var(--bg-body)] relative">    
                 <span class="text-2xl mb-1">📢</span><p class="text-[10px] font-bold theme-text leading-tight">নোটিশ</p>
             </div>          
-            <div onclick="openModal('donation-modal', 'দান')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-green-50 dark:hover:bg-gray-800">
-                <span class="text-2xl mb-1">🤲</span><p class="text-[10px] font-bold theme-text leading-tight">দান</p>            
+            <div onclick="openModal('donation-modal', 'দান')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-[var(--bg-body)]">
+                <span class="text-2xl mb-1">🤲</span><p class="text-[10px] font-bold theme-text leading-tight">দান-অনুদান</p>            
             </div>            
         </section>
     </main>
 
     <!-- Bottom Navigation -->
     <nav class="fixed bottom-0 w-full theme-header border-t p-2 flex justify-around shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-40 no-print">
-        <button onclick="closeAllModals()" class="flex flex-col items-center text-green-600 w-16 p-1 rounded-lg bg-green-50 dark:bg-gray-800">
-            <span class="text-[22px] mb-0.5">🏠</span><span class="text-[10px] font-medium">হোম</span>
+        <button onclick="closeAllModals()" class="flex flex-col items-center text-green-600 w-16 p-1 rounded-lg bg-[var(--bg-body)]">
+            <span class="text-[22px] mb-0.5">🏠</span><span class="text-[10px] font-medium text-[var(--text-main)]">হোম</span>
         </button>
-        <button onclick="openModal('contact-modal')" class="flex flex-col items-center theme-text-muted w-16 p-1 active:bg-gray-50 dark:active:bg-gray-800 rounded-lg">
-            <span class="text-[22px] mb-0.5">☎️</span><span class="text-[10px] font-medium">যোগাযোগ</span>
+        <button onclick="openModal('contact-modal')" class="flex flex-col items-center theme-text-muted w-16 p-1 rounded-lg">
+            <span class="text-[22px] mb-0.5">☎️</span><span class="text-[10px] font-medium theme-text-muted">যোগাযোগ</span>
         </button>
-        <button onclick="window.open('https://qmmsoft.com/10012/login', '_blank')" class="flex flex-col items-center theme-text-muted w-16 p-1 active:bg-gray-50 dark:active:bg-gray-800 rounded-lg">
-            <span class="text-[22px] mb-0.5">👨‍🎓</span><span class="text-[10px] font-medium whitespace-nowrap">শিক্ষার্থী প্রো.</span>
+        <button onclick="window.open('https://qmmsoft.com/10012/login', '_blank')" class="flex flex-col items-center theme-text-muted w-16 p-1 rounded-lg">
+            <span class="text-[22px] mb-0.5">👨‍🎓</span><span class="text-[10px] font-medium whitespace-nowrap theme-text-muted">শিক্ষার্থী প্রো.</span>
         </button>
-        <button onclick="openAdminEntry()" class="flex flex-col items-center theme-text-muted w-16 p-1 active:bg-gray-50 dark:active:bg-gray-800 rounded-lg">
-            <span class="text-[22px] mb-0.5">🛡️</span><span class="text-[10px] font-medium">অ্যাডমিন</span>
+        <button onclick="openAdminEntry()" class="flex flex-col items-center theme-text-muted w-16 p-1 rounded-lg">
+            <span class="text-[22px] mb-0.5">🛡️</span><span class="text-[10px] font-medium theme-text-muted">অ্যাডমিন</span>
         </button>
     </nav>
 
     <!-- Shared 3-Dot Action Menu -->
-    <div id="shared-action-menu" class="hidden absolute theme-card shadow-xl border border-gray-200 dark:border-gray-700 rounded-lg w-28 z-[100] overflow-hidden no-print">
-        <button id="action-edit-btn" class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm theme-text border-b dark:border-gray-700">এডিট</button>
-        <button id="action-delete-btn" class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-red-600">ডিলিট</button>
+    <div id="shared-action-menu" class="hidden absolute theme-card shadow-xl border rounded-lg w-28 z-[100] overflow-hidden no-print">
+        <button id="action-edit-btn" class="w-full text-left px-4 py-2 hover:bg-[var(--bg-body)] text-sm theme-text border-b border-[var(--border-color)]">এডিট</button>
+        <button id="action-delete-btn" class="w-full text-left px-4 py-2 hover:bg-[var(--bg-body)] text-sm text-red-600">ডিলিট</button>
     </div>
 
     <!-- ================= MODALS ================= -->
@@ -290,21 +305,30 @@
     <!-- Notepad Modal -->
     <div id="note-modal" class="fixed inset-0 modal-overlay z-[60] hidden flex items-center justify-center p-4 opacity-0 transition-opacity no-print">
         <div class="theme-card rounded-2xl w-full max-w-sm h-[80vh] shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
-            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+            <div class="p-4 border-b flex justify-between items-center theme-header">
                 <h3 class="font-bold theme-text flex items-center gap-2 text-base">
                     <span>📝</span> নোটপ্যাড
                 </h3>
                 <div class="flex gap-2">
-                    <button onclick="openAddNoteForm()" class="w-8 h-8 bg-green-600 text-white rounded-full font-bold hover:bg-green-700">+</button>
-                    <button onclick="closeModal('note-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold">✕</button>
+                    <button onclick="openAddNoteForm()" class="w-8 h-8 bg-green-600 text-white rounded-full font-bold hover:bg-green-700 flex items-center justify-center">+</button>
+                    <button onclick="closeModal('note-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-800 rounded-full theme-text font-bold flex items-center justify-center">✕</button>
                 </div>
             </div>
             
             <!-- Note Add/Edit Form -->
-            <div id="add-note-form" class="hidden flex-col p-4 border-b bg-gray-100 dark:bg-gray-900">
+            <div id="add-note-form" class="hidden flex-col p-4 border-b bg-[var(--bg-body)]">
                 <h4 id="note-form-title" class="font-bold text-sm mb-2 theme-text">নতুন নোট</h4>
                 <input type="hidden" id="editing-note-id">
-                <textarea id="new-note-text" class="w-full border rounded-lg p-2 text-sm outline-none focus:border-green-500 bg-white dark:bg-gray-800 theme-text mb-2 h-20" placeholder="নোট লিখুন..."></textarea>
+                <textarea id="new-note-text" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-sm outline-none focus:border-green-500 bg-[var(--bg-card)] theme-text mb-2 h-20" placeholder="নোট লিখুন..."></textarea>
+                
+                <!-- Private Note checkbox -->
+                <div class="flex items-center gap-2 mb-3">
+                    <input type="checkbox" id="note-privacy-checkbox" class="w-4 h-4 text-green-600 focus:ring-green-500 rounded">
+                    <label for="note-privacy-checkbox" class="text-xs font-bold text-red-600 dark:text-red-400 flex items-center gap-1 cursor-pointer select-none">
+                        <span>🔐</span> প্রাইভেট নোট
+                    </label>
+                </div>
+
                 <div class="flex gap-2">
                     <button onclick="saveNote()" class="flex-1 bg-green-600 text-white text-sm font-bold py-2 rounded-lg">সেভ করুন</button>
                     <button onclick="closeAddNoteForm()" class="flex-1 bg-gray-400 text-white text-sm font-bold py-2 rounded-lg">বাতিল</button>
@@ -312,7 +336,7 @@
             </div>
 
             <!-- Notes List -->
-            <div id="note-list-container" class="p-4 overflow-y-auto space-y-3 flex-1 bg-gray-50 dark:bg-gray-900 hide-scroll">
+            <div id="note-list-container" class="p-4 overflow-y-auto space-y-3 flex-1 bg-[var(--bg-body)] hide-scroll">
                 <!-- Notes injected via JS -->
             </div>
         </div>
@@ -321,11 +345,11 @@
     <!-- Recycle Bin Modal -->
     <div id="recycle-bin-modal" class="fixed inset-0 modal-overlay z-[70] hidden flex items-center justify-center p-4 opacity-0 transition-opacity no-print">
         <div class="theme-card rounded-2xl w-full max-w-sm h-[70vh] shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
-            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+            <div class="p-4 border-b flex justify-between items-center theme-header">
                 <h3 class="font-bold theme-text text-base">🗑️ রিসাইকেল বিন</h3>
-                <button onclick="closeModal('recycle-bin-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold">✕</button>
+                <button onclick="closeModal('recycle-bin-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-800 rounded-full theme-text font-bold">✕</button>
             </div>
-            <div id="recycle-bin-list" class="p-4 overflow-y-auto space-y-3 flex-1 bg-gray-50 dark:bg-gray-900 hide-scroll">
+            <div id="recycle-bin-list" class="p-4 overflow-y-auto space-y-3 flex-1 bg-[var(--bg-body)] hide-scroll">
                 <!-- Data injected via JS -->
             </div>
         </div>
@@ -334,24 +358,24 @@
     <!-- Notification Alert Modal -->
     <div id="notification-alert-modal" class="fixed inset-0 modal-overlay z-[60] hidden flex items-center justify-center p-4 opacity-0 transition-opacity no-print">
         <div class="theme-card rounded-2xl w-full max-w-sm max-h-[80vh] shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
-            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+            <div class="p-4 border-b flex justify-between items-center theme-header">
                 <h3 class="font-bold theme-text flex items-center gap-2 text-base">
                     <span>🔔</span> নোটিফিকেশন ও নোটিশ
                 </h3>
-                <button onclick="closeModal('notification-alert-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold hover:bg-gray-300">✕</button>
+                <button onclick="closeModal('notification-alert-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-800 rounded-full theme-text font-bold hover:bg-gray-300">✕</button>
             </div>
 
             <!-- Admin-Only Notice Creation Composer inside Bell Modal -->
-            <div id="admin-notice-composer-bell" class="hidden flex-col p-4 border-b bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800/40 shrink-0">
+            <div id="admin-notice-composer-bell" class="hidden flex-col p-4 border-b bg-[var(--bg-body)] border-[var(--border-color)] shrink-0">
                 <h4 class="font-bold text-xs text-green-700 dark:text-green-400 mb-2 flex items-center gap-1">
                     <span>✏️</span> নতুন নোটিশ পাবলিশ করুন (অ্যাডমিন)
                 </h4>
-                <input type="text" id="bell-notice-title" class="w-full bg-gray-50 border border-gray-300 dark:bg-slate-800 dark:border-gray-700 rounded-lg p-2.5 text-sm theme-text mb-2" placeholder="শিরোনাম...">
-                <textarea id="bell-notice-desc" class="w-full border border-gray-300 dark:bg-slate-800 dark:border-gray-700 rounded-lg p-2.5 text-sm theme-text h-16 mb-2" placeholder="বিস্তারিত নোটিশ বা ঘোষণা..."></textarea>
+                <input type="text" id="bell-notice-title" class="w-full bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg p-2.5 text-sm theme-text mb-2" placeholder="শিরোনাম...">
+                <textarea id="bell-notice-desc" class="w-full bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg p-2.5 text-sm theme-text h-16 mb-2" placeholder="বিস্তারিত নোটিশ বা ঘোষণা..."></textarea>
                 <button onclick="publishNotice('bell')" class="w-full bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 rounded-lg transition-transform active:scale-95 shadow-sm">পাবলিশ করুন</button>
             </div>
 
-            <div id="notification-alert-list" class="p-4 overflow-y-auto space-y-3 text-sm hide-scroll bg-gray-50 dark:bg-gray-900 flex-1">
+            <div id="notification-alert-list" class="p-4 overflow-y-auto space-y-3 text-sm hide-scroll bg-[var(--bg-body)] flex-1">
                 <!-- Alerts injected via JS -->
             </div>
         </div>
@@ -360,24 +384,24 @@
     <!-- Notifications/Notice Modal -->
     <div id="notification-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity no-print">
         <div class="theme-card rounded-2xl w-full max-w-sm max-h-[80vh] shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
-            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+            <div class="p-4 border-b flex justify-between items-center theme-header">
                 <h3 class="font-bold theme-text flex items-center gap-2 text-base">
                     <span>📢</span> নোটিশ বোর্ড
                 </h3>
-                <button onclick="closeModal('notification-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold hover:bg-gray-300">✕</button>
+                <button onclick="closeModal('notification-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-800 rounded-full theme-text font-bold hover:bg-gray-300">✕</button>
             </div>
 
             <!-- Admin-Only Notice Creation Composer inside Notice Board -->
-            <div id="admin-notice-composer-grid" class="hidden flex-col p-4 border-b bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800/40 shrink-0">
+            <div id="admin-notice-composer-grid" class="hidden flex-col p-4 border-b bg-[var(--bg-body)] border-[var(--border-color)] shrink-0">
                 <h4 class="font-bold text-xs text-green-700 dark:text-green-400 mb-2 flex items-center gap-1">
                     <span>✏️</span> নতুন নোটিশ পাবলিশ করুন (অ্যাডমিন)
                 </h4>
-                <input type="text" id="grid-notice-title" class="w-full border rounded-lg p-2 text-xs mb-2 bg-white dark:bg-gray-800 theme-text outline-none focus:border-green-500" placeholder="শিরোনাম...">
-                <textarea id="grid-notice-desc" class="w-full border rounded-lg p-2 text-xs mb-2 bg-white dark:bg-gray-800 theme-text outline-none focus:border-green-500 h-16" placeholder="বিস্তারিত নোটিশ বা ঘোষণা..."></textarea>
+                <input type="text" id="grid-notice-title" class="w-full border border-[var(--border-color)] bg-[var(--bg-card)] rounded-lg p-2 text-xs mb-2 theme-text outline-none focus:border-green-500" placeholder="শিরোনাম...">
+                <textarea id="grid-notice-desc" class="w-full border border-[var(--border-color)] bg-[var(--bg-card)] rounded-lg p-2 text-xs mb-2 theme-text outline-none focus:border-green-500 h-16" placeholder="বিস্তারিত নোটিশ বা ঘোষণা..."></textarea>
                 <button onclick="publishNotice('grid')" class="w-full bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 rounded-lg transition-transform active:scale-95 shadow-sm">পাবলিশ করুন</button>
             </div>
 
-            <div id="notification-list" class="p-4 overflow-y-auto space-y-3 text-sm hide-scroll bg-gray-50 dark:bg-gray-900 flex-1">
+            <div id="notification-list" class="p-4 overflow-y-auto space-y-3 text-sm hide-scroll bg-[var(--bg-body)] flex-1">
                 <!-- Notices injected via JS -->
             </div>
         </div>
@@ -386,32 +410,32 @@
     <!-- Location Modal -->
     <div id="location-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity no-print">
         <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
-            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+            <div class="p-4 border-b flex justify-between items-center theme-header">
                 <h3 class="font-bold theme-text text-base">লোকেশন ও বিভাগ নির্বাচন</h3>
-                <button onclick="closeModal('location-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text">✕</button>
+                <button onclick="closeModal('location-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-800 rounded-full theme-text">✕</button>
             </div>
-            <div class="p-4 space-y-3">
+            <div class="p-4 space-y-3 bg-[var(--bg-card)]">
                 <button onclick="getLocationGPS()" class="w-full bg-green-600 text-white p-3 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
                     <span>📍</span> জিপিএস অটোর মাধ্যমে (GPS Auto)
                 </button>
                 <div class="text-center text-xs theme-text-muted"> জিপিএস ম্যানুয়ালি (বিভাগ অনুযায়ী)</div>
-                <select id="manual-location" class="w-full border p-3 rounded-xl outline-none focus:border-green-500 bg-transparent theme-text text-sm font-medium">
-                    <optgroup label="খুলনা বিভাগ">
-                        <option value="23.0159,89.2272,মনিরামপুর, যশোর">যশোর,মনিরামপুর</option>
-                        <option value="22.8456,89.5403,খুলনা">খুলনা</option>
+                <select id="manual-location" class="w-full border border-[var(--border-color)] p-3 rounded-xl outline-none bg-transparent theme-text text-sm font-medium">
+                    <optgroup label="খুলনা বিভাগ" class="bg-[var(--bg-card)]">
+                        <option value="23.0159,89.2272,মনিরামপুর, যশোর" class="bg-[var(--bg-card)]">যশোর,মনিরামপুর</option>
+                        <option value="22.8456,89.5403,খুলনা" class="bg-[var(--bg-card)]">খুলনা</option>
                     </optgroup>
-                    <optgroup label="ঢাকা বিভাগ">
-                        <option value="23.8103,90.4125,ঢাকা">ঢাকা</option>
-                        <option value="23.9984,90.4200,গাজীপুর">গাজীপুর</option>
-                        <option value="23.6238,90.5000,নারায়ণগঞ্জ">নারায়ণগঞ্জ</option>
+                    <optgroup label="ঢাকা বিভাগ" class="bg-[var(--bg-card)]">
+                        <option value="23.8103,90.4125,ঢাকা" class="bg-[var(--bg-card)]">ঢাকা</option>
+                        <option value="23.9984,90.4200,গাজীপুর" class="bg-[var(--bg-card)]">গাজীপুর</option>
+                        <option value="23.6238,90.5000,নারায়ণগঞ্জ" class="bg-[var(--bg-card)]">নারায়ণগঞ্জ</option>
                     </optgroup>
-                    <optgroup label="অন্যান্য বিভাগ">
-                        <option value="22.3569,91.7832,চট্টগ্রাম">চট্টগ্রাম</option>
-                        <option value="24.8949,91.8687,সিলেট">সিলেট</option>
-                        <option value="24.3636,88.6241,রাজশাহী">রাজশাহী</option>
-                        <option value="25.7439,89.2752,রংপুর">রংপুর</option>
-                        <option value="22.7010,90.3535,বরিশাল">বরিশাল</option>
-                        <option value="24.7471,90.4203,ময়মনসিংহ">ময়মনসিংহ</option>
+                    <optgroup label="অন্যান্য বিভাগ" class="bg-[var(--bg-card)]">
+                        <option value="22.3569,91.7832,চট্টগ্রাম" class="bg-[var(--bg-card)]">চট্টগ্রাম</option>
+                        <option value="24.8949,91.8687,সিলেট" class="bg-[var(--bg-card)]">সিলেট</option>
+                        <option value="24.3636,88.6241,রাজশাহী" class="bg-[var(--bg-card)]">রাজশাহী</option>
+                        <option value="25.7439,89.2752,রংপুর" class="bg-[var(--bg-card)]">রংপুর</option>
+                        <option value="22.7010,90.3535,বরিশাল" class="bg-[var(--bg-card)]">বরিশাল</option>
+                        <option value="24.7471,90.4203,ময়মনসিংহ" class="bg-[var(--bg-card)]">ময়মনসিংহ</option>
                     </optgroup>
                 </select>
                 <div class="flex gap-2">
@@ -429,49 +453,49 @@
     <!-- Routine Modal -->
     <div id="routine-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity no-print">
         <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
-            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+            <div class="p-4 border-b flex justify-between items-center theme-header">
                 <h3 class="font-bold theme-text">📅 ক্লাস রুটিন</h3>
                 <button onclick="closeModal('routine-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold hover:bg-gray-300">✕</button>
             </div>
-            <div class="p-4">
-                <select id="class-select" onchange="logUserAction('রুটিন চেক: ' + this.value)" class="w-full p-3 border rounded-xl mb-4 bg-transparent theme-text font-bold outline-none focus:border-green-500">
-                    <option> তাকমীল </option>
-                    <option> ফজীলাত ২য় </option>
-                    <option> ফজীলাত ১ম </option>
-                    <option> সানাবিয়্যাহ ২য়  </option>
-                    <option> সানাবিয়্যাহ ২য় (২য় দল) </option>
-                    <option> সানাবিয়্যাহ ১ম (১ম দল) </option>
-                    <option> সানাবিয়্যাহ ১ম (২য় দল)  </option>
-                    <option> সানাবিয়্যাহ ১ম বর্ষ (৩য় দল) </option>
-                    <option> মুতাওয়াসসিতাহ ২য় (১ম দল) </option>
-                    <option> মুতাওয়াসসিতাহ ২য় (২য় দল) </option>
-                    <option> মুতাওয়াসসিতাহ ২য় (৩য় দল) </option>
-                    <option> মুতাওয়াসসিতাহ ২য় (৪র্থ দল) </option>
-                    <option> মুতাওয়াসসিতাহ ১ম (১ম দল) </option>
-                    <option> মুতাওয়াসসিতাহ ১ম (২য় দল) </option>
-                    <option> ... মুতাওয়াসসিতাহ ১ম (৩য় দল) </option>
-                    <option> মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল) </option>
-                    <option> মুতাওয়াসসিতাহ (৫ম দল) </option>
-                    <option> খুছুছী (১ম দল) </option>
-                    <option> খুছুছী (২য় দল) </option>
-                    <option> খুছুছী (৩য় দল) </option>
-                    <option> swivel ইবতেদাইয়্যাহ ৫ম (১ম দল) </option>
-                    <option> ইবতেদাইয়্যাহ ৫ম (২য় দল) </option>
-                    <option> ইবতেদাইয়্যাহ ৪র্থ (১ম দল) </option>
-                    <option> ইবতেদাইয়্যাহ ৪র্থ (২য় দল) </option>
-                    <option> ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল) </option>
-                    <option> ইবতেদাইয়্যাহ ৩য় (১ম দল) </option>
-                    <option> swivel ইবতেদাইয়্যাহ ৩য় (২য় দল) </option>
-                    <option> ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল) </option>
-                    <option> হিফ্‌জ খানা (হাফেজা রহীমা) </option>
-                    <option> হিফ্‌জ খানা (হাফেজা সামিরা) </option>
-                    <option> হিফ্‌জ খানা (হাফেজা আয়েশা) </option>
-                    <option> হিফ্‌জ খানা (হাফেজা মারয়াম) </option>
-                    <option> হিফ্‌জ খানা (হাফেজা সুমাইয়া) </option>
-                    <option> হিফ্‌জ খানা (হাফেজা নাঈমা) </option>
-                    <option> হিফ্‌জ খানা (৩০ পারা) </option>
-                    <option> হিফজ নাজেরা (উম্মে হাবীবা) </option>
-                    <option> হিফজ নাজেরা (আলেমা ফারজানা) </option>
+            <div class="p-4 bg-[var(--bg-card)]">
+                <select id="class-select" onchange="logUserAction('রুটিন চেক: ' + this.value)" class="w-full p-3 border border-[var(--border-color)] rounded-xl mb-4 bg-transparent theme-text font-bold outline-none">
+                    <option class="bg-[var(--bg-card)]"> তাকমীল </option>
+                    <option class="bg-[var(--bg-card)]"> ফজীলাত ২য় </option>
+                    <option class="bg-[var(--bg-card)]"> ফজীলাত ১ম </option>
+                    <option class="bg-[var(--bg-card)]"> সানাবিয়্যাহ ২য়  </option>
+                    <option class="bg-[var(--bg-card)]"> সানাবিয়্যাহ ২য় (২য় দল) </option>
+                    <option class="bg-[var(--bg-card)]"> সানাবিয়্যাহ ১ম (১ম দল) </option>
+                    <option class="bg-[var(--bg-card)]"> সানাবিয়্যাহ ১ম (২য় দল)  </option>
+                    <option class="bg-[var(--bg-card)]"> সানাবিয়্যাহ ১ম বর্ষ (৩য় দল) </option>
+                    <option class="bg-[var(--bg-card)]"> মুতাওয়াসসিতাহ ২য় (১ম দল) </option>
+                    <option class="bg-[var(--bg-card)]"> মুতাওয়াসসিতাহ ২য় (২য় দল) </option>
+                    <option class="bg-[var(--bg-card)]"> মুতাওয়াসসিতাহ ২য় (৩য় দল) </option>
+                    <option class="bg-[var(--bg-card)]"> মুতাওয়াসসিতাহ ২য় (৪র্থ দল) </option>
+                    <option class="bg-[var(--bg-card)]"> মুতাওয়াসসিতাহ ১ম (১ম দল) </option>
+                    <option class="bg-[var(--bg-card)]"> মুতাওয়াসসিতাহ ১ম (২য় দল) </option>
+                    <option class="bg-[var(--bg-card)]"> মুতাওয়াসসিতাহ ১ম (৩য় দল) </option>
+                    <option class="bg-[var(--bg-card)]"> মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল) </option>
+                    <option class="bg-[var(--bg-card)]"> মুতাওয়াসসিতাহ (৫ম দল) </option>
+                    <option class="bg-[var(--bg-card)]"> খুছুছী (১ম দল) </option>
+                    <option class="bg-[var(--bg-card)]"> খুছুছী (২য় দল) </option>
+                    <option class="bg-[var(--bg-card)]"> খুছুছী (৩য় দল) </option>
+                    <option class="bg-[var(--bg-card)]"> ইবতেদাইয়্যাহ ৫ম (১ম দল) </option>
+                    <option class="bg-[var(--bg-card)]"> ইবতেদাইয়্যাহ ৫ম (২য় দল) </option>
+                    <option class="bg-[var(--bg-card)]"> ইবতেদাইয়্যাহ ৪র্থ (১ম দল) </option>
+                    <option class="bg-[var(--bg-card)]"> ইবতেদাইয়্যাহ ৪র্থ (২য় দল) </option>
+                    <option class="bg-[var(--bg-card)]"> ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল) </option>
+                    <option class="bg-[var(--bg-card)]"> ইবতেদাইয়্যাহ ৩য় (১ম দল) </option>
+                    <option class="bg-[var(--bg-card)]"> ইবতেদাইয়্যাহ ৩য় (২য় দল) </option>
+                    <option class="bg-[var(--bg-card)]"> ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল) </option>
+                    <option class="bg-[var(--bg-card)]"> হিফ্‌জ খানা (হাফেজা রহীমা) </option>
+                    <option class="bg-[var(--bg-card)]"> হিফ্‌জ খানা (হাফেজা সামিরা) </option>
+                    <option class="bg-[var(--bg-card)]"> হিফ্‌জ খানা (হাফেজা আয়েশা) </option>
+                    <option class="bg-[var(--bg-card)]"> হিফ্‌জ খানা (হাফেজা মারয়াম) </option>
+                    <option class="bg-[var(--bg-card)]"> হিফ্‌জ খানা (হাফেজা সুমাইয়া) </option>
+                    <option class="bg-[var(--bg-card)]"> হিফ্‌জ খানা (হাফেজা নাঈমা) </option>
+                    <option class="bg-[var(--bg-card)]"> হিফ্‌জ খানা (৩০ পারা) </option>
+                    <option class="bg-[var(--bg-card)]"> হিফজ নাজেরা (উম্মে হাবীবা) </option>
+                    <option class="bg-[var(--bg-card)]"> হিফজ নাজেরা (আলেমা ফারজানা) </option>
                 </select>
                 <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-xl border border-yellow-200 dark:border-yellow-800 text-center">
                     <h4 class="font-bold text-yellow-800 dark:text-yellow-500 mb-2">রুটিন</h4>
@@ -484,20 +508,20 @@
     <!-- Sakkhat (Meeting) Modal -->
     <div id="sakkhat-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity no-print">
         <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
-            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+            <div class="p-4 border-b flex justify-between items-center theme-header">
                 <h3 class="font-bold theme-text">🤝 সাক্ষাতের সময়সূচী</h3>
                 <button onclick="closeModal('sakkhat-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold hover:bg-gray-300">✕</button>
             </div>
-            <div class="p-5 space-y-3">
-                <div class="flex justify-between items-center border-b dark:border-gray-700 pb-2">
+            <div class="p-5 space-y-3 bg-[var(--bg-card)]">
+                <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-2">
                     <span class="text-sm font-bold theme-text">সকাল</span>
                     <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">ক্লাস শুরুর আগে</span>
                 </div>
-                <div class="flex justify-between items-center border-b dark:border-gray-700 pb-2">
+                <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-2">
                     <span class="text-sm font-bold theme-text">দুপুর</span>
                     <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">ক্লাস শেষে (১:৪৫ - ৩:০০)</span>
                 </div>
-                <div class="flex justify-between items-center border-b dark:border-gray-700 pb-2">
+                <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-2">
                     <span class="text-sm font-bold theme-text">বিকাল</span>
                     <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">আসর থেকে মাগরিব পর্যন্ত</span>
                 </div>
@@ -512,7 +536,7 @@
     <!-- Shared History Modal -->
     <div id="history-modal" class="fixed inset-0 modal-overlay z-[60] hidden flex items-center justify-center p-4 opacity-0 transition-opacity no-print">
         <div class="theme-card rounded-2xl w-full max-w-sm h-[70vh] shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
-            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+            <div class="p-4 border-b flex justify-between items-center theme-header">
                 <h3 class="font-bold theme-text flex items-center gap-2 text-base">
                     <span>🕒</span> অ্যাক্টিভিটি হিস্টোরি (History)
                 </h3>
@@ -521,7 +545,7 @@
                     <button onclick="closeModal('history-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold">✕</button>
                 </div>
             </div>
-            <div id="history-list-container" class="p-4 overflow-y-auto space-y-2.5 flex-1 bg-gray-50 dark:bg-gray-900 hide-scroll">
+            <div id="history-list-container" class="p-4 overflow-y-auto space-y-2.5 flex-1 bg-[var(--bg-body)] hide-scroll">
                 <!-- Logged activity list -->
             </div>
         </div>
@@ -534,7 +558,7 @@
                 <h3 class="font-bold text-lg" id="donation-title">দান করুন</h3>
                 <button onclick="closeModal('donation-modal')" class="w-8 h-8 bg-white/20 rounded-full text-white font-bold hover:bg-white/30">✕</button>
             </div>
-            <div class="p-5 space-y-4 bg-gray-50 dark:bg-gray-900">
+            <div class="p-5 space-y-4 bg-[var(--bg-body)]">
                 <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-900 p-4 rounded-xl text-center space-y-2.5 shadow-sm">
                     <p class="text-xs font-bold text-green-700 dark:text-green-400 flex items-center justify-center gap-1.5">
                         <span>💳</span> জামেয়ার দান অনুদান পেমেন্ট ওয়েবসাইট
@@ -548,15 +572,15 @@
                 <div class="theme-card p-3 rounded-xl border flex items-center gap-3">
                     <div class="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">B</div>
                     <div>
-                        <p class="text-xs theme-text-muted font-bold">বিকাশ (জামেয়ার মুহতামীম সাহেব)</p>
+                        <p class="text-xs theme-text-muted font-bold">বিকাশ (জামীয়ার মুহতামীম সাহেব)</p>
                         <p class="font-mono font-bold theme-text tracking-wider">01920-855922</p>
                     </div>
                 </div>
                 
-                <hr class="dark:border-gray-700">
-                <p class="text-xs text-center theme-text-muted">দান অনুদান দেয়ার পর ট্রানজেকশন আইডি প্রদান করুন</p>
+                <hr class="border-[var(--border-color)]">
+                <p class="text-xs text-center theme-text-muted">মোবাইলে দান অনুদান দেয়ার পর ট্রানজেকশন আইডি প্রদান করুন</p>
                 <div class="flex gap-2">
-                    <input type="text" id="trx-id" placeholder="TrxID..." class="flex-1 border rounded-lg p-2 text-sm outline-none bg-transparent theme-text focus:border-green-500">
+                    <input type="text" id="trx-id" placeholder="TrxID..." class="flex-1 border border-[var(--border-color)] rounded-lg p-2 text-sm outline-none bg-transparent theme-text focus:border-green-500">
                     <button onclick="submitDonation()" class="bg-green-600 text-white px-4 rounded-lg font-bold text-sm active:scale-95">সাবমিট</button>
                 </div>
             </div>
@@ -566,34 +590,31 @@
     <!-- Contact Modal -->
     <div id="contact-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 no-print">
         <div id="modal-content" class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300">
-            
-            <div class="p-4 border-b dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+            <div class="p-4 border-b flex justify-between items-center theme-header">
                 <h3 class="font-bold theme-text text-lg">☎️ যোগাযোগ</h3>
                 <button onclick="closeModal('contact-modal')" class="w-8 h-8 flex justify-center items-center bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold hover:bg-red-500 hover:text-white transition-colors">
                     ✕
                 </button>
             </div>
-            
-            <div class="p-5 space-y-4">
-                
-                <div class="flex items-center justify-between border-b dark:border-gray-700 pb-3">
+            <div class="p-5 space-y-4 bg-[var(--bg-card)]">
+                <div class="flex items-center justify-between border-b border-[var(--border-color)] pb-3">
                     <div>
                         <p class="font-bold theme-text text-sm">মুহতামিম সাহেব</p>
                         <p class="text-xs theme-text-muted font-mono mt-1">01920-855922</p>
                     </div>
-                    <a href="tel:01920855922" class="bg-green-100 text-green-700 w-10 h-10 rounded-full flex items-center justify-center text-lg shadow-sm hover:bg-green-200 transition-colors">
+                    <button onclick="makePhoneCall('মুহতামিম সাহেব', '01920855922')" class="bg-green-100 dark:bg-green-950/20 text-green-700 dark:text-green-400 w-10 h-10 rounded-full flex items-center justify-center text-lg shadow-sm hover:bg-green-200 transition-colors border border-[var(--border-color)]">
                         📞
-                    </a>
+                    </button>
                 </div>
 
-                <div class="flex items-center justify-between border-b dark:border-gray-700 pb-3">
+                <div class="flex items-center justify-between border-b border-[var(--border-color)] pb-3">
                     <div>
                         <p class="font-bold theme-text text-sm">নাজেমে তালিমাত</p>
                         <p class="text-xs theme-text-muted font-mono mt-1">01912-906193</p>
                     </div>
-                    <a href="tel:01912906193" class="bg-green-100 text-green-700 w-10 h-10 rounded-full flex items-center justify-center text-lg shadow-sm hover:bg-green-200 transition-colors">
+                    <button onclick="makePhoneCall('নাজেমে তালিমাত', '01912906193')" class="bg-green-100 dark:bg-green-950/20 text-green-700 dark:text-green-400 w-10 h-10 rounded-full flex items-center justify-center text-lg shadow-sm hover:bg-green-200 transition-colors border border-[var(--border-color)]">
                         📞
-                    </a>
+                    </button>
                 </div>
                 
                 <div class="pt-2 flex flex-col gap-3">
@@ -605,7 +626,6 @@
                         <span class="text-xl">🌐</span> মাদ্রাসার ওয়েব সাইট
                     </button>
                 </div>
-
             </div>
         </div>
     </div>
@@ -613,23 +633,23 @@
     <!-- Admin Entry Modal -->
     <div id="admin-entry-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity no-print">
         <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
-            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+            <div class="p-4 border-b flex justify-between items-center theme-header">
                 <h3 class="font-bold theme-text">কোথায় প্রবেশ করবেন?</h3>
                 <button onclick="closeModal('admin-entry-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300 font-bold hover:bg-gray-300">✕</button>
             </div>
-            <div class="p-6 space-y-4">
-                <button onclick="window.open('https://qmmsoft.com/login', '_blank')" class="w-full bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-800 p-4 rounded-xl flex items-center gap-4 transition-colors">
+            <div class="p-6 space-y-4 bg-[var(--bg-card)]">
+                <button onclick="window.open('https://qmmsoft.com/login', '_blank')" class="w-full bg-[var(--bg-body)] border border-[var(--border-color)] text-[var(--text-main)] p-4 rounded-xl flex items-center gap-4 transition-colors">
                     <span class="text-3xl">👨‍🏫</span>
                     <div class="text-left">
                         <h4 class="font-bold text-lg">শিক্ষক পোর্টাল</h4>
-                        <p class="text-xs text-blue-600">ওয়েবসাইট</p>
+                        <p class="text-xs text-green-600">ওয়েবসাইট</p>
                     </div>
                 </button>
-                <button onclick="openAdminPin()" class="w-full bg-gray-800 hover:bg-gray-900 text-white p-4 rounded-xl flex items-center gap-4 transition-colors shadow-md">
+                <button onclick="openAdminPin()" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white p-4 rounded-xl flex items-center gap-4 transition-colors shadow-md">
                     <span class="text-3xl">🛡️</span>
                     <div class="text-left">
                         <h4 class="font-bold text-lg">অ্যাডমিন প্যানেল</h4>
-                        <p class="text-xs text-gray-400">শিক্ষার্থী লিস্ট</p>
+                        <p class="text-xs text-emerald-200">শিক্ষার্থী লিস্ট</p>
                     </div>
                 </button>
             </div>
@@ -640,77 +660,76 @@
     <div id="admin-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity">
         <div class="theme-card rounded-2xl w-full max-w-md h-[90vh] shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200 relative">
             
-            <div id="admin-pin-screen" class="flex-1 flex flex-col items-center justify-center p-6 theme-card relative no-print">
-                <button onclick="closeModal('admin-modal')" class="absolute top-4 right-4 w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300 font-bold hover:bg-gray-300">✕</button>
-                <div class="w-16 h-16 bg-gray-200 dark:bg-gray-800 rounded-full flex items-center justify-center text-3xl mb-4">🛡️</div>
+            <div id="admin-pin-screen" class="flex-1 flex flex-col items-center justify-center p-6 bg-[var(--bg-card)] relative no-print">
+                <button onclick="closeModal('admin-modal')" class="absolute top-4 right-4 w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300 font-bold hover:bg-gray-300 flex items-center justify-center">✕</button>
+                <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-950 rounded-full flex items-center justify-center text-3xl mb-4">🛡️</div>
                 <h3 class="font-bold text-xl theme-text mb-2">অ্যাডমিন প্যানেল</h3>
                 <p class="text-xs theme-text-muted mb-6 text-center">প্রবেশ করতে পিন কোড দিন</p>
                 
                 <div class="relative w-full max-w-xs mb-4">
-                    <input type="password" id="admin-pin" class="w-full border-2 text-center text-2xl tracking-[0.5em] p-3 rounded-xl outline-none focus:border-green-500 pr-10 bg-transparent theme-text" placeholder="••••">
+                    <input type="password" id="admin-pin" class="w-full border-2 border-[var(--border-color)] text-center text-2xl tracking-[0.5em] p-3 rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="••••">
                     <button onclick="toggleAdminPin()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl opacity-60 hover:opacity-100" id="pin-eye">👁️</button>
                 </div>
                 
-                <button onclick="verifyAdminPin()" class="w-full max-w-xs bg-gray-800 text-white font-bold py-3 rounded-xl shadow-md">প্রবেশ</button>
+                <button onclick="verifyAdminPin()" class="w-full max-w-xs bg-emerald-800 text-white font-bold py-3 rounded-xl shadow-md">প্রবেশ</button>
             </div>
 
-            <!-- Admin Dashboard with Logout option -->
+            <!-- Admin Dashboard -->
             <div id="admin-dashboard-screen" class="hidden flex-1 flex flex-col overflow-hidden relative">
-                <div class="p-3 border-b bg-gray-800 text-white flex justify-between items-center shrink-0">
+                <div class="p-3 border-b bg-emerald-800 text-white flex justify-between items-center shrink-0">
                     <div class="flex flex-col items-start gap-0.5">
                         <h3 class="font-bold text-base">শিক্ষার্থী তালিকা</h3>
-                        <!-- Realtime Statistics Block -->
-                        <div id="admin-student-stats-badge" class="bg-green-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+                        <div id="admin-student-stats-badge" class="bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
                             📊 মোট: <span id="admin-stats-total">০</span> জন
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
                         <button onclick="adminLogout()" class="text-xs bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded-lg font-bold transition-all no-print">লগআউট</button>
-                        <button onclick="closeModal('admin-modal');" class="w-8 h-8 bg-white/20 rounded-full text-white font-bold hover:bg-white/30 no-print">✕</button>
+                        <button onclick="closeModal('admin-modal');" class="w-8 h-8 bg-white/20 rounded-full text-white font-bold hover:bg-white/30 flex items-center justify-center no-print">✕</button>
                     </div>
                 </div>
                 
-                <div class="p-3 theme-card shrink-0 space-y-2 border-b no-print">
+                <div class="p-3 bg-[var(--bg-card)] shrink-0 space-y-2 border-b border-[var(--border-color)] no-print">
                     <div class="flex gap-2">
-                        <select id="admin-class-filter" onchange="resetPaginationAndRender()" class="flex-1 p-2 border rounded-lg outline-none font-bold text-sm bg-transparent theme-text">
-                            <option value="all">সকল ক্লাস</option>
-                            <option value="তাকমীল">তাকমীল</option>
-                            <option value="ফজীলাত ২য়">ফজীলাত ২য়</option>
-                            <option value="ফজীলাত ১ম">ফজীলাত ১ম</option>
-                            <option value="সানাবিয়্যাহ ২য়">সানাবিয়্যাহ ২য়</option>
-                            <option value="সানাবিয়্যাহ ২য় (২য় দল)">সানাবিয়্যাহ ২য় (২য় দল)</option>
-                            <option value="সানাবিয়্যাহ ১ম (১ম দল)">সানাবিয়্যাহ ১ম (১ম দল)</option>
-                            <option value="সানাবিয়্যাহ ১ম (২য় দল)">সানাবিয়্যাহ ১ম (২য় দল)</option>
-                            <option value="সানাবিয়্যাহ ১ম বর্ষ (৩য় দল)">সানাবিয়্যাহ ১ম বর্ষ (৩য় দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ২য় (১ম দল)">মুতাওয়াসসিতাহ ২য় (১ম দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ২য় (২য় দল)">মুতাওয়াসসিতাহ ২য় (২য় দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ২য় (৩য় দল)">মুতাওয়াসসিতাহ ২য় (৩য় দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ২য় (৪র্থ দল)">মুতাওয়াসসিতাহ ২য় (৪র্থ দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ১ম (১ম দল)">মুতাওয়াসসিতাহ ১ম (১ম দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ১ম (২য় দল)">মুতাওয়াসসিতাহ ১ম (২য় দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ১ম (৩য় দল)">মুতাওয়াসসিতাহ ১ম (৩য় দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল)">মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল)</option>
-                            <option value="মুতাওয়াসসিতাহ (৫ম দল)">মুতাওয়াসসিতাহ (৫ম দল)</option>
-                            <option value="খুছুছী (১ম দল)">খুছুছী (১ম দল)</option>
-                            <option value="খুছুছী (২য় দল)">খুছুছী (২য় দল)</option>
-                            <option value="খুছুছী (৩য় দল)">খুছুছী (৩য় দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৫ম (১ম দল)">ইবতেদাইয়্যাহ ৫ম (১ম দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৫ম (২য় দল)">ইবতেদাইয়্যাহ ৫ম (২য় দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৪র্থ (১ম দল)">ইবতেদাইয়্যাহ ৪র্থ (১ম দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৪র্থ (২য় দল)">ইবতেদাইয়্যাহ ৪র্থ (২য় দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)">ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৩য় (১ম দল)">ইবতেদাইয়্যাহ ৩য় (১ম দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৩য় (২য় দল)">ইবতেদাইয়্যাহ ৩য় (২য় দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)">ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)</option>
-                            <option value="হিফ্‌জ খানা (হাফেজা রহীমা)">হিফ্‌জ খানা (হাফেজা রহীমা)</option>
-                            <option value="হিফ্‌জ খানা (হাফেজা সামিরা)">হিফ্‌জ খানা (হাফেজা সামিরা)</option>
-                            <option value="হিফ্‌জ খানা (হাফেজা আয়েশা)">হিফ্‌জ খানা (হাফেজা আয়েশা)</option>
-                            <option value="হিফ্‌জ খানা (হাফেজা মারয়াম)">হিফ্‌জ খানা (হাফেজা মারয়াম)</option>
-                            <option value="হিফ্‌জ খানা (হাফেজা সুমাইয়া)">হিফ্‌জ খানা (হাফেজা সুমাইয়া)</option>
-                            <option value="হিফ্‌জ খানা (হাফেজা নাঈমা)">হিফ্‌জ খানা (হাফেজা নাঈমা)</option>
-                            <option value="হিফ্‌জ খানা (৩০ পারা)">হিফ্‌জ খানা (৩০ পারা)</option>
-                            <option value="হিফজ নাজেরা (উম্মে হাবীবা)">হিফজ নাজেরা (উম্মে হাবীবা)</option>
-                            <option value="হিফজ নাজেরা (আলেমা ফারজানা)">হিফজ নাজেরা (আলেমা ফারজানা)</option>
+                        <select id="admin-class-filter" onchange="resetPaginationAndRender()" class="flex-1 p-2 border border-[var(--border-color)] rounded-lg outline-none font-bold text-sm bg-transparent theme-text">
+                            <option value="all" class="bg-[var(--bg-card)]">সকল ক্লাস</option>
+                            <option value="তাকমীল" class="bg-[var(--bg-card)]">তাকমীল</option>
+                            <option value="ফজীলাত ২য়" class="bg-[var(--bg-card)]">ফজীলাত ২য়</option>
+                            <option value="ফজীলাত ১ম" class="bg-[var(--bg-card)]">ফজীলাত ১ম</option>
+                            <option value="সানাবিয়্যাহ ২য়" class="bg-[var(--bg-card)]">সানাবিয়্যাহ ২য়</option>
+                            <option value="সানাবিয়্যাহ ২য় (২য় দল)" class="bg-[var(--bg-card)]">সানাবিয়্যাহ ২য় (২য় দল)</option>
+                            <option value="সানাবিয়্যাহ ১ম (১ম দল)" class="bg-[var(--bg-card)]">সানাবিয়্যাহ ১ম (১ম দল)</option>
+                            <option value="সানাবিয়্যাহ ১ম (২য় দল)" class="bg-[var(--bg-card)]">সানাবিয়্যাহ ১ম (২য় দল)</option>
+                            <option value="সানাবিয়্যাহ ১ম বর্ষ (৩য় দল)" class="bg-[var(--bg-card)]">সানাবিয়্যাহ ১ম বর্ষ (৩য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (১ম দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ২য় (১ম দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (২য় দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ২য় (২য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (৩য় দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ২য় (৩য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (৪র্থ দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ২য় (৪র্থ দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম (১ম দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ১ম (১ম দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম (২য় দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ১ম (২য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম (৩য় দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ১ম (৩য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল)</option>
+                            <option value="মুতাওয়াসসিতাহ (৫ম দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ (৫ম দল)</option>
+                            <option value="খুছুছী (১ম দল)" class="bg-[var(--bg-card)]">খুছুছী (১ম দল)</option>
+                            <option value="খুছুছী (২য় দল)" class="bg-[var(--bg-card)]">খুছুছী (২য় দল)</option>
+                            <option value="খুছুছী (৩য় দল)" class="bg-[var(--bg-card)]">খুছুছী (৩য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৫ম (১ম দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৫ম (১ম দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৫ম (২য় দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৫ম (২য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৪র্থ (১ম দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৪র্থ (১ম দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৪র্থ (২য় দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৪র্থ (২য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৩য় (১ম দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৩য় (১ম দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৩য় (২য় দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৩য় (২য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা রহীমা)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (হাফেজা রহীমা)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা সামিরা)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (হাফেজা সামিরা)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা আয়েশা)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (হাফেজা আয়েশা)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা মারয়াম)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (হাফেজা মারয়াম)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা সুমাইয়া)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (হাফেজা সুমাইয়া)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা নাঈমা)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (হাফেজা নাঈমা)</option>
+                            <option value="হিফ্‌জ খানা (৩০ পারা)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (৩০ পারা)</option>
+                            <option value="হিফজ নাজেরা (উম্মে হাবীবা)" class="bg-[var(--bg-card)]">হিফজ নাজেরা (উম্মে হাবীবা)</option>
+                            <option value="হিফজ নাজেরা (আলেমা ফারজানা)" class="bg-[var(--bg-card)]">হিফজ নাজেরা (আলেমা ফারজানা)</option>
                         </select>
                         <button onclick="exportStudentData()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-bold flex items-center gap-1 hover:bg-blue-700">
                             <span>📄</span> প্রিন্ট
@@ -719,7 +738,7 @@
                     <div class="flex gap-2 items-center">
                         <div class="relative flex-1">
                             <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
-                            <input type="text" id="admin-search" oninput="resetPaginationAndRender()" placeholder="আইডি বা নাম দিয়ে খুঁজুন..." class="w-full pl-9 pr-3 py-2 border rounded-lg outline-none focus:border-green-500 text-sm bg-transparent theme-text">
+                            <input type="text" id="admin-search" oninput="resetPaginationAndRender()" placeholder="আইডি বা নাম দিয়ে খুঁজুন..." class="w-full pl-9 pr-3 py-2 border border-[var(--border-color)] rounded-lg outline-none focus:border-green-500 text-sm bg-transparent theme-text">
                         </div>
                         <button onclick="openAddStudentForm()" class="bg-green-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-xl hover:bg-green-700 shrink-0">
                             +
@@ -728,91 +747,91 @@
                 </div>
                 
                 <!-- Student list scrollbox container -->
-                <div class="p-3 flex-1 overflow-y-auto hide-scroll bg-gray-50 dark:bg-gray-900 space-y-3" id="student-list-container">
+                <div class="p-3 flex-1 overflow-y-auto hide-scroll bg-[var(--bg-body)] space-y-3" id="student-list-container">
                     <!-- Loaded Student Cards via JS -->
                 </div>
 
                 <!-- Static Pagination Panel -->
-                <div id="admin-pagination-panel" class="p-3 border-t bg-gray-100 dark:bg-gray-800 flex justify-between items-center shrink-0 no-print">
-                    <button id="btn-prev-page" onclick="changeStudentPage(-1)" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                <div id="admin-pagination-panel" class="p-3 border-t border-[var(--border-color)] bg-[var(--bg-card)] flex justify-between items-center shrink-0 no-print">
+                    <button id="btn-prev-page" onclick="changeStudentPage(-1)" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold disabled:opacity-40">
                         ◀ পূর্ববর্তী
                     </button>
                     <span id="txt-page-info" class="text-xs font-bold theme-text">পৃষ্ঠা: ১ / ১</span>
-                    <button id="btn-next-page" onclick="changeStudentPage(1)" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                    <button id="btn-next-page" onclick="changeStudentPage(1)" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold disabled:opacity-40">
                         পরবর্তী ▶
                     </button>
                 </div>
             </div>
 
-            <!-- Add/Edit Student Overlay Screen inside Modal -->
+            <!-- Add/Edit Student Overlay Screen -->
             <div id="add-student-screen" class="hidden absolute inset-0 theme-card z-10 flex-col">
-                <div class="p-4 border-b bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
+                <div class="p-4 border-b theme-header flex justify-between items-center">
                     <h3 class="font-bold theme-text" id="add-std-title">নতুন শিক্ষার্থী যোগ করুন</h3>
-                    <button onclick="closeAddStudentForm()" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-600 font-bold">✕</button>
+                    <button onclick="closeAddStudentForm()" class="w-8 h-8 bg-gray-200 dark:bg-gray-800 rounded-full text-gray-600 dark:text-gray-300 font-bold">✕</button>
                 </div>
-                <div class="p-4 flex-1 overflow-y-auto space-y-3">
+                <div class="p-4 flex-1 overflow-y-auto space-y-3 bg-[var(--bg-card)]">
                     <input type="hidden" id="edit-std-id">
                     <div>
                         <label class="block text-xs font-bold theme-text-muted mb-1">ক্লাস নির্বাচন করুন</label>
-                        <select id="new-std-class" class="w-full border rounded-lg p-2 bg-transparent theme-text outline-none focus:border-green-500">
-                            <option value="তাকমীল">তাকমীল</option>
-                            <option value="ফজীলাত ২য়">ফজীলাত ২য়</option>
-                            <option value="ফজীলাত ১ম">ফজীলাত ১ম</option>
-                            <option value="সানাবিয়্যাহ ২য়">সানাবিয়্যাহ ২য়</option>
-                            <option value="সানাবিয়্যাহ ২য় (২য় দল)">সানাবিয়্যাহ ২য় (২য় দল)</option>
-                            <option value="সানাবিয়্যাহ ১ম (১ম দল)">সানাবিয়্যাহ ১ম (১ম দল)</option>
-                            <option value="সানাবিয়্যাহ ১ম (২য় দল)">সানাবিয়্যাহ ১ম (২য় দল)</option>
-                            <option value="সানাবিয়্যাহ ১ম বর্ষ (৩য় দল)">সানাবিয়্যাহ ১ম বর্ষ (৩য় দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ২য় (১ম দল)">মুতাওয়াসসিতাহ ২য় (১ম দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ২য় (২য় দল)">মুতাওয়াসসিতাহ ২য় (২য় দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ২য় (৩য় দল)">মুতাওয়াসসিতাহ ২য় (৩য় দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ২য় (৪র্থ দল)">মুতাওয়াসসিতাহ ২য় (৪র্থ দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ১ম (১ম দল)">মুতাওয়াসসিতাহ ১ম (১ম দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ১ম (২য় দল)">মুতাওয়াসসিতাহ ১ম (২য় দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ১ম (৩য় দল)">মুতাওয়াসসিতাহ ১ম (৩য় দল)</option>
-                            <option value="মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল)">মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল)</option>
-                            <option value="মুতাওয়াসসিতাহ (৫ম দল)">মুতাওয়াসসিতাহ (৫ম দল)</option>
-                            <option value="খুছুছী (১ম দল)">খুছুছী (১ম দল)</option>
-                            <option value="খুছুছী (২য় দল)">খুছুছী (২য় দল)</option>
-                            <option value="খুছুছী (৩য় দল)">খুছুছী (৩য় দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৫ম (১ম দল)">ইবতেদাইয়্যাহ ৫ম (১ম দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৫ম (২য় দল)">ইবতেদাইয়্যাহ ৫ম (২য় দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৪র্থ (১ম দল)">ইবতেদাইয়্যাহ ৪র্থ (১ম দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৪র্থ (২য় দল)">ইবতেদাইয়্যাহ ৪র্থ (২য় দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)">ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৩য় (১ম দল)">ইবতেদাইয়্যাহ ৩য় (১ম দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৩য় (২য় দল)">ইবতেদাইয়্যাহ ৩য় (২য় দল)</option>
-                            <option value="ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)">ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)</option>
-                            <option value="হিফ্‌জ খানা (হাফেজা রহীমা)">হিফ্‌জ খানা (হাফেজা রহীমা)</option>
-                            <option value="হিফ্‌জ খানা (হাফেজা সামিরা)">হিফ্‌জ খানা (হাফেজা সামিরা)</option>
-                            <option value="হিফ্‌জ খানা (হাফেজা আয়েশা)">হিফ্‌জ খানা (হাফেজা আয়েশা)</option>
-                            <option value="হিফ্‌জ খানা (হাফেজা মারয়াম)">হিফ্‌জ খানা (হাফেজা মারয়াম)</option>
-                            <option value="হিফ্‌জ খানা (হাফেজা সুমাইয়া)">হিফ্‌জ খানা (হাফেজা সুমাইয়া)</option>
-                            <option value="হিফ্‌জ খানা (হাফেজা নাঈমা)">হিফ্‌জ খানা (হাফেজা নাঈমা)</option>
-                            <option value="হিফ্‌জ খানা (৩০ পারা)">হিফ্‌জ খানা (৩০ পারা)</option>
-                            <option value="হিফজ নাজেরা (উম্মে হাবীবা)">হিফজ নাজেরা (উম্মে হাবীবা)</option>
-                            <option value="হিফজ নাজেরা (আলেমা ফারজানা)">হিফজ নাজেরা (আলেমা ফারজানা)</option>
+                        <select id="new-std-class" class="w-full border border-[var(--border-color)] rounded-lg p-2 bg-transparent theme-text">
+                            <option value="তាកমীল" class="bg-[var(--bg-card)]">তাকমীল</option>
+                            <option value="ফজীলাত ২য়" class="bg-[var(--bg-card)]">ফজীলাত ২য়</option>
+                            <option value="ফজীলাত ১ম" class="bg-[var(--bg-card)]">ফজীলাত ১ম</option>
+                            <option value="সানাবিয়্যাহ ২য়" class="bg-[var(--bg-card)]">সানাবিয়্যাহ ২য়</option>
+                            <option value="সানাবিয়্যাহ ২য় (২য় দল)" class="bg-[var(--bg-card)]">সানাবিয়্যাহ ২য় (২য় দল)</option>
+                            <option value="সানাবিয়্যাহ ১ম (১ম দল)" class="bg-[var(--bg-card)]">সানাবিয়্যাহ ১ম (১ম দল)</option>
+                            <option value="সানাবিয়্যাহ ১ম (২য় দল)" class="bg-[var(--bg-card)]">সানাবিয়্যাহ ১ম (২য় দল)</option>
+                            <option value="সানাবিয়্যাহ ১ম বর্ষ (৩য় দল)" class="bg-[var(--bg-card)]">সানাবিয়্যাহ ১ম বর্ষ (৩য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (১ম দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ২য় (১ম দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (২য় দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ২য় (২য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (৩য় দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ২য় (৩য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ২য় (৪র্থ দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ২য় (৪র্থ দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম (১ম দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ১ম (১ম দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম (২য় দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ১ম (২য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম (৩য় দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ১ম (৩য় দল)</option>
+                            <option value="মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল)</option>
+                            <option value="মুতাওয়াসসিতাহ (৫ম দল)" class="bg-[var(--bg-card)]">মুতাওয়াসসিতাহ (৫ম দল)</option>
+                            <option value="খুছুছী (১ম দল)" class="bg-[var(--bg-card)]">খুছুছী (১ম দল)</option>
+                            <option value="খুছুছী (২য় দল)" class="bg-[var(--bg-card)]">খুছুছী (২য় দল)</option>
+                            <option value="খুছুছী (৩য় দল)" class="bg-[var(--bg-card)]">খুছুছী (৩য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৫ম (১ম দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৫ম (১ম দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৫ম (২য় দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৫ম (২য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৪র্থ (১ম দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৪র্থ (১ম দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৪র্থ (২য় দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৪র্থ (২য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৩য় (১ম দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৩য় (১ম দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৩য় (২য় দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৩য় (২য় দল)</option>
+                            <option value="ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)" class="bg-[var(--bg-card)]">ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা রহীমা)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (হাফেজা রহীমা)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা সামিরা)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (হাফেজা সামিরা)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা আয়েশা)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (হাফেজা আয়েশা)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা মারয়াম)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (হাফেজা মারয়াম)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা সুমাইয়া)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (হাফেজা সুমাইয়া)</option>
+                            <option value="হিফ্‌জ খানা (হাফেজা নাঈমা)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (হাফেজা নাঈমা)</option>
+                            <option value="হিফ্‌জ খানা (৩০ পারা)" class="bg-[var(--bg-card)]">হিফ্‌জ খানা (৩০ পারা)</option>
+                            <option value="হিফজ নাজেরা (উম্মে হাবীবা)" class="bg-[var(--bg-card)]">হিফজ নাজেরা (উম্মে হাবীবা)</option>
+                            <option value="হিফজ নাজেরা (আলেমা ফারজানা)" class="bg-[var(--bg-card)]">হিফজ নাজেরা (আলেমা ফারজানা)</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold theme-text-muted mb-1">শিক্ষার্থীর আইডি</label>
-                        <input type="text" id="new-std-id" class="w-full border rounded-lg p-2 bg-transparent theme-text outline-none focus:border-green-500" placeholder="যেমন: 2648000">
+                        <input type="text" id="new-std-id" class="w-full border border-[var(--border-color)] rounded-lg p-2 bg-transparent theme-text" placeholder="যেমন: 2648000">
                     </div>
                     <div>
                         <label class="block text-xs font-bold theme-text-muted mb-1">নাম</label>
-                        <input type="text" id="new-std-name" class="w-full border rounded-lg p-2 bg-transparent theme-text outline-none focus:border-green-500" placeholder="নাম লিখুন">
+                        <input type="text" id="new-std-name" class="w-full border border-[var(--border-color)] rounded-lg p-2 bg-transparent theme-text" placeholder="নাম লিখুন">
                     </div>
                     <div>
                         <label class="block text-xs font-bold theme-text-muted mb-1">পিতার নাম</label>
-                        <input type="text" id="new-std-fname" class="w-full border rounded-lg p-2 bg-transparent theme-text outline-none focus:border-green-500" placeholder="পিতার নাম">
+                        <input type="text" id="new-std-fname" class="w-full border border-[var(--border-color)] rounded-lg p-2 bg-transparent theme-text" placeholder="পিতার নাম">
                     </div>
                     <div>
                         <label class="block text-xs font-bold theme-text-muted mb-1">মোবাইল নাম্বার</label>
-                        <input type="tel" id="new-std-phone" class="w-full border rounded-lg p-2 bg-transparent theme-text outline-none focus:border-green-500" placeholder="01....">
+                        <input type="tel" id="new-std-phone" class="w-full border border-[var(--border-color)] rounded-lg p-2 bg-transparent theme-text" placeholder="01....">
                     </div>
                     <div>
                         <label class="block text-xs font-bold theme-text-muted mb-1">ঠিকানা</label>
-                        <input type="text" id="new-std-addr" class="w-full border rounded-lg p-2 bg-transparent theme-text outline-none focus:border-green-500" placeholder="গ্রাম">
+                        <input type="text" id="new-std-addr" class="w-full border border-[var(--border-color)] rounded-lg p-2 bg-transparent theme-text" placeholder="গ্রাম">
                     </div>
                     <button onclick="saveStudent()" class="w-full bg-green-600 text-white font-bold py-3 rounded-lg mt-2 active:scale-95 shadow-md">সংরক্ষণ করুন</button>
                 </div>
@@ -823,30 +842,30 @@
     <!-- Login Modal -->
     <div id="login-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-end sm:items-center justify-center sm:p-4 opacity-0 transition-opacity no-print">
         <div class="theme-card rounded-t-2xl sm:rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform translate-y-full sm:translate-y-0 sm:scale-95 transition-transform duration-300">
-            <div class="p-4 border-b flex justify-between items-center bg-green-50 dark:bg-gray-800">
+            <div class="p-4 border-b flex justify-between items-center theme-header">
                 <h3 class="font-bold theme-text text-base" id="auth-title">লগইন করুন</h3>
                 <button onclick="closeModal('login-modal')" class="w-8 h-8 theme-card rounded-full theme-text font-bold border">✕</button>
             </div>
-            <div class="p-5 space-y-4" id="auth-form-container">
+            <div class="p-5 space-y-4 bg-[var(--bg-card)]" id="auth-form-container">
                 <div class="flex justify-center mb-2">
-                    <div class="bg-gray-100 dark:bg-gray-700 p-1 rounded-lg inline-flex">
-                        <button onclick="toggleAuthMode('login')" id="btn-mode-login" class="px-4 py-1.5 rounded-md bg-white dark:bg-gray-600 shadow-sm text-sm font-bold theme-text transition-all">লগইন</button>
+                    <div class="bg-[var(--bg-body)] border border-[var(--border-color)] p-1 rounded-lg inline-flex">
+                        <button onclick="toggleAuthMode('login')" id="btn-mode-login" class="px-4 py-1.5 rounded-md bg-[var(--bg-card)] shadow-sm text-sm font-bold theme-text transition-all">লগইন</button>
                         <button onclick="toggleAuthMode('register')" id="btn-mode-register" class="px-4 py-1.5 rounded-md text-sm font-medium theme-text-muted transition-all">রেজিস্টার</button>
                     </div>
                 </div>
                 <div id="register-fields" class="hidden space-y-4">
                     <div>
                         <label class="block text-xs font-bold theme-text-muted mb-1">নাম</label>
-                        <input type="text" id="auth-name" class="w-full border rounded-lg p-2.5 text-sm outline-none focus:border-green-500 bg-transparent theme-text" placeholder="আপনার নাম">
+                        <input type="text" id="auth-name" class="w-full border border-[var(--border-color)] rounded-lg p-2.5 text-sm outline-none bg-transparent theme-text" placeholder="আপনার নাম">
                     </div>
                 </div>
                 <div>
                     <label class="block text-xs font-bold theme-text-muted mb-1">ইমেইল</label>
-                    <input type="email" id="auth-email" class="w-full border rounded-lg p-2.5 text-sm outline-none focus:border-green-500 bg-transparent theme-text" placeholder="user@example.com">
+                    <input type="email" id="auth-email" class="w-full border border-[var(--border-color)] rounded-lg p-2.5 text-sm outline-none bg-transparent theme-text" placeholder="user@example.com">
                 </div>
                 <div>
                     <label class="block text-xs font-bold theme-text-muted mb-1">পাসওয়ার্ড</label>
-                    <input type="password" id="auth-pass" class="w-full border rounded-lg p-2.5 text-sm outline-none focus:border-green-500 bg-transparent theme-text" placeholder="••••••••">
+                    <input type="password" id="auth-pass" class="w-full border border-[var(--border-color)] rounded-lg p-2.5 text-sm outline-none bg-transparent theme-text" placeholder="••••••••">
                 </div>
                 <button id="auth-submit-btn" onclick="handleLogin()" class="w-full bg-green-600 text-white font-bold py-2.5 rounded-lg active:scale-95 transition-transform">লগইন করুন</button>
                 <div class="text-center pt-2">
@@ -859,23 +878,23 @@
     <!-- Settings Modal -->
     <div id="settings-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity no-print">
         <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
-            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+            <div class="p-4 border-b flex justify-between items-center theme-header">
                 <h3 class="font-bold theme-text">⚙️ সেটিং </h3>
-                <button onclick="closeModal('settings-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold">✕</button>
+                <button onclick="closeModal('settings-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-800 rounded-full theme-text font-bold">✕</button>
             </div>
-            <div class="p-5 space-y-4">
-                <div class="border-b pb-4">
+            <div class="p-5 space-y-4 bg-[var(--bg-card)]">
+                <div class="border-b border-[var(--border-color)] pb-4">
                     <h4 class="font-bold text-xs text-green-700 dark:text-green-400 mb-2">🔐 পিন পরিবর্তন করুন</h4>
                     <div class="space-y-2 text-xs">
                         <div>
                             <label class="block theme-text-muted mb-1">বর্তমান পিন কোড</label>
-                            <input type="password" id="admin-current-pin-input" class="w-full border rounded-lg p-2.5 outline-none bg-transparent theme-text" placeholder="বর্তমান ৪ ডিজিটের পিন">
+                            <input type="password" id="admin-current-pin-input" class="w-full border border-[var(--border-color)] rounded-lg p-2.5 outline-none bg-transparent theme-text" placeholder="বর্তমান ৪ ডিজিটের পিন">
                         </div>
                         <div>
                             <label class="block theme-text-muted mb-1">নতুন পিন কোড</label>
-                            <input type="password" id="admin-new-pin-input" class="w-full border rounded-lg p-2.5 outline-none bg-transparent theme-text" placeholder="নতুন ৪ ডিজিটের পিন">
+                            <input type="password" id="admin-new-pin-input" class="w-full border border-[var(--border-color)] rounded-lg p-2.5 outline-none bg-transparent theme-text" placeholder="নতুন ৪ ডিজিটের পিন">
                         </div>
-                        <button onclick="changeAdminPinFirebase()" class="w-full bg-green-600 text-white font-bold py-2 rounded-lg active:scale-95 transition-transform shadow-sm">পিন কোড পরিবর্তন করুন</button>
+                        <button onclick="changeAdminPinFirebase()" class="w-full bg-green-600 text-white font-bold py-2 rounded-lg active:scale-95 shadow-sm">পিন কোড পরিবর্তন করুন</button>
                     </div>
                 </div>
                 <div class="text-xs space-y-2">
@@ -889,20 +908,20 @@
     <!-- About Modal -->
     <div id="about-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity no-print">
         <div class="theme-card rounded-2xl w-full max-w-sm shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-200 text-center">
-            <div class="p-4 border-b flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+            <div class="p-4 border-b flex justify-between items-center theme-header">
                 <h3 class="font-bold theme-text text-left">ℹ️ এবাউট</h3>
-                <button onclick="closeModal('about-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold">✕</button>
+                <button onclick="closeModal('about-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-800 rounded-full theme-text font-bold">✕</button>
             </div>
-            <div class="p-6">
+            <div class="p-6 bg-[var(--bg-card)]">
                 <!-- Editable / Dynamic About Logo Container -->
-                <div onclick="triggerLogoUpload()" class="w-20 h-20 bg-green-100 rounded-full mx-auto flex items-center justify-center border-2 border-green-300 overflow-hidden shadow-inner cursor-pointer relative group">
+                <div onclick="triggerLogoUpload('about')" class="w-20 h-20 bg-green-100 dark:bg-green-950/20 rounded-full mx-auto flex items-center justify-center border-2 border-green-300 dark:border-green-800 overflow-hidden shadow-inner cursor-pointer relative group">
                     <img id="madrasa-logo-about" class="w-full h-full object-cover hidden" alt="Logo">
-                    <span id="about-logo-placeholder" class="text-4xl">🕌</span>
+                    <span id="about-logo-placeholder" class="text-4xl text-green-700 dark:text-green-400">🕌</span>
                     <div id="about-logo-edit-indicator" class="absolute inset-0 bg-black/50 text-[11px] text-white flex items-center justify-center font-bold opacity-0 transition-opacity duration-200 pointer-events-none hidden">পরিবর্তন</div>
                 </div>
                 <h2 class="text-lg font-bold theme-text mt-2">ড্যাশবোর্ড ইনফো</h2>
                 <p class="text-sm theme-text-muted mt-2">এই ড্যাশবোর্ডটি আধুনিক প্রযুক্তি ব্যবহার করে তৈরি করা হয়েছে। এটি মাদ্রাসার শিক্ষক, শিক্ষার্থী এবং অ্যাডমিনদের কাজকে আরও সহজ ও দ্রুত করার উদ্দেশ্যে ডিজাইন করা হয়েছে।</p>
-                <div class="mt-4 pt-4 border-t text-xs theme-text-muted">
+                <div class="mt-4 pt-4 border-t border-[var(--border-color)] text-xs theme-text-muted">
                     ভার্সন: 1.০  <br>
                     স্বত্ব: মাওলানা সাইফুল্লাহ সাইফ, জামেয়া ইমদাদিয়া মাদানীনগর।
                 </div>
@@ -918,9 +937,9 @@
                 <button onclick="closeModal('calc-modal')" class="w-8 h-8 bg-white/20 rounded-full text-white font-bold hover:bg-white/30">✕</button>
             </div>
             
-            <div class="p-4 overflow-y-auto hide-scroll flex-1 bg-gray-50 dark:bg-gray-900">
-                <div class="flex bg-gray-200 dark:bg-gray-700 p-1 rounded-lg mb-4 text-sm font-medium">
-                    <button onclick="switchCalcTab('half')" id="tab-half" class="flex-1 py-1.5 rounded-md bg-white dark:bg-gray-600 shadow-sm text-green-700 dark:text-green-400">হাফ খানা</button>
+            <div class="p-4 overflow-y-auto hide-scroll flex-1 bg-[var(--bg-body)]">
+                <div class="flex bg-[var(--bg-card)] border border-[var(--border-color)] p-1 rounded-lg mb-4 text-sm font-medium">
+                    <button onclick="switchCalcTab('half')" id="tab-half" class="flex-1 py-1.5 rounded-md bg-[var(--bg-body)] shadow-sm text-green-700 dark:text-green-400">হাফ খানা</button>
                     <button onclick="switchCalcTab('full')" id="tab-full" class="flex-1 py-1.5 rounded-md text-gray-500 dark:text-gray-300">ফুল খানা</button>
                     <button onclick="switchCalcTab('wakto')" id="tab-wakto" class="flex-1 py-1.5 rounded-md text-gray-500 dark:text-gray-300">ওয়াক্ত ভিত্তিক</button>
                 </div>
@@ -928,20 +947,20 @@
                 <div id="calc-half" class="calc-section space-y-4">
                     <div>
                         <label class="block text-sm font-bold theme-text-muted mb-1">খানা নির্বাচন করুন :</label>
-                        <select id="half-khana-val" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text">
-                            <option value="2300">২৩০০ টাকা</option>
-                            <option value="2450">২৪৫০ টাকা</option>
-                            <option value="2900">২৯০০ টাকা</option>
-                            <option value="3050">৩০৫০ টাকা</option>
+                        <select id="half-khana-val" class="w-full p-3 border border-[var(--border-color)] rounded-xl outline-none bg-[var(--bg-card)] theme-text">
+                            <option value="2300" class="bg-[var(--bg-card)]">২৩০০ টাকা</option>
+                            <option value="2450" class="bg-[var(--bg-card)]">২৪৫০ টাকা</option>
+                            <option value="2900" class="bg-[var(--bg-card)]">২৯০০ টাকা</option>
+                            <option value="3050" class="bg-[var(--bg-card)]">৩০৫০ টাকা</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-sm font-bold theme-text-muted mb-1">কত দিন খেয়েছে? :</label>
-                        <input type="number" id="half-khana-days" value="30" max="30" min="0" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="যেমন: ২৫">
+                        <input type="number" id="half-khana-days" value="30" max="30" min="0" class="w-full p-3 border border-[var(--border-color)] rounded-xl outline-none bg-[var(--bg-card)] theme-text" placeholder="যেমন: ২৫">
                     </div>
                     <div>
                         <label class="block text-sm font-bold theme-text-muted mb-1"> বেতন বিদ্যুৎ ও জেনারেটর বিল:</label>
-                        <input type="number" id="half-tuition" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="লিখুন (৳)">
+                        <input type="number" id="half-tuition" class="w-full p-3 border border-[var(--border-color)] rounded-xl outline-none bg-[var(--bg-card)] theme-text" placeholder="লিখুন (৳)">
                     </div>
                 </div>
 
@@ -971,30 +990,30 @@
 
                     <div>
                         <label class="block text-sm font-bold theme-text-muted mb-1">কত দিন খেয়েছে? :</label>
-                        <input type="number" id="full-khana-days" value="30" max="30" min="0" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="যেমন: ৩০">
+                        <input type="number" id="full-khana-days" value="30" max="30" min="0" class="w-full p-3 border border-[var(--border-color)] rounded-xl outline-none bg-[var(--bg-card)] theme-text" placeholder="যেমন: ৩০">
                     </div>
 
                     <div>
                         <label class="block text-sm font-bold theme-text-muted mb-1">বেতন বিদ্যুৎ ও জেনারেটর বিল:</label>
-                        <input type="number" id="full-tuition" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="লিখুন (৳)">
+                        <input type="number" id="full-tuition" class="w-full p-3 border border-[var(--border-color)] rounded-xl outline-none bg-[var(--bg-card)] theme-text" placeholder="লিখুন (৳)">
                     </div>
                     
                     <div>
                         <label class="block text-sm font-bold theme-text-muted mb-1">বোনের বেতন:</label>
-                        <input type="number" id="full-sister-salary" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="লিখুন (৳)">
+                        <input type="number" id="full-sister-salary" class="w-full p-3 border border-[var(--border-color)] rounded-xl outline-none bg-[var(--bg-card)] theme-text" placeholder="লিখুন (৳)">
                     </div>
                 </div>
 
                 <div id="calc-wakto" class="calc-section space-y-4 hidden">
                     <div>
                         <label class="block text-sm font-bold theme-text-muted mb-1">ওয়াক্ত নির্বাচন করুন :</label>
-                        <select id="wakto-select" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text">
-                            <option value="700">সকাল (৭০০ ৳)</option>
-                            <option value="1000">দুপুর (১০০০ ৳)</option>
-                            <option value="700">রাত্রি (৭০০ ৳)</option>
-                            <option value="1700">সকাল + দুপুর (১৭০০ ৳)</option>
-                            <option value="1400">সকাল + রাত্রি (১৪০০ ৳)</option>
-                            <option value="1700">দুপুর + রাত্রি (১৭০০ ৳)</option>
+                        <select id="wakto-select" class="w-full p-3 border border-[var(--border-color)] rounded-xl outline-none bg-[var(--bg-card)] theme-text">
+                            <option value="700" class="bg-[var(--bg-card)]">সকাল (৭০০ ৳)</option>
+                            <option value="1000" class="bg-[var(--bg-card)]">দুপুর (১০০০ ৳)</option>
+                            <option value="700" class="bg-[var(--bg-card)]">রাত্রি (৭০০ ৳)</option>
+                            <option value="1700" class="bg-[var(--bg-card)]">সকাল + দুপুর (১৭০০ ৳)</option>
+                            <option value="1400" class="bg-[var(--bg-card)]">সকাল + রাত্রি (১৪০০ ৳)</option>
+                            <option value="1700" class="bg-[var(--bg-card)]">দুপুর + রাত্রি (১৭০০ ৳)</option>
                         </select>
                     </div>
 
@@ -1019,19 +1038,19 @@
 
                     <div>
                         <label class="block text-sm font-bold theme-text-muted mb-1">কত দিন খেয়েছে? :</label>
-                        <input type="number" id="wakto-days" value="30" max="30" min="0" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="যেমন: ৩০">
+                        <input type="number" id="wakto-days" value="30" max="30" min="0" class="w-full p-3 border border-[var(--border-color)] rounded-xl outline-none bg-[var(--bg-card)] theme-text" placeholder="যেমন: ৩০">
                     </div>
 
                     <div>
                         <label class="block text-sm font-bold theme-text-muted mb-1">বেতন বিদ্যুৎ ও জেনারেটর বিল:</label>
-                        <input type="number" id="wakto-tuition" class="w-full p-3 border rounded-xl outline-none focus:border-green-500 bg-transparent theme-text" placeholder="লিখুন(৳)">
+                        <input type="number" id="wakto-tuition" class="w-full p-3 border border-[var(--border-color)] rounded-xl outline-none bg-[var(--bg-card)] theme-text" placeholder="লিখুন(৳)">
                     </div>
                 </div>
             </div>
             
-            <div class="p-4 border-t theme-card shrink-0">
+            <div class="p-4 border-t border-[var(--border-color)] bg-[var(--bg-card)] shrink-0">
                 <button onclick="calculateTotal()" class="w-full bg-green-600 text-white font-bold py-3 rounded-xl mb-3 active:scale-95 transition-transform text-lg shadow-md">হিসাব করুন</button>
-                <div class="flex justify-between items-center bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-300 p-3 rounded-xl border border-green-200 dark:border-green-800">
+                <div class="flex justify-between items-center bg-green-50 dark:bg-green-950/30 text-green-800 dark:text-green-300 p-3 rounded-xl border border-green-200 dark:border-green-800">
                     <span class="font-bold">সর্বমোট:</span>
                     <span id="calc-total" class="font-bold text-xl">০ ৳</span>
                 </div>
@@ -1048,7 +1067,7 @@
             { id: '3247', name: 'মোছাঃ হাফসা খাতুন', fname: 'মোঃ মুজিবুর রহমান', addr: 'গোপালপুর', status: 'Active', cls: 'তাকমীল', phone: '01937874777' },
             { id: '3248', name: 'আফসানা তাসনীম', fname: 'মোঃ হারুন আর রশিদ', addr: 'চিনাটোলা', status: 'Active', cls: 'তাকমীল', phone: '01629579848' },
             { id: '32410', name: 'খাদিজা', fname: 'শুকুরালী সানা', addr: 'গোপালপুর', status: 'Active', cls: 'তাকমীল', phone: '01930661740' },
-            { id: '32413', name: 'তাসলিমা খাতুন', fname: 'আশরাফ আলী', addr: 'নাগোরঘোপ', status: 'Active', cls: 'তাকমীল', phone: '01778768271' },
+			{ id: '32413', name: 'তাসলিমা খাতুন', fname: 'আশরাফ আলী', addr: 'নাগোরঘোপ', status: 'Active', cls: 'তাকমীল', phone: '01778768271' },
 			{ id: '32415', name: 'আফিয়া হুমায়রা', fname: 'মোঃ Shahাদাৎ হোসেন', addr: 'মশ্বিমনগর', status: 'Active', cls: 'তাকমীল', phone: '01303042089' },
             { id: '32416', name: 'ইতি আক্তার', fname: 'মোঃ আবুল কাশেম', addr: 'মোবারকপুর', status: 'Active', cls: 'তাকমীল', phone: '01740423090' },
             { id: '32417', name: 'উমامہ তাঝকিয়্যাহ', fname: 'মাসউদ আলম', addr: 'দূগার্পুর', status: 'Active', cls: 'তাকমীল', phone: '01936011201' },
@@ -2150,20 +2169,18 @@
 			  { id: '382648276', name: 'মোছা: ফাতেমা খাতুন', fname: 'মো: হালিম হোসেন', addr: 'মোহনপুর', status: 'Active', cls: 'হিফজ নাজেরা (আলেমা ফারজানা)', phone: '01852379891' },
 			  { id: '392547038', name: 'মোছা: মুনিয়া আক্তার', fname: 'মো: আজিজুর রহমান', addr: 'মাদারডাঙ্গা', status: 'Active', cls: 'হিফজ নাজেরা (আলেমা ফারজানা)', phone: '01706777098' },
 			  { id: '402648283', name: 'রোকাইয়া', fname: 'মোঃ আব্দুর রাজ্জাক গোলদার', addr: 'রাড়ুলী', status: 'Active', cls: 'হিফজ নাজেরা (আলেমা ফারজানা)', phone: '01737872962' },
-						// আপনি এখানে আরও ১০০০+ শিক্ষার্থী এভাবে অবজেক্ট আকারে সহজে যোগ করতে পারবেন।
         ];
         const INITIAL_NOTICES = [
             { id: 1, title: "আসসালামু আলাইকুম ওয়া রাহমাতুল্লাহ", date: "২৮ জুন ২০২৬", desc: "জামিয়া ইমদাদিয়া মাদানীনগরে স্বাগতম।" },
             { id: 2, title: "আলহামদুলিল্লাহ", date: "২৮ জুন ২০২৬", desc: "আমাদের ড্যাশবোর্ড সফলভাবে ক্লাউডে সিঙ্ক করা হয়েছে।" }
         ];
         const INITIAL_ALERTS = [
-            { id: 101, title: "আসসালামু আলাইকুম ওয়া রাহমাতুল্লাহ" }
+            { id: 101, title: "আসসালামু আলাইকুম" }
         ];
         const INITIAL_NOTES = [
-            { id: 1, text: "কাল সকালে বাজার থেকে কলম আনতে হবে", time: "সকাল ১০:৩০", completed: false }
+            { id: 1, text: "কাল সকালে বাজার থেকে কলম আনতে হবে", time: "সকাল ১০:৩০", completed: false, isPrivate: false }
         ];
 
-        /* Bind to window explicitly to avoid Strict Mode ReferenceErrors in Module script */
         window.mockStudents = [...INITIAL_STUDENTS];
         window.notices = [...INITIAL_NOTICES];
         window.alerts = [...INITIAL_ALERTS];
@@ -2171,11 +2188,9 @@
         window.recycleBin = [];
         window.isAdminLoggedIn = false;
 
-        /* Pagination & Live Data Stats States */
         window.studentCurrentPage = 1;
         window.studentPageSize = 50;
 
-        /* Utils */
         const toBanglaNum = (num) => {
             if (num === undefined || num === null) return '০';
             return num.toString().replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
@@ -2194,20 +2209,23 @@
             return `${toBanglaNum(h.toString().padStart(2, '0'))}:${toBanglaNum(m.toString().padStart(2,'0'))}`; 
         };
 
-        /* Local User Action Logging System */
         function logUserAction(actionText) {
             const history = JSON.parse(localStorage.getItem('appActivityHistory') || '[]');
             const now = new Date();
             const timeString = now.toLocaleTimeString('bn-BD', { hour: 'numeric', minute: '2-digit' });
             history.unshift({ time: timeString, action: actionText });
-            localStorage.setItem('appActivityHistory', JSON.stringify(history.slice(0, 50))); // Keep last 50 logs
+            localStorage.setItem('appActivityHistory', JSON.stringify(history.slice(0, 50)));
         }
+
+        window.makePhoneCall = (name, phone) => {
+            logUserAction(`📞 কল করা হয়েছে: ${name} (${phone})`);
+            window.location.href = `tel:${phone}`;
+        };
 
         window.openHistoryModal = () => {
             closeProfileMenu();
             renderUserHistory();
             openModal('history-modal');
-            logUserAction("হিস্টোরি অপশন চেক করা হয়েছে");
         };
 
         window.renderUserHistory = () => {
@@ -2220,7 +2238,7 @@
             container.innerHTML = history.map(h => `
                 <div class="p-3 theme-card rounded-xl border text-xs flex justify-between items-center gap-3">
                     <span class="theme-text text-left flex-1">${h.action}</span>
-                    <span class="theme-text-muted shrink-0 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded font-mono">${h.time}</span>
+                    <span class="theme-text-muted shrink-0 bg-[var(--bg-body)] px-2 py-0.5 rounded font-mono">${h.time}</span>
                 </div>
             `).join('');
         };
@@ -2231,7 +2249,6 @@
             showToast("হিস্টোরি মুছে ফেলা হয়েছে");
         };
 
-        /* Toast System */
         window.showToast = (msg) => {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -2245,18 +2262,12 @@
             }, 3000);
         };
 
-        /* Modal & Dropdown System */
         let activeModal = null;
         window.openModal = (id, param = null) => {
             if(activeModal) closeModal(activeModal);
             const modal = document.getElementById(id);
             if(!modal) return;
             
-            if(id === 'notification-alert-modal' || id === 'notification-modal') {
-                const badge = document.getElementById('notification-badge');
-                if(badge) badge.classList.add('hidden');
-            }
-
             modal.classList.remove('hidden');
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
@@ -2266,13 +2277,6 @@
                 }
             }, 10);
             activeModal = id;
-            
-            if(id === 'donation-modal' && param) {
-                document.getElementById('donation-title').innerText = param + ' প্রদান';
-            }
-
-            let friendlyName = id.replace('-modal', '');
-            logUserAction(`মেনু ওপেন: ${friendlyName}`);
         };
 
         window.closeModal = (id) => {
@@ -2282,7 +2286,6 @@
             if(modal.children[0]) {
                 modal.children[0].classList.remove('translate-y-0', 'scale-100');
                 modal.children[0].classList.add('scale-95');
-                if(window.innerWidth < 640) modal.children[0].classList.add('translate-y-full');
             }
             setTimeout(() => {
                 modal.classList.add('hidden');
@@ -2295,6 +2298,7 @@
         /* Theme Management */
         window.setTheme = (themeName) => {
             document.body.setAttribute('data-theme', themeName);
+            localStorage.setItem('appTheme', themeName);
             if (themeName === 'dark' || themeName === 'night') {
                 document.documentElement.classList.add('dark');
             } else {
@@ -2303,17 +2307,23 @@
             showToast('থিম পরিবর্তন করা হয়েছে');
             logUserAction("থিম পরিবর্তন: " + themeName);
             closeProfileMenu();
+            renderStudentList();
+            renderNotices();
+            renderNotes();
+            renderPrayerTimeline();
+            updatePrayerProgress();
         };
 
-        /* Profile Menu Logic */
         window.toggleProfileMenu = (e) => {
             e.stopPropagation();
             const menu = document.getElementById('profile-dropdown');
             menu.classList.toggle('hidden');
         };
         window.closeProfileMenu = () => {
-            document.getElementById('profile-dropdown').classList.add('hidden');
+            const dropdown = document.getElementById('profile-dropdown');
+            if (dropdown) dropdown.classList.add('hidden');
         };
+
         document.addEventListener('click', (e) => {
             if(!e.target.closest('#profile-dropdown') && !e.target.closest('#profile-trigger')) {
                 closeProfileMenu();
@@ -2324,57 +2334,35 @@
         });
 
         /* Trigger Logo Upload with Admin Verification */
-        window.triggerLogoUpload = () => {
+        window.triggerLogoUpload = (type) => {
             if (window.isAdminLoggedIn) {
-                document.getElementById('logo-file-input').click();
+                if (type === 'header') {
+                    document.getElementById('logo-header-input').click();
+                } else if (type === 'about') {
+                    document.getElementById('logo-about-input').click();
+                }
             } else {
                 showToast("লোগো পরিবর্তন করতে প্রথমে অ্যাডমিন প্যানেলে লগইন করুন!");
             }
         };
 
         /* Compress & upload client logo safely */
-        window.handleLogoSelect = async (event) => {
+        window.handleLogoSelect = async (event, type) => {
             const file = event.target.files[0];
             if (!file) return;
-
-            if (!file.type.startsWith('image/')) {
-                showToast("শুধুমাত্র PNG, JPG বা JPEG ছবি সিলেক্ট করুন!");
-                return;
-            }
-
-            showToast("ছবি প্রসেস হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...");
 
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = async function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 200;
-                    const MAX_HEIGHT = 200;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > height) {
-                        if (width > MAX_WIDTH) {
-                            height *= MAX_WIDTH / width;
-                            width = MAX_WIDTH;
-                        }
-                    } else {
-                        if (height > MAX_HEIGHT) {
-                            width *= MAX_HEIGHT / height;
-                            height = MAX_HEIGHT;
-                        }
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
+                    canvas.width = 120;
+                    canvas.height = 120;
                     const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
+                    ctx.drawImage(img, 0, 0, 120, 120);
                     const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
-                    
                     if (window.uploadLogoFirebase) {
-                        await window.uploadLogoFirebase(compressedBase64);
+                        await window.uploadLogoFirebase(compressedBase64, type);
                     }
                 };
                 img.src = e.target.result;
@@ -2382,36 +2370,13 @@
             reader.readAsDataURL(file);
         };
 
-        /* Login / Register Toggle */
-        window.toggleAuthMode = (mode) => {
-            const btnL = document.getElementById('btn-mode-login');
-            const btnR = document.getElementById('btn-mode-register');
-            const regFields = document.getElementById('register-fields');
-            const submitBtn = document.getElementById('auth-submit-btn');
-            
-            if(mode === 'login') {
-                btnL.className = "px-4 py-1.5 rounded-md bg-white dark:bg-gray-600 shadow-sm text-sm font-bold theme-text transition-all";
-                btnR.className = "px-4 py-1.5 rounded-md text-sm font-medium theme-text-muted transition-all";
-                regFields.classList.add('hidden');
-                submitBtn.innerText = "লগইন করুন";
-            } else {
-                btnR.className = "px-4 py-1.5 rounded-md bg-white dark:bg-gray-600 shadow-sm text-sm font-bold theme-text transition-all";
-                btnL.className = "px-4 py-1.5 rounded-md text-sm font-medium theme-text-muted transition-all";
-                regFields.classList.remove('hidden');
-                submitBtn.innerText = "একাউন্ট তৈরি করুন";
-            }
-        };
-
-        /* Date & Calendar Logic */
+        /* Date Formatting Logic */
         function getBanglaDate(date) {
             const day = date.getDate(); const month = date.getMonth(); const year = date.getFullYear();
             let bMonth = ""; let bDay = 0; let bYear = year - 593; let season = "";
             if (month === 5) {
                 if (day <= 14) { bMonth = "জ্যৈষ্ঠ"; bDay = day + 17; season = "গ্রীষ্মকাল"; } 
                 else { bMonth = "আষাঢ়"; bDay = day - 14; season = "বর্ষাকাল"; }
-            } else if (month === 6) { 
-                if (day <= 15) { bMonth = "আষাঢ়"; bDay = day + 16; season = "বর্ষাকাল"; } 
-                else { bMonth = "শ্রাবণ"; bDay = day - 15; season = "বর্ষাকাল"; }
             } else {
                 const bNames = ["পৌষ", "মাঘ", "ফাল্গুন", "চৈত্র", "বৈশাখ", "জ্যৈষ্ঠ", "আষাঢ়", "শ্রাবণ", "ভাদ্র", "আশ্বিন", "কার্তিক", "অগ্রহায়ণ"];
                 bMonth = bNames[month]; bDay = day;
@@ -2429,167 +2394,7 @@
             document.getElementById('display-bangla').innerText = `${weekday}, ${bangla.day} ${bangla.month} ${bangla.year} বঙ্গাব্দ${bangla.season ? ', '+bangla.season : ''}`;
         }
 
-        /* Notice Board and Alerts */
-        function renderNotices() {
-            const container = document.getElementById('notification-list');
-            if(!container) return;
-            if(window.notices.length === 0) {
-                container.innerHTML = '<p class="text-center theme-text-muted py-4 text-xs">কোন নোটিশ নেই</p>';
-            } else {
-                container.innerHTML = window.notices.map(n => `
-                    <div class="p-3 theme-card rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
-                        <div class="flex justify-between items-start gap-2 mb-1">
-                            <h4 class="font-bold theme-text text-sm">${n.title}</h4>
-                            <span class="text-[10px] theme-text-muted bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded whitespace-nowrap">${n.date}</span>
-                        </div>
-                        <p class="theme-text-muted text-xs leading-relaxed">${n.desc}</p>
-                    </div>
-                `).join('');
-            }
-            renderAlerts();
-        }
-
-        function renderAlerts() {
-            const container = document.getElementById('notification-alert-list');
-            const badge = document.getElementById('notification-badge');
-            if(!container) return;
-            
-            if(window.alerts.length === 0) {
-                container.innerHTML = '<p class="text-center theme-text-muted py-4 text-xs">কোনো নতুন নোটিফিকেশন নেই</p>';
-                if(badge) badge.classList.add('hidden');
-            } else {
-                container.innerHTML = window.alerts.map(a => `
-                    <div class="p-3 theme-card rounded-xl border dark:border-gray-700 flex justify-between items-center shadow-sm">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                            <span class="font-bold theme-text text-sm">${a.title}</span>
-                        </div>
-                        <button onclick="deleteAlert(${a.id})" class="text-red-400 hover:text-red-600 text-xs bg-red-50 dark:bg-red-900/30 p-1.5 rounded-lg active:scale-95">ডিলিট</button>
-                    </div>
-                `).join('');
-                if(badge) {
-                    badge.innerText = toBanglaNum(window.alerts.length);
-                    badge.classList.remove('hidden');
-                }
-            }
-        }
-
-        window.deleteAlert = (id) => {
-            window.alerts = window.alerts.filter(a => a.id !== id);
-            renderAlerts();
-            if(window.alerts.length === 0) closeModal('notification-alert-modal');
-        };
-
-        window.submitDonation = () => {
-            const trxId = document.getElementById('trx-id').value;
-            if(!trxId) { showToast("ট্রানজেকশন আইডি দিন"); return; }
-            showToast("ধন্যবাদ! আপনার পেমেন্ট যাচাই করা হচ্ছে।");
-            logUserAction("অনলাইন দান সাবমিট Trx: " + trxId);
-            document.getElementById('trx-id').value = '';
-            closeModal('donation-modal');
-        };
-
-        /* Upgraded Location Systems */
-        window.getLocationGPS = () => {
-            if (navigator.geolocation) {
-                showToast('জিপিএস সিগন্যাল খোঁজা হচ্ছে...');
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        currentLat = position.coords.latitude;
-                        currentLng = position.coords.longitude;
-                        document.getElementById('location-text').innerText = "অটোমেটিক GPS";
-                        fetchPrayerTimes();
-                        closeModal('location-modal');
-                        showToast('লোケーション জিপিএস আপডেট হয়েছে');
-                        logUserAction("GPS Auto লোকেশন আপডেট");
-                    },
-                    (error) => { showToast('লোকেশন পারমিশন দেওয়া হয়নি'); }
-                );
-            }
-        };
-
-        window.setManualLocation = () => {
-            const selectEl = document.getElementById('manual-location');
-            const selectedText = selectEl.options[selectEl.selectedIndex].text;
-            const val = selectEl.value.split(',');
-            currentLat = parseFloat(val[0]);
-            currentLng = parseFloat(val[1]);
-            document.getElementById('location-text').innerText = selectedText;
-            fetchPrayerTimes();
-            closeModal('location-modal');
-            showToast('লোকেশন আপডেট: ' + selectedText);
-            logUserAction("ম্যানুয়াল লোকেশন আপডেট: " + selectedText);
-        };
-
-        window.openGoogleMapsLookup = () => {
-            const selectEl = document.getElementById('manual-location');
-            const val = selectEl.value.split(',');
-            const lat = parseFloat(val[0]);
-            const lng = parseFloat(val[1]);
-            window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
-            logUserAction("গুগল ম্যাপে লোকেশন ভিউ");
-        };
-
-        /* Action Menu Logic & Recycle Bin */
-        let currentActionTarget = { type: null, id: null };
-
-        window.showActionMenu = (e, type, id) => {
-            e.stopPropagation();
-            currentActionTarget = { type, id };
-            const menu = document.getElementById('shared-action-menu');
-            menu.classList.remove('hidden');
-            
-            const rect = e.target.getBoundingClientRect();
-            menu.style.top = `${rect.bottom + window.scrollY}px`;
-            if(type === 'student') {
-                menu.style.left = `${rect.left + window.scrollX}px`;
-                menu.style.right = 'auto';
-            } else {
-                menu.style.right = `${window.innerWidth - rect.right}px`;
-                menu.style.left = 'auto';
-            }
-        };
-        
-        window.hideActionMenu = () => {
-            document.getElementById('shared-action-menu').classList.add('hidden');
-        };
-
-        document.getElementById('action-edit-btn').addEventListener('click', () => {
-            hideActionMenu();
-            if(currentActionTarget.type === 'note') editNote(currentActionTarget.id);
-            else if(currentActionTarget.type === 'student') editStudent(currentActionTarget.id);
-        });
-
-        document.getElementById('action-delete-btn').addEventListener('click', () => {
-            hideActionMenu();
-            if(currentActionTarget.type === 'note') deleteNote(currentActionTarget.id);
-            else if(currentActionTarget.type === 'student') deleteStudent(currentActionTarget.id);
-        });
-
-        window.openRecycleBin = () => {
-            closeProfileMenu();
-            renderRecycleBin();
-            openModal('recycle-bin-modal');
-        };
-
-        window.renderRecycleBin = () => {
-            const container = document.getElementById('recycle-bin-list');
-            if(window.recycleBin.length === 0) {
-                container.innerHTML = '<p class="text-center theme-text-muted py-8 text-sm">রিসাইকেল বিন খালি</p>';
-                return;
-            }
-            container.innerHTML = window.recycleBin.map((item, index) => `
-                <div class="theme-card p-3 rounded-xl border shadow-sm flex justify-between items-center gap-2">
-                    <div class="flex-1 overflow-hidden">
-                        <p class="text-[10px] font-bold text-red-500 mb-0.5">${item.type === 'note' ? '📝 নোট' : '🎓 শিক্ষার্থী'}</p>
-                        <p class="text-xs theme-text truncate">${item.type === 'note' ? item.data.text : item.data.name}</p>
-                    </div>
-                    <button onclick="restoreItem(${index})" class="bg-green-100 text-green-700 px-3 py-1.5 rounded-lg text-xs font-bold active:scale-95 shrink-0 whitespace-nowrap">রিস্টোর</button>
-                </div>
-            `).join('');
-        };
-
-        /* Enhanced Prayer API System */
+        /* Beautiful Prayer times Timeline render updates */
         let currentLat = 23.0159; let currentLng = 89.2272;
         let prayerPhases = [];
         let prayerInterval = null;
@@ -2648,7 +2453,7 @@
             const grid = document.getElementById('prayer-timeline-grid');
             let visiblePhases = prayerPhases.slice(0, prayerPhases.length - 1);
             grid.innerHTML = visiblePhases.map(p => `
-                <div class="px-3 py-2 flex flex-col items-center justify-center min-w-[70px] opacity-70 transition-all ${p.isMakruh ? 'makruh-bg text-red-800 dark:text-red-200' : ''}" id="phase-${p.id}">
+                <div class="px-3 py-2 flex flex-col items-center justify-center min-w-[75px] opacity-70 transition-all rounded-lg ${p.isMakruh ? 'makruh-bg text-red-800 dark:text-red-200' : ''}" id="phase-${p.id}">
                     <span class="text-[10px] mb-0.5 font-bold whitespace-nowrap">${p.name}</span>
                     <span class="text-xs font-mono">${formatTimeAmPm(p.start)}</span>
                 </div>
@@ -2679,7 +2484,7 @@
                 nameEl.className = "font-bold text-2xl text-red-500 tracking-wide leading-tight";
                 statusDot.className = "w-3 h-3 rounded-full bg-red-500 animate-pulse";
             } else {
-                nameEl.className = "font-bold text-2xl text-green-600 tracking-wide leading-tight";
+                nameEl.className = "font-bold text-2xl text-[var(--text-main)] tracking-wide leading-tight";
                 statusDot.className = "w-3 h-3 rounded-full bg-green-500 animate-pulse";
             }
             
@@ -2688,9 +2493,14 @@
                 if (el) {
                     if(p.id === currentP.id) {
                         el.classList.remove('opacity-70');
-                        el.classList.add('opacity-100', 'bg-white', 'dark:bg-gray-800', 'shadow-inner');
-                        el.style.borderBottom = '3px solid #22c55e';
-                        if(p.isMakruh) el.style.borderBottom = '3px solid #ef4444';
+                        el.classList.add('opacity-100', 'shadow-inner');
+                        el.style.backgroundColor = 'var(--bg-body)';
+                        el.style.color = 'var(--primary-color)';
+                        el.style.borderBottom = '3px solid var(--primary-color)';
+                        if(p.isMakruh) {
+                            el.style.borderBottom = '3px solid #ef4444';
+                            el.style.color = '#ef4444';
+                        }
 
                         const container = document.getElementById('prayer-timeline-grid-container');
                         if(container) {
@@ -2699,7 +2509,9 @@
                         }
                     } else {
                         el.classList.add('opacity-70');
-                        el.classList.remove('opacity-100', 'bg-white', 'dark:bg-gray-800', 'shadow-inner');
+                        el.classList.remove('opacity-100', 'shadow-inner');
+                        el.style.backgroundColor = 'transparent';
+                        el.style.color = 'inherit';
                         el.style.borderBottom = 'none';
                     }
                 }
@@ -2719,32 +2531,27 @@
             let rmMinutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
             
             let remainingString = "";
-            if (rmHours > 0) {
-                remainingString += `${toBanglaNum(rmHours)} ঘণ্টা `;
-            }
+            if (rmHours > 0) remainingString += `${toBanglaNum(rmHours)} ঘণ্টা `;
             remainingString += `${toBanglaNum(rmMinutes)} মিনিট বাকি`;
             document.getElementById('time-remaining-text').innerText = remainingString;
         }
 
-        /* Calculator Logic */
+        /* Calculator Settings Tabs */
         let currentCalcTab = 'half';
-
         window.switchCalcTab = (tab) => {
             currentCalcTab = tab;
             document.querySelectorAll('.calc-section').forEach(el => el.classList.add('hidden'));
-            
             let targetSec = document.getElementById('calc-' + tab);
             if(targetSec) targetSec.classList.remove('hidden');
             
             ['half', 'full', 'wakto'].forEach(t => {
                 let btn = document.getElementById('tab-' + t);
                 if(btn) {
-                    if(t === tab) btn.className = `flex-1 py-1.5 rounded-md bg-white dark:bg-gray-600 shadow-sm text-green-700 dark:text-green-400 font-bold transition-colors`;
+                    if(t === tab) btn.className = `flex-1 py-1.5 rounded-md bg-[var(--bg-body)] shadow-sm text-green-700 dark:text-green-400 font-bold transition-colors`;
                     else btn.className = `flex-1 py-1.5 rounded-md text-sm font-medium text-gray-500 dark:text-gray-300 transition-colors`;
                 }
             });
             calculateTotal();
-            logUserAction(`বেতন ক্যালকুলেটর: ${tab} ভিউ`);
         };
 
         ['m', 'n', 'e'].forEach(p => {
@@ -2759,7 +2566,6 @@
                     calculateTotal();
                 });
             }
-            
             let wp = document.getElementById('wak-sp-' + p);
             if(wp) {
                 wp.addEventListener('change', (e) => {
@@ -2780,61 +2586,55 @@
 
         function calculateTotal() {
             let total = 0;
-            
             if(currentCalcTab === 'half') {
                 let monthlyRate = parseInt(document.getElementById('half-khana-val').value) || 0;
                 let days = parseInt(document.getElementById('half-khana-days').value) || 0;
                 let tuition = parseInt(document.getElementById('half-tuition').value) || 0;
                 if(days > 30) days = 30;
                 total = Math.round((monthlyRate / 30) * days) + tuition;
-                
             } else if (currentCalcTab === 'full') {
                 let baseMonthly = 3300; 
                 let days = parseInt(document.getElementById('full-khana-days').value) || 0;
                 let tuition = parseInt(document.getElementById('full-tuition').value) || 0;
                 let sisterSalary = parseInt(document.getElementById('full-sister-salary').value) || 0;
                 if(days > 30) days = 30;
-                
                 total = Math.round((baseMonthly / 30) * days) + sisterSalary + tuition;
-
                 if(document.getElementById('full-sp-m')?.checked) total += 150 * (parseInt(document.getElementById('full-sp-m-count').value) || 1);
                 if(document.getElementById('full-sp-n')?.checked) total += 500 * (parseInt(document.getElementById('full-sp-n-count').value) || 1);
                 if(document.getElementById('full-sp-e')?.checked) total += 600 * (parseInt(document.getElementById('full-sp-e-count').value) || 1);
-                
             } else if (currentCalcTab === 'wakto') {
                 let monthlyRate = parseInt(document.getElementById('wakto-select').value) || 0;
                 let days = parseInt(document.getElementById('wakto-days').value) || 0;
                 let tuition = parseInt(document.getElementById('wakto-tuition').value) || 0;
                 if(days > 30) days = 30;
-                
                 total = Math.round((monthlyRate / 30) * days) + tuition;
-                
                 if(document.getElementById('wak-sp-m')?.checked) total += 150 * (parseInt(document.getElementById('wak-sp-m-count').value) || 1);
                 if(document.getElementById('wak-sp-n')?.checked) total += 500 * (parseInt(document.getElementById('wak-sp-n-count').value) || 1);
                 if(document.getElementById('wak-sp-e')?.checked) total += 600 * (parseInt(document.getElementById('wak-sp-e-count').value) || 1);
             }
-            
             let totalEl = document.getElementById('calc-total');
-            if(totalEl) {
-                totalEl.innerText = toBanglaNum(total) + " ৳";
-            }
+            if(totalEl) totalEl.innerText = toBanglaNum(total) + " ৳";
         }
 
-        /* Notepad Notes System */
+        /* Notepad Notes Rendering with Private notes hidden logic */
         window.renderNotes = () => {
             const container = document.getElementById('note-list-container');
             if(window.notesList.length === 0) {
-                container.innerHTML = '<p class="text-center theme-text-muted py-10">কোনো নোট নেই। উপরে + এ ক্লিক করে নোট যোগ করুন।</p>';
+                container.innerHTML = '<p class="text-center theme-text-muted py-10">কোনো সাধারণ নোট নেই। উপরে + এ ক্লিক করে নোট যোগ করুন।</p>';
                 return;
             }
-            container.innerHTML = window.notesList.map(n => `
-                <div class="p-4 rounded-xl border flex gap-3 shadow-sm transition-all duration-300 theme-card">
-                    <input type="checkbox" onchange="toggleNoteStatus(${n.id})" class="w-5 h-5 mt-0.5 rounded text-yellow-500 accent-yellow-500 cursor-pointer" ${n.completed ? 'checked' : ''}>
+            const visibleNotes = window.notesList.filter(n => {
+                if (n.isPrivate && !window.isAdminLoggedIn) return false;
+                return true;
+            });
+            container.innerHTML = visibleNotes.map(n => `
+                <div class="p-4 rounded-xl border flex gap-3 shadow-sm transition-all duration-300 theme-card ${n.isPrivate ? 'bg-amber-500/10 border-amber-300' : ''}">
+                    <input type="checkbox" onchange="toggleNoteStatus(${n.id})" class="w-5 h-5 mt-0.5 rounded cursor-pointer" ${n.completed ? 'checked' : ''}>
                     <div class="flex-1">
                         <p class="${n.completed ? 'text-gray-400 line-through' : 'theme-text'} text-sm leading-relaxed whitespace-pre-wrap">${n.text}</p>
                         <div class="flex justify-between items-center mt-2 relative">
-                            <p class="text-[10px] theme-text-muted">${n.time}</p>
-                            <button onclick="showActionMenu(event, 'note', ${n.id})" class="text-gray-400 hover:text-yellow-600 px-2 py-1 font-bold">⋮</button>
+                            <p class="text-[10px] theme-text-muted">${n.time} ${n.isPrivate ? '🔐 [প্রাইভেট]' : ''}</p>
+                            <button onclick="showActionMenu(event, 'note', ${n.id})" class="text-gray-400 hover:text-green-600 px-2 font-bold">⋮</button>
                         </div>
                     </div>
                 </div>
@@ -2845,7 +2645,9 @@
             document.getElementById('note-form-title').innerText = "নতুন নোট";
             document.getElementById('editing-note-id').value = "";
             document.getElementById('new-note-text').value = "";
-            document.getElementById('add-note-form').classList.remove('hidden'); document.getElementById('add-note-form').classList.add('flex');
+            document.getElementById('note-privacy-checkbox').checked = false;
+            document.getElementById('add-note-form').classList.remove('hidden');
+            document.getElementById('add-note-form').classList.add('flex');
             document.getElementById('new-note-text').focus();
         };
 
@@ -2855,13 +2657,17 @@
                 document.getElementById('note-form-title').innerText = "নোট এডিট করুন";
                 document.getElementById('editing-note-id').value = id;
                 document.getElementById('new-note-text').value = note.text;
-                document.getElementById('add-note-form').classList.remove('hidden'); document.getElementById('add-note-form').classList.add('flex');
+                document.getElementById('note-privacy-checkbox').checked = !!note.isPrivate;
+                document.getElementById('add-note-form').classList.remove('hidden');
+                document.getElementById('add-note-form').classList.add('flex');
             }
         };
 
-        window.closeAddNoteForm = () => { document.getElementById('add-note-form').classList.add('hidden'); document.getElementById('add-note-form').classList.remove('flex'); };
+        window.closeAddNoteForm = () => { 
+            document.getElementById('add-note-form').classList.add('hidden'); 
+            document.getElementById('add-note-form').classList.remove('flex'); 
+        };
 
-        /* Admin Pagination Controls */
         window.changeStudentPage = (offset) => {
             window.studentCurrentPage += offset;
             renderStudentList();
@@ -2877,7 +2683,6 @@
             const filter = document.getElementById('admin-class-filter').value;
             const query = document.getElementById('admin-search').value.toLowerCase().trim();
             
-            // Filter all matching students (ignoring pagination limits for print)
             let printList = window.mockStudents.filter(s => {
                 const matchClass = filter === 'all' || s.cls === filter;
                 const matchSearch = query === '' || s.name.toLowerCase().includes(query) || s.phone.includes(query) || s.id.includes(query);
@@ -2901,13 +2706,12 @@
                     <td style="padding: 10px; text-align: left; font-size: 13px;">${s.fname || '---'}</td>
                     <td style="padding: 10px; font-size: 13px;">${toBanglaNum(s.phone)}</td>
                     <td style="padding: 10px; text-align: left; font-size: 13px;">${s.addr || '---'}</td>
-                    <td style="padding: 10px; font-size: 12px; font-weight: bold;">${s.status || 'মন্তব্য'}</td>
+                    <td style="padding: 10px; font-size: 12px; font-weight: bold;">${s.status || 'ভর্তি সম্পন্ন'}</td>
                 </tr>
             `).join('');
 
             printContainer.innerHTML = `
                 <div style="font-family: 'Hind Siliguri', sans-serif; padding: 20px; color: #000; background: #fff;">
-                    <!-- Report Header -->
                     <div style="text-align: center; margin-bottom: 25px; border-bottom: 3px double #047857; padding-bottom: 15px;">
                         <h1 style="font-size: 26px; font-weight: bold; color: #047857; margin: 0;">জামেয়া ইমদাদিয়া মাদানীনগর</h1>
                         <p style="font-size: 13px; margin: 3px 0; color: #555;">মনিরামপুর, যশোর</p>
@@ -2920,7 +2724,6 @@
                         </div>
                     </div>
                     
-                    <!-- Main Data Table -->
                     <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
                         <thead>
                             <tr style="background-color: #047857; color: white; border: 1px solid #047857;">
@@ -2938,7 +2741,6 @@
                         </tbody>
                     </table>
 
-                    <!-- Report Footer -->
                     <div style="margin-top: 50px; display: flex; justify-content: space-between; font-size: 12px;">
                         <div style="text-align: center; width: 150px; border-top: 1px solid #000; padding-top: 5px;">প্রস্তুতকারী</div>
                         <div style="text-align: center; width: 150px; border-top: 1px solid #000; padding-top: 5px;">নাজেমে তালিমাত</div>
@@ -2978,34 +2780,25 @@
             }
         };
 
-        /* Renders the student directory with live stats and clean pagination */
         window.renderStudentList = () => {
             const filter = document.getElementById('admin-class-filter').value;
             const query = document.getElementById('admin-search').value.toLowerCase().trim();
             const container = document.getElementById('student-list-container');
-            
             if(!container) return;
 
-            // Generate overall class filter and search query list
             let filtered = window.mockStudents.filter(s => {
                 const matchClass = filter === 'all' || s.cls === filter;
                 const matchSearch = query === '' || s.name.toLowerCase().includes(query) || s.phone.includes(query) || s.id.includes(query);
                 return matchClass && matchSearch;
             });
 
-            // Update real-time statistics UI
-            const totalStatsEl = document.getElementById('admin-stats-total');
-            if (totalStatsEl) {
-                totalStatsEl.innerText = toBanglaNum(filtered.length);
-            }
-
+            document.getElementById('admin-stats-total').innerText = toBanglaNum(filtered.length);
             if(filtered.length === 0) {
                 container.innerHTML = '<p class="text-center theme-text-muted py-8 text-sm">কোনো শিক্ষার্থী পাওয়া যায়নি</p>';
                 document.getElementById('admin-pagination-panel').classList.add('hidden');
                 return;
             }
 
-            // Calculations for Pagination Slicing
             const totalStudents = filtered.length;
             const totalPages = Math.ceil(totalStudents / window.studentPageSize) || 1;
             
@@ -3015,7 +2808,6 @@
             const startIndex = (window.studentCurrentPage - 1) * window.studentPageSize;
             const paginatedList = filtered.slice(startIndex, startIndex + window.studentPageSize);
 
-            // Update page pagination buttons/labels
             document.getElementById('admin-pagination-panel').classList.remove('hidden');
             document.getElementById('btn-prev-page').disabled = (window.studentCurrentPage === 1);
             document.getElementById('btn-next-page').disabled = (window.studentCurrentPage === totalPages);
@@ -3024,11 +2816,11 @@
             container.innerHTML = paginatedList.map((s, idx) => {
                 const absoluteIndex = startIndex + idx + 1;
                 let bgClass = "theme-card";
-                if(s.status === 'কথা হয়েছে') bgClass = "bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800";
-                else if(s.status === 'ফোন বন্ধ') bgClass = "bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800";
-                else if(s.status === 'ফোন ব্যস্ত') bgClass = "bg-yellow-50 dark:bg-yellow-900/30 border-yellow-200 dark:border-yellow-800";
-                else if(s.status === 'ফোন করেছিল') bgClass = "bg-purple-50 dark:bg-purple-900/30 border-purple-200 dark:border-purple-800";
-                else if(s.status && s.status.startsWith('ম্যানুয়াল:')) bgClass = "bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-600";
+                if(s.status === 'কথা হয়েছে') bgClass = "bg-blue-500/10 border-blue-400/50";
+                else if(s.status === 'ফোন বন্ধ') bgClass = "bg-red-500/10 border-red-400/50";
+                else if(s.status === 'ফোন ব্যস্ত') bgClass = "bg-yellow-500/10 border-yellow-400/50";
+                else if(s.status === 'ফোন করেছিল') bgClass = "bg-purple-500/10 border-purple-400/50";
+                else if(s.status && s.status.startsWith('ম্যানুয়াল:')) bgClass = "bg-emerald-500/15 border-emerald-400/50";
 
                 return `
                 <div class="${bgClass} p-3 rounded-xl border shadow-sm relative flex items-start gap-2 transition-colors duration-300">
@@ -3037,18 +2829,18 @@
                     <div class="flex-1">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-xs text-green-600 font-bold mb-0.5">${s.cls}</p>
+                                <p class="text-xs text-green-600 dark:text-green-400 font-bold mb-0.5">${s.cls}</p>
                                 <h4 class="font-bold theme-text text-sm leading-tight mb-1">
                                     ${toBanglaNum(absoluteIndex)}. [ID: ${toBanglaNum(s.id)}] ${s.name}
                                 </h4>
-                                <p class="text-[11px] theme-text-muted">পিতা: ${s.fname} | ঠিকানা: ${s.addr}</p>
+                                <p class="text-[11px] theme-text-muted">পিতা: ${s.fname || '---'} | ঠিকানা: ${s.addr || '---'}</p>
                             </div>
-                            <a href="tel:${s.phone}" class="no-print bg-green-100 text-green-700 w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-sm shadow-sm border border-green-200">📞</a>
+                            <button onclick="makePhoneCall('${s.name}', '${s.phone}')" class="no-print bg-green-100 dark:bg-green-950/20 text-green-700 dark:text-green-400 w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-sm shadow-sm border border-[var(--border-color)]">📞</button>
                         </div>
-                        <div class="flex flex-col gap-1 border-t mt-2 pt-2 dark:border-gray-600">
+                        <div class="flex flex-col gap-1 border-t mt-2 pt-2 border-[var(--border-color)]">
                             <div class="flex items-center gap-2">
                                 <span class="text-[10px] font-bold theme-text-muted">স্ট্যাটাস:</span>
-                                <select onchange="handleStatusChange('${s.id}', this)" class="no-print flex-1 border text-[11px] p-1 rounded bg-white dark:bg-gray-700 theme-text outline-none dark:border-gray-500 shadow-sm">
+                                <select onchange="handleStatusChange('${s.id}', this)" class="no-print flex-1 border text-[11px] p-1 rounded bg-[var(--bg-card)] theme-text border-[var(--border-color)] outline-none shadow-sm">
                                     <option ${s.status === 'মন্তব্য' ? 'selected':''}>মন্তব্য</option>
                                     <option ${s.status === 'কথা হয়েছে' ? 'selected':''}>কথা হয়েছে</option>
                                     <option ${s.status === 'ফোন বন্ধ' ? 'selected':''}>ফোন বন্ধ</option>
@@ -3059,7 +2851,7 @@
                                 <span class="hidden print:inline text-[11px] font-bold theme-text">${s.status || 'ভর্তি সম্পন্ন'}</span>
                             </div>
                             <div id="manual-comment-container-${s.id}" class="${s.status && s.status.startsWith('ম্যানুয়াল:') ? 'block' : 'hidden'} no-print">
-                                <input type="text" id="manual-comment-input-${s.id}" placeholder="মন্তব্য লিখে এন্টার চাপুন..." class="w-full text-[11px] p-1.5 border rounded bg-white dark:bg-gray-700 theme-text outline-none dark:border-gray-500 shadow-inner" value="${s.status && s.status.startsWith('ম্যানুয়াল:') ? s.status.replace('ম্যানুয়াল: ', '') : ''}" onchange="updateStatus('${s.id}', 'ম্যানুয়াল: ' + this.value)">
+                                <input type="text" id="manual-comment-input-${s.id}" placeholder="মন্তব্য লিখে এন্টার চাপুন..." class="w-full text-[11px] p-1.5 border rounded bg-[var(--bg-card)] border-[var(--border-color)] theme-text outline-none shadow-inner" value="${s.status && s.status.startsWith('ম্যানুয়াল:') ? s.status.replace('ম্যানুয়াল: ', '') : ''}" onchange="updateStatus('${s.id}', 'ম্যানুয়াল: ' + this.value)">
                             </div>
                         </div>
                     </div>
@@ -3122,55 +2914,44 @@
             renderNotices();
             fetchPrayerTimes(); 
             
+            const savedTheme = localStorage.getItem('appTheme') || 'default';
+            setTheme(savedTheme);
+
             document.getElementById('calendar-trigger').addEventListener('click', function() {
                 const picker = document.getElementById('calendar-picker');
-                if (typeof picker.showPicker === 'function') picker.showPicker();
-                else picker.click();
+                picker.click();
             });
             document.getElementById('calendar-picker').addEventListener('change', function(e) {
                 const selectedDate = new Date(e.target.value);
                 if(!isNaN(selectedDate)) updateDates(selectedDate);
             });
-
-            if ('Notification' in window) {
-                document.addEventListener('click', () => {
-                    if (Notification.permission === 'default') {
-                        Notification.requestPermission();
-                    }
-                }, { once: true });
-            }
         });
     </script>
 
     <!-- ================= FIREBASE CONNECTIVITY ENGINE ================= -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDocs, updateDoc, deleteDoc, collection, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDocs, updateDoc, deleteDoc, collection, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyD2rGccvT16z-nlXzM9wRXdTzTfRRICHjk",
             authDomain: "madrasa-app-91dd6.firebaseapp.com",
             projectId: "madrasa-app-91dd6",
             storageBucket: "madrasa-app-91dd6.appspot.com",
             messagingSenderId: "281211783935",
-            appId: "1:281211783935:web:29d80daf6fe72fe6f89aca",
-            measurementId: "G-93VMQT1M3V"
+            appId: "1:281211783935:web:29d80daf6fe72fe6f89aca"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
+        const appId = 'madrasa-app-91dd6';
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'madrasa-app-91dd6';
-        const appStartTime = Date.now();
-        let activeUser = null;
         let adminPinCode = "9522";
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                activeUser = user;
                 if (!user.isAnonymous) {
                     showToast(`স্বাগতম, ${user.email}!`);
                     document.getElementById('profile-login-btn').classList.add('hidden');
@@ -3180,7 +2961,6 @@
                     document.getElementById('profile-logout-btn').classList.add('hidden');
                 }
             } else {
-                activeUser = null;
                 signInAnonymously(auth).catch(err => console.error("Anonymous auth failed", err));
                 document.getElementById('profile-login-btn').classList.remove('hidden');
                 document.getElementById('profile-logout-btn').classList.add('hidden');
@@ -3225,7 +3005,7 @@
                 const pinDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'adminPin');
                 await setDoc(pinDocRef, { code: newInp });
                 adminPinCode = newInp;
-                showToast(" এডমিন পিন কোড পরিবর্তন হয়েছে।");
+                showToast("এডমিন পিন কোড পরিবর্তন হয়েছে।");
                 document.getElementById('admin-current-pin-input').value = "";
                 document.getElementById('admin-new-pin-input').value = "";
                 logUserAction("এডমিন পিন কোড পরিবর্তন সফল");
@@ -3277,12 +3057,11 @@
             }
         };
 
-        // Seed empty database securely from IMMUTABLE INITIAL constants
+        /* Seed database once securely */
         async function checkAndSeedDatabase() {
             try {
                 await fetchAdminPinCode();
 
-                // Seed Students
                 const studentsCol = collection(db, 'artifacts', appId, 'public', 'data', 'students');
                 const studentSnap = await getDocs(studentsCol);
                 if (studentSnap.empty) {
@@ -3293,7 +3072,6 @@
                     showToast("শিক্ষার্থী তালিকা ফায়ারবেসে সফলভাবে ব্যাকআপ হয়েছে!");
                 }
 
-                // Seed Notices
                 const noticesCol = collection(db, 'artifacts', appId, 'public', 'data', 'notices');
                 const noticeSnap = await getDocs(noticesCol);
                 if (noticeSnap.empty) {
@@ -3303,14 +3081,10 @@
                 }
             } catch (e) {
                 console.error("Database seeding error: ", e);
-                if (e.code === 'permission-denied') {
-                    showToast("ডাটাবেজ পারমিশন এরর!");
-                }
             }
         }
         checkAndSeedDatabase();
 
-        // 1. Live Sync Notes
         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'notes'), (snapshot) => {
             window.notesList = [];
             snapshot.forEach((doc) => {
@@ -3322,7 +3096,6 @@
             console.error("Notes sync error: ", error);
         });
 
-        // 2. Live Sync Students
         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'students'), (snapshot) => {
             window.mockStudents = [];
             snapshot.forEach((doc) => {
@@ -3333,36 +3106,16 @@
             }
         });
 
-        // 3. Live Sync Notices
         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'notices'), (snapshot) => {
             window.notices = [];
             snapshot.forEach((doc) => {
                 window.notices.push({ id: doc.id, ...doc.data() });
             });
             window.notices.sort((a, b) => b.timestamp - a.timestamp);
-
-            snapshot.docChanges().forEach((change) => {
-                if (change.type === "added") {
-                    const noticeData = change.doc.data();
-                    const noticeTime = noticeData.timestamp || Date.now();
-                    if (noticeTime > appStartTime && Notification.permission === 'granted') {
-                        try {
-                            new Notification("নতুন নোটিশ: " + noticeData.title, {
-                                body: noticeData.desc,
-                                icon: 'https://placehold.co/128x128/10b981/ffffff?text=M'
-                            });
-                        } catch (err) {
-                            console.error("Native notification failed:", err);
-                        }
-                    }
-                }
-            });
-
             renderNotices();
             updateUnreadNotificationsBadge();
         });
 
-        // 4. Live Sync Recycle Bin
         onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'recycleBin'), (snapshot) => {
             window.recycleBin = [];
             snapshot.forEach((doc) => {
@@ -3373,72 +3126,51 @@
             }
         });
 
-        // 5. Live Sync Logo
-        onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'config', 'logo'), (docSnap) => {
-            if (docSnap.exists() && docSnap.data().base64) {
-                const base64 = docSnap.data().base64;
-                updateLogoUI(base64);
+        // Separate Logos Real-time Fetch Synchronization (Header vs About)
+        onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'config', 'logo_header'), (snap) => {
+            const img = document.getElementById('madrasa-logo-header');
+            const svg = document.getElementById('madrasa-logo-svg');
+            if (snap.exists() && snap.data().base64) {
+                img.src = snap.data().base64;
+                img.classList.remove('hidden');
+                svg.classList.add('hidden');
+                localStorage.setItem('header_logo_cache', snap.data().base64);
             } else {
-                revertLogoToDefault();
+                img.classList.add('hidden');
+                svg.classList.remove('hidden');
             }
-        }, (error) => {
-            console.error("Logo sync error: ", error);
         });
 
-        /* Update Logo across header and about section in UI */
-        function updateLogoUI(base64) {
-            const headerImg = document.getElementById('madrasa-logo-header');
-            const headerSvg = document.getElementById('madrasa-logo-svg');
-            const aboutImg = document.getElementById('madrasa-logo-about');
-            const aboutPlaceholder = document.getElementById('about-logo-placeholder');
-
-            if (headerImg && headerSvg) {
-                headerImg.src = base64;
-                headerImg.classList.remove('hidden');
-                headerSvg.classList.add('hidden');
+        onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'config', 'logo_about'), (snap) => {
+            const img = document.getElementById('madrasa-logo-about');
+            const placeholder = document.getElementById('about-logo-placeholder');
+            if (snap.exists() && snap.data().base64) {
+                img.src = snap.data().base64;
+                img.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+                localStorage.setItem('about_logo_cache', snap.data().base64);
+            } else {
+                img.classList.add('hidden');
+                placeholder.classList.remove('hidden');
             }
-            if (aboutImg && aboutPlaceholder) {
-                aboutImg.src = base64;
-                aboutImg.classList.remove('hidden');
-                aboutPlaceholder.classList.add('hidden');
-            }
-        }
+        });
 
-        /* Revert logos back to SVGs or placeholders if none specified */
-        function revertLogoToDefault() {
-            const headerImg = document.getElementById('madrasa-logo-header');
-            const headerSvg = document.getElementById('madrasa-logo-svg');
-            const aboutImg = document.getElementById('madrasa-logo-about');
-            const aboutPlaceholder = document.getElementById('about-logo-placeholder');
-
-            if (headerImg && headerSvg) {
-                headerImg.classList.add('hidden');
-                headerSvg.classList.remove('hidden');
-            }
-            if (aboutImg && aboutPlaceholder) {
-                aboutImg.classList.add('hidden');
-                aboutPlaceholder.classList.remove('hidden');
-            }
-        }
-
-        /* Firebase upload trigger saved dynamically under compliance rules */
-        window.uploadLogoFirebase = async (base64) => {
+        window.uploadLogoFirebase = async (base64, type) => {
             try {
-                const logoDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'logo');
+                const logoDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'logo_' + type);
                 await setDoc(logoDocRef, { base64: base64, updatedAt: Date.now() });
-                showToast("মাদ্রাসার লোগো রিয়েল-টাইমে আপডেট হয়েছে!");
-                logUserAction("লোগো ছবি রিয়েল-টাইম পরিবর্তন সফল");
+                showToast("ছবি রিয়েল-টাইমে আপডেট হয়েছে!");
+                logUserAction(`${type} লোগো পরিবর্তন সফল`);
             } catch (e) {
-                console.error("Upload logo failed: ", e);
-                showToast("লোগো পরিবর্তন সংরক্ষণ ব্যর্থ হয়েছে!");
+                console.error(e);
+                showToast("ছবি সেভ ব্যর্থ হয়েছে!");
             }
         };
-
-        // --- OVERRIDE SYSTEM ACTIONS TO SYNC TO CLOUD ---
 
         window.saveNote = async () => {
             let text = document.getElementById('new-note-text').value.trim();
             let editId = document.getElementById('editing-note-id').value;
+            let isPrivate = document.getElementById('note-privacy-checkbox').checked;
             if(!text) return;
             
             let now = new Date(); 
@@ -3448,7 +3180,8 @@
                 if(editId) {
                     await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'notes', String(editId)), {
                         text: text,
-                        time: "এডিট: " + timeStr
+                        time: "এডিট: " + timeStr,
+                        isPrivate: isPrivate
                     });
                     showToast("নোট আপডেট হয়েছে");
                 } else {
@@ -3456,7 +3189,8 @@
                     await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'notes', newId), {
                         text: text,
                         time: "আজ " + timeStr,
-                        completed: false
+                        completed: false,
+                        isPrivate: isPrivate
                     });
                     showToast("নোট ডাটাবেজে সেভ হয়েছে");
                     logUserAction("নতুন নোট সেভ সম্পন্ন");
@@ -3492,7 +3226,7 @@
                     });
                     await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'notes', String(id)));
                     showToast("নোট রিসাইকেল বিনে পাঠানো হয়েছে");
-                    logUserAction("নোট ডিলিট করে রিসাইকেল বিনে স্থানান্তর");
+                    logUserAction("নোট ডিলিট সম্পন্ন");
                 } catch (e) {
                     console.error(e);
                 }
@@ -3547,7 +3281,7 @@
                     status: val
                 });
                 showToast("স্ট্যাটাস আপডেট হয়েছে");
-                logUserAction(`শিক্ষার্থী স্থিতি পরিবর্তন: ID ${id}`);
+                logUserAction(`শিক্ষার্থী ID ${id} স্থিতি পরিবর্তন`);
             } catch (e) {
                 console.error(e);
             }
@@ -3565,7 +3299,7 @@
                     await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', String(id)));
                     showToast("শিক্ষার্থী রিসাইকেল বিনে পাঠানো হয়েছে");
                     renderStudentList();
-                    logUserAction("শিক্ষার্থী ডিলিট করে রিসাইকেল বিনে স্থানান্তর");
+                    logUserAction("শিক্ষার্থী ডিলিট সম্পন্ন");
                 } catch (e) {
                     console.error(e);
                 }
@@ -3646,12 +3380,8 @@
                 if (unreadCount > 0) {
                     badge.innerText = toBanglaNum(unreadCount);
                     badge.classList.remove('hidden');
-                    const trigger = document.getElementById('notification-trigger');
-                    if (trigger) trigger.classList.add('animate-bounce');
                 } else {
                     badge.classList.add('hidden');
-                    const trigger = document.getElementById('notification-trigger');
-                    if (trigger) trigger.classList.remove('animate-bounce');
                 }
             }
         };
@@ -3679,7 +3409,7 @@
             const noticesHTML = window.notices.length === 0 
                 ? '<p class="text-center theme-text-muted py-8 text-xs">কোনো নোটিশ নেই</p>'
                 : window.notices.map(n => `
-                    <div class="p-3.5 theme-card rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm relative transition-all duration-300">
+                    <div class="p-3.5 theme-card rounded-xl border relative transition-all duration-300">
                         <div class="flex justify-between items-start gap-2 mb-1.5">
                             <h4 class="font-bold theme-text text-sm leading-tight">${n.title}</h4>
                             <span class="text-[9px] theme-text-muted bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded whitespace-nowrap">${n.date}</span>
@@ -3702,13 +3432,11 @@
             if (enteredPin === adminPinCode) {
                 window.isAdminLoggedIn = true;
                 
-                // Show composer fields
                 const bellComposer = document.getElementById('admin-notice-composer-bell');
                 const gridComposer = document.getElementById('admin-notice-composer-grid');
                 if (bellComposer) bellComposer.classList.remove('hidden');
                 if (gridComposer) gridComposer.classList.remove('hidden');
                 
-                // Show logo edit overlays
                 const headerEdit = document.getElementById('header-logo-edit-indicator');
                 const aboutEdit = document.getElementById('about-logo-edit-indicator');
                 if (headerEdit) headerEdit.classList.remove('hidden', 'opacity-0');
@@ -3721,33 +3449,32 @@
                 
                 resetPaginationAndRender();
                 renderNotices();
-                logUserAction("এডমিন প্যানেলে লগইন সফল");
+                renderNotes();
+                logUserAction("অ্যাডমিন লগইন সফল");
             } else { 
                 showToast("ভুল পিন কোড!"); 
                 document.getElementById('admin-pin').value = ''; 
             }
         };
 
-        /* Secure Admin Logout override to hide administrative controls */
         window.adminLogout = () => {
             window.isAdminLoggedIn = false;
 
-            // Hide logo edit overlays
             const headerEdit = document.getElementById('header-logo-edit-indicator');
             const aboutEdit = document.getElementById('about-logo-edit-indicator');
             if (headerEdit) headerEdit.classList.add('hidden', 'opacity-0');
             if (aboutEdit) aboutEdit.classList.add('hidden', 'opacity-0');
 
-            // Hide Composer fields
             const bellComposer = document.getElementById('admin-notice-composer-bell');
             const gridComposer = document.getElementById('admin-notice-composer-grid');
             if (bellComposer) bellComposer.classList.add('hidden');
             if (gridComposer) gridComposer.classList.add('hidden');
 
             closeModal('admin-modal');
-            showToast("অ্যাডমিন প্যানেল থেকে সফলভাবে লগআউট করা হয়েছে");
+            showToast("লগআউট করা হয়েছে");
             logUserAction("অ্যাডমিন লগআউট সফল");
-            renderNotices(); // Re-render to clear delete action icons
+            renderNotices(); 
+            renderNotes();
         };
     </script>
 </body>
