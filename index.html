@@ -7,6 +7,8 @@
     <!-- PWA Manifest support -->
     <link class="no-print" rel="manifest" href="manifest.json" id="pwa-manifest">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class', // Enables dark mode based on class
@@ -104,6 +106,25 @@
     <!-- Print Area -->
     <div id="print-container" class="hidden"></div>
 
+    <!-- PDF Preview Modal -->
+    <div id="pdf-preview-modal" class="fixed inset-0 z-[200] hidden flex-col bg-black/80 no-print">
+        <div class="flex items-center justify-between px-4 py-3 bg-emerald-800 text-white shrink-0">
+            <h3 class="font-bold text-base flex items-center gap-2">📄 <span id="pdf-preview-title">শিক্ষার্থী তালিকা</span></h3>
+            <div class="flex items-center gap-2">
+                <button onclick="downloadStudentPDF()" class="bg-white text-emerald-800 font-bold text-xs px-3 py-1.5 rounded-lg flex items-center gap-1 active:scale-95 transition-transform">
+                    ⬇️ PDF ডাউনলোড
+                </button>
+                <button onclick="printStudentList()" class="bg-emerald-600 border border-white/30 text-white font-bold text-xs px-3 py-1.5 rounded-lg flex items-center gap-1 active:scale-95 transition-transform">
+                    🖨️ প্রিন্ট
+                </button>
+                <button onclick="closePdfPreview()" class="w-8 h-8 bg-white/20 rounded-full text-white font-bold hover:bg-white/30 flex items-center justify-center">✕</button>
+            </div>
+        </div>
+        <div class="flex-1 overflow-auto p-4 flex justify-center">
+            <div id="pdf-preview-content" class="bg-white shadow-2xl w-full max-w-3xl rounded-lg overflow-hidden"></div>
+        </div>
+    </div>
+
     <!-- Hidden Input Files for Uploading Separate Logos -->
     <input type="file" id="logo-header-input" onchange="handleLogoSelect(event, 'header')" accept="image/*" class="hidden">
     <input type="file" id="logo-about-input" onchange="handleLogoSelect(event, 'about')" accept="image/*" class="hidden">
@@ -123,16 +144,16 @@
             </div>
             <div>
                 <h1 class="text-xl font-bold theme-text leading-tight">জামেয়া ইমদাদিয়া মাদানীনগর</h1>
-                <p class="text-[11px] theme-text-muted mt-0.5 text-center">মনিরামপুর, যশোর</p>
+                <p class="text-[11px] theme-text-muted mt-0.5 text-center" id="header-location-text">📍 লোড হচ্ছে...</p>
             </div>
         </div>
     </header>
 
     <!-- Top Bar -->
     <div class="px-4 py-3 flex justify-between items-center theme-card shadow-sm mt-1 relative no-print border-b">
-        <div id="calendar-trigger" class="flex items-center theme-text-muted font-medium cursor-pointer hover:text-green-600 transition-colors select-none text-sm">
+        <div class="flex items-center theme-text-muted font-medium cursor-pointer hover:text-green-600 transition-colors select-none text-sm relative" onclick="document.getElementById('calendar-picker').showPicker ? document.getElementById('calendar-picker').showPicker() : document.getElementById('calendar-picker').click()">
             <span id="display-month-year">▼ লোড হচ্ছে...</span>
-            <input type="date" id="calendar-picker" class="w-0 h-0 absolute opacity-0 pointer-events-none">
+            <input type="date" id="calendar-picker" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;cursor:pointer;z-index:1;">
         </div>
         
         <div class="absolute left-1/2 transform -translate-x-1/2">
@@ -143,8 +164,8 @@
         </div>
 
         <div class="flex items-center gap-3 relative">
-            <div onclick="openModal('location-modal')" class="bg-green-50 border border-green-200 dark:bg-emerald-950/20 dark:border-emerald-800 text-green-700 dark:text-emerald-400 text-[11px] px-2.5 py-1 rounded-full flex items-center gap-1 cursor-pointer active:scale-95 transition-transform">
-                <span id="location-text">মনিরামপুর</span> <span class="text-[10px]">▼</span>
+            <div onclick="requestLocationUpdate()" class="bg-green-50 border border-green-200 dark:bg-emerald-950/20 dark:border-emerald-800 text-green-700 dark:text-emerald-400 text-[11px] px-2.5 py-1 rounded-full flex items-center gap-1 cursor-pointer active:scale-95 transition-transform">
+                <span id="location-text">📍 লোড...</span> <span class="text-[10px]">↻</span>
             </div>
             
             <!-- Profile Trigger -->
@@ -173,7 +194,7 @@
                         <span class="flex items-center gap-2"><span>🎨</span> থিম</span>
                         <span id="theme-arrow" class="text-xs transition-transform duration-200">▶</span>
                     </button>
-                    <div id="theme-submenu" class="hidden absolute right-full top-0 w-32 theme-card rounded-xl shadow-xl border overflow-hidden mr-1 z-50">
+                    <div id="theme-submenu" class="hidden absolute right-0 top-full w-36 theme-card rounded-xl shadow-xl border overflow-hidden mt-1 z-50">
                         <button onclick="setTheme('default'); closeProfileMenu();" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-[var(--bg-body)]">ডিফল্ট</button>
                         <button onclick="setTheme('dark'); closeProfileMenu();" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-[var(--bg-body)]">ডার্ক</button>
                         <button onclick="setTheme('night'); closeProfileMenu();" class="w-full text-left px-4 py-2 text-sm theme-text hover:bg-[var(--bg-body)]">নাইট</button>
@@ -279,20 +300,63 @@
     </main>
 
     <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 w-full theme-header border-t p-2 flex justify-around shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-40 no-print">
-        <button onclick="closeAllModals()" class="flex flex-col items-center text-green-600 w-16 p-1 rounded-lg bg-[var(--bg-body)]">
-            <span class="text-[22px] mb-0.5">🏠</span><span class="text-[10px] font-medium text-[var(--text-main)]">হোম</span>
+    <nav id="bottom-nav" class="fixed bottom-0 w-full theme-header border-t p-2 flex justify-around shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-40 no-print">
+        <button onclick="openModal('contact-modal')" class="flex flex-col items-center text-green-600 flex-1 p-1 rounded-lg bg-[var(--bg-body)]">
+            <span class="text-[22px] mb-0.5">☎️</span><span class="text-[10px] font-medium text-[var(--text-main)]">যোগাযোগ</span>
         </button>
-        <button onclick="openModal('contact-modal')" class="flex flex-col items-center theme-text-muted w-16 p-1 rounded-lg">
-            <span class="text-[22px] mb-0.5">☎️</span><span class="text-[10px] font-medium theme-text-muted">যোগাযোগ</span>
+        <button onclick="window.open('https://qmmsoft.com/login', '_blank')" class="flex flex-col items-center theme-text-muted flex-1 p-1 rounded-lg">
+            <span class="text-[22px] mb-0.5">👨‍🏫</span><span class="text-[10px] font-medium theme-text-muted">শিক্ষক পো.</span>
         </button>
-        <button onclick="window.open('https://qmmsoft.com/10012/login', '_blank')" class="flex flex-col items-center theme-text-muted w-16 p-1 rounded-lg">
+        <button onclick="window.open('https://qmmsoft.com/10012/login', '_blank')" class="flex flex-col items-center theme-text-muted flex-1 p-1 rounded-lg">
             <span class="text-[22px] mb-0.5">👨‍🎓</span><span class="text-[10px] font-medium whitespace-nowrap theme-text-muted">শিক্ষার্থী প্রো.</span>
         </button>
-        <button onclick="openAdminEntry()" class="flex flex-col items-center theme-text-muted w-16 p-1 rounded-lg">
+        <button id="admin-nav-btn" onclick="openAdminEntry()" class="hidden flex-col items-center theme-text-muted flex-1 p-1 rounded-lg">
             <span class="text-[22px] mb-0.5">🛡️</span><span class="text-[10px] font-medium theme-text-muted">অ্যাডমিন</span>
         </button>
     </nav>
+    <script>
+    /* ===== TRIPLE-TAP ON EMPTY SCREEN AREA TO SHOW ADMIN BUTTON ===== */
+    (function() {
+        let tapCount = 0;
+        let tapTimer = null;
+        function handleTripleTap(e) {
+            // Ignore taps on interactive elements (buttons, links, inputs, modals)
+            const tag = e.target.tagName.toLowerCase();
+            const interactiveTags = ['button', 'a', 'input', 'textarea', 'select', 'label'];
+            if (interactiveTags.includes(tag)) return;
+            if (e.target.closest('button, a, input, textarea, select, [onclick], nav, .modal-overlay, #profile-dropdown, header')) return;
+            // Only trigger if admin is NOT logged in
+            if (window.isAdminLoggedIn) return;
+            tapCount++;
+            if (tapTimer) clearTimeout(tapTimer);
+            if (tapCount >= 3) {
+                tapCount = 0;
+                const adminBtn = document.getElementById('admin-nav-btn');
+                if (adminBtn && adminBtn.classList.contains('hidden')) {
+                    // Show admin button and prompt password
+                    adminBtn.classList.remove('hidden');
+                    adminBtn.classList.add('flex');
+                    // Immediately open admin entry
+                    if (typeof openAdminEntry === 'function') openAdminEntry();
+                }
+                return;
+            }
+            tapTimer = setTimeout(() => { tapCount = 0; }, 700);
+        }
+        document.addEventListener('click', handleTripleTap);
+        document.addEventListener('touchend', function(e) { handleTripleTap(e); });
+    })();
+
+    /* ===== ADMIN BUTTON SHOW/HIDE HELPERS ===== */
+    window.showAdminNavBtn = function() {
+        const btn = document.getElementById('admin-nav-btn');
+        if (btn) { btn.classList.remove('hidden'); btn.classList.add('flex'); }
+    };
+    window.hideAdminNavBtn = function() {
+        const btn = document.getElementById('admin-nav-btn');
+        if (btn) { btn.classList.add('hidden'); btn.classList.remove('flex'); }
+    };
+    </script>
 
     <!-- Shared 3-Dot Action Menu -->
     <div id="shared-action-menu" class="hidden absolute theme-card shadow-xl border rounded-lg w-28 z-[100] overflow-hidden no-print">
@@ -499,7 +563,17 @@
                 </select>
                 <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-xl border border-yellow-200 dark:border-yellow-800 text-center">
                     <h4 class="font-bold text-yellow-800 dark:text-yellow-500 mb-2">রুটিন</h4>
-                    <p class="text-sm text-yellow-700 dark:text-yellow-600">সকাল ৮:৩০ - প্রথম ক্লাস<br>সকাল ৯:১৫ - ২য় ক্লাস<br>সকাল ১০:০০ - ৩য় ক্লাস<br>সকাল ১০:৪৫ - ৪র্থ ক্লাস<br>সকাল ১১:৩০ - ৫ম ক্লাস<br>দুপুর ১২:১৫ - ৬ষ্ঠ ক্লাস<br>দুপুর ১:০০ - ৭ম ক্লাস</p>
+                    <div id="routine-display" class="text-sm text-yellow-700 dark:text-yellow-600">সকাল ৮:৩০ - প্রথম ক্লাস<br>সকাল ৯:১৫ - ২য় ক্লাস<br>সকাল ১০:০০ - ৩য় ক্লাস<br>সকাল ১০:৪৫ - ৪র্থ ক্লাস<br>সকাল ১১:৩০ - ৫ম ক্লাস<br>দুপুর ১২:১৫ - ৬ষ্ঠ ক্লাস<br>দুপুর ১:০০ - ৭ম ক্লাস</div>
+                    <div id="routine-edit-form" class="hidden mt-3 text-left">
+                        <textarea id="routine-edit-text" class="w-full border border-yellow-300 dark:border-yellow-700 rounded-lg p-2 text-sm bg-yellow-50 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 h-32 outline-none"></textarea>
+                        <div class="flex gap-2 mt-2">
+                            <button onclick="saveRoutineText()" class="flex-1 bg-green-600 text-white text-xs font-bold py-2 rounded-lg">সেভ করুন</button>
+                            <button onclick="cancelRoutineEdit()" class="flex-1 bg-gray-400 text-white text-xs font-bold py-2 rounded-lg">বাতিল</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="routine-admin-btn-container" class="hidden mt-3">
+                    <button onclick="editRoutine()" class="w-full bg-blue-600 text-white text-xs font-bold py-2 rounded-lg">✏️ রুটিন এডিট করুন (অ্যাডমিন)</button>
                 </div>
             </div>
         </div>
@@ -513,24 +587,41 @@
                 <button onclick="closeModal('sakkhat-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full theme-text font-bold hover:bg-gray-300">✕</button>
             </div>
             <div class="p-5 space-y-3 bg-[var(--bg-card)]">
+                <div id="sakkhat-display">
                 <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-2">
                     <span class="text-sm font-bold theme-text">সকাল</span>
-                    <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">ক্লাস শুরুর আগে</span>
+                    <span id="sakkhat-morning" class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">ক্লাস শুরুর আগে</span>
                 </div>
                 <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-2">
                     <span class="text-sm font-bold theme-text">দুপুর</span>
-                    <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">ক্লাস শেষে (১:৪৫ - ৩:০০)</span>
+                    <span id="sakkhat-noon" class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">ক্লাস শেষে (১:৪৫ - ৩:০০)</span>
                 </div>
                 <div class="flex justify-between items-center border-b border-[var(--border-color)] pb-2">
                     <span class="text-sm font-bold theme-text">বিকাল</span>
-                    <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">আসর থেকে মাগরিব পর্যন্ত</span>
+                    <span id="sakkhat-afternoon" class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">আসর থেকে মাগরিব পর্যন্ত</span>
                 </div>
                 <div class="flex justify-between items-center">
                     <span class="text-sm font-bold theme-text">রাত</span>
-                    <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">ইশার পর থেকে রাত ১০:০০ টা</span>
+                    <span id="sakkhat-night" class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">ইশার পর থেকে রাত ১০:০০ টা</span>
+                </div>
+                </div>
+                <!-- Admin Edit Section -->
+                <div id="sakkhat-edit-form" class="hidden space-y-2 pt-2 border-t border-[var(--border-color)]">
+                    <div class="flex justify-between items-center gap-2"><span class="text-xs font-bold theme-text w-12">সকাল:</span><input id="sakkhat-edit-morning" class="flex-1 border border-[var(--border-color)] rounded p-1.5 text-xs bg-transparent theme-text outline-none"></div>
+                    <div class="flex justify-between items-center gap-2"><span class="text-xs font-bold theme-text w-12">দুপুর:</span><input id="sakkhat-edit-noon" class="flex-1 border border-[var(--border-color)] rounded p-1.5 text-xs bg-transparent theme-text outline-none"></div>
+                    <div class="flex justify-between items-center gap-2"><span class="text-xs font-bold theme-text w-12">বিকাল:</span><input id="sakkhat-edit-afternoon" class="flex-1 border border-[var(--border-color)] rounded p-1.5 text-xs bg-transparent theme-text outline-none"></div>
+                    <div class="flex justify-between items-center gap-2"><span class="text-xs font-bold theme-text w-12">রাত:</span><input id="sakkhat-edit-night" class="flex-1 border border-[var(--border-color)] rounded p-1.5 text-xs bg-transparent theme-text outline-none"></div>
+                    <div class="flex gap-2 mt-2">
+                        <button onclick="saveSakkhat()" class="flex-1 bg-green-600 text-white text-xs font-bold py-2 rounded-lg">সেভ করুন</button>
+                        <button onclick="cancelSakkhatEdit()" class="flex-1 bg-gray-400 text-white text-xs font-bold py-2 rounded-lg">বাতিল</button>
+                    </div>
+                </div>
+                <div id="sakkhat-admin-btn" class="hidden pt-2">
+                    <button onclick="editSakkhat()" class="w-full bg-blue-600 text-white text-xs font-bold py-2 rounded-lg">✏️ সাক্ষাত সময় এডিট করুন (অ্যাডমিন)</button>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Shared History Modal -->
@@ -638,13 +729,6 @@
                 <button onclick="closeModal('admin-entry-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300 font-bold hover:bg-gray-300">✕</button>
             </div>
             <div class="p-6 space-y-4 bg-[var(--bg-card)]">
-                <button onclick="window.open('https://qmmsoft.com/login', '_blank')" class="w-full bg-[var(--bg-body)] border border-[var(--border-color)] text-[var(--text-main)] p-4 rounded-xl flex items-center gap-4 transition-colors">
-                    <span class="text-3xl">👨‍🏫</span>
-                    <div class="text-left">
-                        <h4 class="font-bold text-lg">শিক্ষক পোর্টাল</h4>
-                        <p class="text-xs text-green-600">ওয়েবসাইট</p>
-                    </div>
-                </button>
                 <button onclick="openAdminPin()" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white p-4 rounded-xl flex items-center gap-4 transition-colors shadow-md">
                     <span class="text-3xl">🛡️</span>
                     <div class="text-left">
@@ -732,7 +816,7 @@
                             <option value="হিফজ নাজেরা (আলেমা ফারজানা)" class="bg-[var(--bg-card)]">হিফজ নাজেরা (আলেমা ফারজানা)</option>
                         </select>
                         <button onclick="exportStudentData()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-bold flex items-center gap-1 hover:bg-blue-700">
-                            <span>📄</span> প্রিন্ট
+                            <span>📄</span> প্রিন্ট / PDF
                         </button>
                     </div>
                     <div class="flex gap-2 items-center">
@@ -1063,6 +1147,9 @@
         const INITIAL_STUDENTS = [
             { id: '3241', name: 'মোছা: মাহজুবা খাতুন', fname: 'মো: আব্দুল হক', addr: 'জয়পুর', status: 'Active', cls: 'তাকমীল', phone: '01712852739' },
             { id: '3244', name: 'মিস লাইলী খাতুন', fname: 'মোঃ আজমুল সালাম', addr: 'মাঝলাউড়ী', status: 'Active', cls: 'তাকমীল', phone: '01964791560' },
+            { id: '3246', name: 'মারুফা আক্তার', fname: 'মোঃ ফারুক হোসেন', addr: 'হাঁসাডাংগা', status: 'Active', cls: 'তাকমীল', phone: '01724469835' },
+            { id: '3247', name: 'মোছাঃ হাফসা খাতুন', fname: 'মোঃ মুজিবুর রহমান', addr: 'গোপালপুর', status: 'Active', cls: 'তাকমীল', phone: '01937874777' },
+			            { id: '3244', name: 'মিস লাইলী খাতুন', fname: 'মোঃ আজমুল সালাম', addr: 'মাঝলাউড়ী', status: 'Active', cls: 'তাকমীল', phone: '01964791560' },
             { id: '3246', name: 'মারুফা আক্তার', fname: 'মোঃ ফারুক হোসেন', addr: 'হাঁসাডাংগা', status: 'Active', cls: 'তাকমীল', phone: '01724469835' },
             { id: '3247', name: 'মোছাঃ হাফসা খাতুন', fname: 'মোঃ মুজিবুর রহমান', addr: 'গোপালপুর', status: 'Active', cls: 'তাকমীল', phone: '01937874777' },
             { id: '3248', name: 'আফসানা তাসনীম', fname: 'মোঃ হারুন আর রশিদ', addr: 'চিনাটোলা', status: 'Active', cls: 'তাকমীল', phone: '01629579848' },
@@ -2333,6 +2420,37 @@
             }
         });
 
+        /* Shared Action Menu (3-dot) for Notes and Students */
+        let _actionContext = { type: null, id: null };
+        window.showActionMenu = (event, type, id) => {
+            event.stopPropagation();
+            _actionContext = { type, id };
+            const menu = document.getElementById('shared-action-menu');
+            const editBtn = document.getElementById('action-edit-btn');
+            const deleteBtn = document.getElementById('action-delete-btn');
+
+            if (type === 'note') {
+                editBtn.onclick = () => { hideActionMenu(); window.editNote(id); };
+                deleteBtn.onclick = () => { hideActionMenu(); window.deleteNote(id); };
+                editBtn.classList.remove('hidden');
+            } else if (type === 'student') {
+                editBtn.onclick = () => { hideActionMenu(); window.editStudent(id); };
+                deleteBtn.onclick = () => { hideActionMenu(); window.deleteStudent(id); };
+                editBtn.classList.remove('hidden');
+            }
+
+            // Position menu near button
+            const rect = event.target.getBoundingClientRect();
+            menu.style.position = 'fixed';
+            menu.style.top = (rect.bottom + 5) + 'px';
+            menu.style.left = Math.min(rect.left, window.innerWidth - 130) + 'px';
+            menu.classList.remove('hidden');
+        };
+        window.hideActionMenu = () => {
+            const menu = document.getElementById('shared-action-menu');
+            if(menu) menu.classList.add('hidden');
+        };
+
         /* Trigger Logo Upload with Admin Verification */
         window.triggerLogoUpload = (type) => {
             if (window.isAdminLoggedIn) {
@@ -2387,8 +2505,21 @@
         function updateDates(date) {
             const options = { day: 'numeric', month: 'long', year: 'numeric' };
             document.getElementById('display-month-year').innerText = `▼ ${new Intl.DateTimeFormat('bn-BD', options).format(date)}`;
-            const hijriFormatter = new Intl.DateTimeFormat('bn-BD-u-ca-islamic-nu-beng', { day: 'numeric', month: 'long', year: 'numeric' });
-            document.getElementById('display-hijri').innerText = hijriFormatter.format(date) + ' হি.';
+            
+            // Fix: Use Arabic Hijri month names mapped to Bangla
+            const hijriMonthsBangla = ['মুহাররাম','সফর','রবিউল আউয়াল','রবিউস সানী','জুমাদাল উলা','জুমাদাস সানী','রজব','শাবান','রামাদান','শাওয়াল','জিলকদ','জিলহজ'];
+            // Use en-u-ca-islamic to get reliable month index
+            const hijriEnFormatter = new Intl.DateTimeFormat('en-u-ca-islamic', { day: 'numeric', month: 'numeric', year: 'numeric' });
+            const hijriParts = hijriEnFormatter.formatToParts(date);
+            let hDay = '', hMonth = '', hYear = '';
+            hijriParts.forEach(p => {
+                if(p.type === 'day') hDay = parseInt(p.value);
+                if(p.type === 'month') hMonth = parseInt(p.value) - 1;
+                if(p.type === 'year') hYear = parseInt(p.value);
+            });
+            const hijriMonthName = hijriMonthsBangla[hMonth] || '';
+            document.getElementById('display-hijri').innerText = `${toBanglaNum(hDay)} ${hijriMonthName} ${toBanglaNum(hYear)} হি.`;
+            
             const bangla = getBanglaDate(date);
             const weekday = new Intl.DateTimeFormat('bn-BD', { weekday: 'long' }).format(date);
             document.getElementById('display-bangla').innerText = `${weekday}, ${bangla.day} ${bangla.month} ${bangla.year} বঙ্গাব্দ${bangla.season ? ', '+bangla.season : ''}`;
@@ -2503,7 +2634,7 @@
                         }
 
                         const container = document.getElementById('prayer-timeline-grid-container');
-                        if(container) {
+                        if(container && !container._userScrolling) {
                             const scrollLeft = el.offsetLeft - (container.offsetWidth / 2) + (el.offsetWidth / 2);
                             container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
                         }
@@ -2679,79 +2810,136 @@
         };
 
         /* Beautiful Dynamic Printable Table Generator */
+        /* ===== PDF / PRINT SYSTEM ===== */
+        window._currentPrintHTML = '';
+        window._currentFilter = '';
+
+        function buildStudentTableHTML(printList, filter) {
+            const today = new Date();
+            const formattedDate = today.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
+            const tableTitle = filter === 'all' ? 'সকল ক্লাসের শিক্ষার্থী তালিকা' : filter + ' ক্লাস রিপোর্ট';
+            const rows = printList.map((s, idx) => `
+                <tr style="border-bottom:1px solid #d1fae5;text-align:center;${idx%2===1?'background:#f0fdf4;':''}">
+                    <td style="padding:8px 6px;font-weight:bold;font-size:12px;border-right:1px solid #d1fae5;">${toBanglaNum(idx+1)}</td>
+                    <td style="padding:8px 6px;font-size:11px;border-right:1px solid #d1fae5;">${toBanglaNum(s.id)}</td>
+                    <td style="padding:8px 6px;font-weight:bold;text-align:left;font-size:12px;border-right:1px solid #d1fae5;">${s.name}</td>
+                    <td style="padding:8px 6px;text-align:left;font-size:11px;border-right:1px solid #d1fae5;">${s.fname||'---'}</td>
+                    <td style="padding:8px 6px;font-size:11px;border-right:1px solid #d1fae5;font-family:monospace;">${s.phone||'---'}</td>
+                    <td style="padding:8px 6px;text-align:left;font-size:11px;border-right:1px solid #d1fae5;">${s.addr||'---'}</td>
+                    <td style="padding:8px 6px;font-size:11px;font-weight:bold;color:#047857;">${s.status||'ভর্তি সম্পন্ন'}</td>
+                </tr>`).join('');
+            return `<div id="student-pdf-body" style="font-family:'Hind Siliguri',sans-serif;padding:24px;color:#000;background:#fff;min-width:650px;">
+                    <div style="text-align:center;margin-bottom:18px;border-bottom:3px double #047857;padding-bottom:12px;">
+                        <h1 style="font-size:20px;font-weight:bold;color:#047857;margin:0 0 2px 0;">জামেয়া ইমদাদিয়া মাদানীনগর</h1>
+                        <p style="font-size:11px;margin:0 0 8px 0;color:#555;">মনিরামপুর, যশোর</p>
+                        <div style="display:inline-block;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:20px;padding:3px 16px;">
+                            <b style="font-size:13px;color:#065f46;">${tableTitle}</b>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:10px;margin-top:10px;color:#444;">
+                            <span>মোট শিক্ষার্থী: <b style="color:#047857;">${toBanglaNum(printList.length)} জন</b></span>
+                            <span>তারিখ: <b>${formattedDate}</b></span>
+                        </div>
+                    </div>
+                    <table style="width:100%;border-collapse:collapse;border:1px solid #d1fae5;">
+                        <thead>
+                            <tr style="background:#047857;color:white;">
+                                <th style="padding:8px 5px;font-size:11px;">ক্রমিক</th>
+                                <th style="padding:8px 5px;font-size:11px;">আইডি</th>
+                                <th style="padding:8px 5px;text-align:left;font-size:11px;">শিক্ষার্থীর নাম</th>
+                                <th style="padding:8px 5px;text-align:left;font-size:11px;">পিতার নাম</th>
+                                <th style="padding:8px 5px;font-size:11px;">মোবাইল</th>
+                                <th style="padding:8px 5px;text-align:left;font-size:11px;">ঠিকানা</th>
+                                <th style="padding:8px 5px;font-size:11px;">স্ট্যাটাস</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                    <div style="margin-top:36px;display:flex;justify-content:space-between;font-size:10px;padding:0 8px;">
+                        <div style="text-align:center;width:120px;border-top:1px solid #000;padding-top:4px;">প্রস্তুতকারী</div>
+                        <div style="text-align:center;width:120px;border-top:1px solid #000;padding-top:4px;">নাজেমে তালিমাত</div>
+                        <div style="text-align:center;width:120px;border-top:1px solid #000;padding-top:4px;">মুহতামিম দস্তখত</div>
+                    </div>
+                </div>`;
+        }
+
         window.exportStudentData = () => {
             const filter = document.getElementById('admin-class-filter').value;
             const query = document.getElementById('admin-search').value.toLowerCase().trim();
-            
             let printList = window.mockStudents.filter(s => {
                 const matchClass = filter === 'all' || s.cls === filter;
-                const matchSearch = query === '' || s.name.toLowerCase().includes(query) || s.phone.includes(query) || s.id.includes(query);
+                const matchSearch = query === '' || s.name.toLowerCase().includes(query) || s.phone.includes(query) || String(s.id).includes(query);
                 return matchClass && matchSearch;
             });
+            if(printList.length === 0) { showToast("প্রিন্ট করার মত কোনো শিক্ষার্থী পাওয়া যায়নি!"); return; }
 
-            if(printList.length === 0) {
-                showToast("প্রিন্ট করার মত কোনো শিক্ষার্থী পাওয়া যায়নি!");
-                return;
-            }
+            window._currentPrintHTML = buildStudentTableHTML(printList, filter);
+            window._currentFilter = filter;
 
-            const printContainer = document.getElementById('print-container');
-            const today = new Date();
-            const formattedDate = today.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
-            
-            let tableRowsHTML = printList.map((s, idx) => `
-                <tr style="border-bottom: 1px solid #ddd; text-align: center;">
-                    <td style="padding: 10px; font-weight: bold; font-size: 13px;">${toBanglaNum(idx + 1)}</td>
-                    <td style="padding: 10px; font-size: 13px;">${toBanglaNum(s.id)}</td>
-                    <td style="padding: 10px; font-weight: bold; text-align: left; font-size: 13px;">${s.name}</td>
-                    <td style="padding: 10px; text-align: left; font-size: 13px;">${s.fname || '---'}</td>
-                    <td style="padding: 10px; font-size: 13px;">${toBanglaNum(s.phone)}</td>
-                    <td style="padding: 10px; text-align: left; font-size: 13px;">${s.addr || '---'}</td>
-                    <td style="padding: 10px; font-size: 12px; font-weight: bold;">${s.status || 'ভর্তি সম্পন্ন'}</td>
-                </tr>
-            `).join('');
-
-            printContainer.innerHTML = `
-                <div style="font-family: 'Hind Siliguri', sans-serif; padding: 20px; color: #000; background: #fff;">
-                    <div style="text-align: center; margin-bottom: 25px; border-bottom: 3px double #047857; padding-bottom: 15px;">
-                        <h1 style="font-size: 26px; font-weight: bold; color: #047857; margin: 0;">জামেয়া ইমদাদিয়া মাদানীনগর</h1>
-                        <p style="font-size: 13px; margin: 3px 0; color: #555;">মনিরামপুর, যশোর</p>
-                        <h2 style="font-size: 18px; font-weight: bold; margin: 12px 0 5px 0; background-color: #f0fdf4; display: inline-block; padding: 5px 20px; border-radius: 20px; border: 1px solid #bbf7d0;">
-                            ${filter === 'all' ? 'সকল ক্লাসের শিক্ষার্থী তালিকা' : filter + ' ক্লাস রিপোর্ট'}
-                        </h2>
-                        <div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 15px; color: #444;">
-                            <span>মোট শিক্ষার্থী: <b>${toBanglaNum(printList.length)} জন</b></span>
-                            <span>তারিখ: <b>${formattedDate} ইং</b></span>
-                        </div>
-                    </div>
-                    
-                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-                        <thead>
-                            <tr style="background-color: #047857; color: white; border: 1px solid #047857;">
-                                <th style="padding: 10px; font-size: 13px;">ক্রমিক</th>
-                                <th style="padding: 10px; font-size: 13px;">আইডি</th>
-                                <th style="padding: 10px; text-align: left; font-size: 13px;">শিক্ষার্থীর নাম</th>
-                                <th style="padding: 10px; text-align: left; font-size: 13px;">পিতার নাম</th>
-                                <th style="padding: 10px; font-size: 13px;">মোবাইল নাম্বার</th>
-                                <th style="padding: 10px; text-align: left; font-size: 13px;">ঠিকানা</th>
-                                <th style="padding: 10px; font-size: 13px;">স্ট্যাটাস</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${tableRowsHTML}
-                        </tbody>
-                    </table>
-
-                    <div style="margin-top: 50px; display: flex; justify-content: space-between; font-size: 12px;">
-                        <div style="text-align: center; width: 150px; border-top: 1px solid #000; padding-top: 5px;">প্রস্তুতকারী</div>
-                        <div style="text-align: center; width: 150px; border-top: 1px solid #000; padding-top: 5px;">নাজেমে তালিমাত</div>
-                        <div style="text-align: center; width: 150px; border-top: 1px solid #000; padding-top: 5px;">মুহতামিম দস্তখত</div>
-                    </div>
-                </div>
-            `;
-
-            logUserAction(`প্রিন্ট রিপোর্ট জেনারেট: ${filter}`);
-            window.print();
+            const tableTitle = filter === 'all' ? 'সকল ক্লাসের শিক্ষার্থী তালিকা' : filter + ' রিপোর্ট';
+            document.getElementById('pdf-preview-title').innerText = tableTitle;
+            document.getElementById('pdf-preview-content').innerHTML = window._currentPrintHTML;
+            const modal = document.getElementById('pdf-preview-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            logUserAction(`প্রিন্ট প্রিভিউ: ${filter}`);
         };
+
+        window.closePdfPreview = () => {
+            const modal = document.getElementById('pdf-preview-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        window.printStudentList = () => {
+            const printContainer = document.getElementById('print-container');
+            printContainer.innerHTML = window._currentPrintHTML;
+            printContainer.classList.remove('hidden');
+            setTimeout(() => {
+                window.print();
+                setTimeout(() => printContainer.classList.add('hidden'), 1500);
+            }, 200);
+        };
+
+        window.downloadStudentPDF = async () => {
+            const btn = document.querySelector('#pdf-preview-modal button[onclick="downloadStudentPDF()"]');
+            if(btn) { btn.disabled = true; btn.innerHTML = '⏳ তৈরি হচ্ছে...'; }
+            try {
+                const el = document.getElementById('student-pdf-body');
+                if(!el) { showToast('কনটেন্ট পাওয়া যায়নি!'); return; }
+                const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: '#fff', logging: false });
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+                const pW = pdf.internal.pageSize.getWidth();
+                const pH = pdf.internal.pageSize.getHeight();
+                const imgW = pW - 40;
+                const imgH = (canvas.height / canvas.width) * imgW;
+                let y = 20;
+                let drawn = 0;
+                const totalH = imgH;
+                const maxH = pH - 40;
+                while(drawn < totalH) {
+                    const sliceH = Math.min(maxH, totalH - drawn);
+                    const sc = document.createElement('canvas');
+                    sc.width = canvas.width;
+                    sc.height = Math.round((sliceH / totalH) * canvas.height);
+                    const ctx = sc.getContext('2d');
+                    ctx.drawImage(canvas, 0, Math.round((drawn/totalH)*canvas.height), canvas.width, sc.height, 0, 0, canvas.width, sc.height);
+                    if(drawn > 0) { pdf.addPage(); y = 20; }
+                    pdf.addImage(sc.toDataURL('image/jpeg', 0.95), 'JPEG', 20, y, imgW, sliceH);
+                    drawn += sliceH;
+                }
+                const fname = (window._currentFilter === 'all' ? 'সকল_শিক্ষার্থী' : window._currentFilter.replace(/[\s()]/g,'_')) + '_তালিকা.pdf';
+                pdf.save(fname);
+                showToast('✅ PDF ডাউনলোড সম্পন্ন!');
+                logUserAction(`PDF ডাউনলোড: ${window._currentFilter}`);
+            } catch(err) {
+                console.error('PDF error:', err);
+                showToast('PDF তৈরিতে সমস্যা — প্রিন্ট ব্যবহার করুন');
+            } finally {
+                if(btn) { btn.disabled = false; btn.innerHTML = '⬇️ PDF ডাউনলোড'; }
+            }
+        };
+
 
         window.openAdminEntry = () => { openModal('admin-entry-modal'); };
 
@@ -2907,6 +3095,39 @@
             }
         };
 
+        /* ======= RECYCLE BIN ======= */
+        window.openRecycleBin = () => {
+            closeProfileMenu();
+            renderRecycleBin();
+            openModal('recycle-bin-modal');
+            logUserAction("রিসাইকেল বিন খোলা হয়েছে");
+        };
+
+        window.renderRecycleBin = () => {
+            const container = document.getElementById('recycle-bin-list');
+            if (!container) return;
+            if (!window.recycleBin || window.recycleBin.length === 0) {
+                container.innerHTML = '<p class="text-center theme-text-muted py-10 text-xs">রিসাইকেল বিন খালি</p>';
+                return;
+            }
+            container.innerHTML = window.recycleBin.map((item, idx) => {
+                const d = item.data || item;
+                const label = item.type === 'note' ? (d.text ? d.text.substring(0, 50) : 'নোট') 
+                            : item.type === 'student' ? (d.name || 'শিক্ষার্থী') 
+                            : (d.title || 'নোটিশ');
+                const icon = item.type === 'note' ? '📝' : item.type === 'student' ? '👤' : '📢';
+                return `
+                <div class="p-3 theme-card rounded-xl border shadow-sm flex items-start gap-3">
+                    <span class="text-xl shrink-0">${icon}</span>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-bold theme-text truncate">${label}</p>
+                        <p class="text-[10px] theme-text-muted mt-0.5">${item.type === 'student' ? 'শিক্ষার্থী' : item.type === 'note' ? 'নোট' : 'নোটিশ'}</p>
+                    </div>
+                    <button onclick="restoreItem(${idx})" class="shrink-0 bg-green-600 text-white text-[10px] font-bold px-2 py-1 rounded-lg active:scale-95">পুনরুদ্ধার</button>
+                </div>`;
+            }).join('');
+        };
+
         /* Init App Data */
         document.addEventListener('DOMContentLoaded', () => {
             const today = new Date();
@@ -2917,14 +3138,30 @@
             const savedTheme = localStorage.getItem('appTheme') || 'default';
             setTheme(savedTheme);
 
-            document.getElementById('calendar-trigger').addEventListener('click', function() {
-                const picker = document.getElementById('calendar-picker');
-                picker.click();
-            });
             document.getElementById('calendar-picker').addEventListener('change', function(e) {
-                const selectedDate = new Date(e.target.value);
-                if(!isNaN(selectedDate)) updateDates(selectedDate);
+                // Fix timezone offset: parse date parts directly to avoid UTC shift
+                const parts = e.target.value.split('-');
+                if(parts.length === 3) {
+                    const selectedDate = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+                    if(!isNaN(selectedDate)) updateDates(selectedDate);
+                }
             });
+            
+            // Fix: Prevent auto-scroll of prayer timeline while user is manually scrolling
+            const prayerContainer = document.getElementById('prayer-timeline-grid-container');
+            if(prayerContainer) {
+                let scrollTimer = null;
+                prayerContainer.addEventListener('touchstart', () => { prayerContainer._userScrolling = true; }, { passive: true });
+                prayerContainer.addEventListener('touchend', () => {
+                    if(scrollTimer) clearTimeout(scrollTimer);
+                    scrollTimer = setTimeout(() => { prayerContainer._userScrolling = false; }, 2000);
+                }, { passive: true });
+                prayerContainer.addEventListener('mousedown', () => { prayerContainer._userScrolling = true; });
+                prayerContainer.addEventListener('mouseup', () => {
+                    if(scrollTimer) clearTimeout(scrollTimer);
+                    scrollTimer = setTimeout(() => { prayerContainer._userScrolling = false; }, 2000);
+                });
+            }
         });
     </script>
 
@@ -3364,8 +3601,19 @@
         window.deleteNoticeFromFirebase = async (id) => {
             if (!window.isAdminLoggedIn) return;
             try {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'notices', String(id)));
-                showToast("নোটিশটি মুছে ফেলা হয়েছে");
+                // First get the notice data to save in recycle bin
+                const noticeRef = doc(db, 'artifacts', appId, 'public', 'data', 'notices', String(id));
+                const noticeSnap = await getDoc(noticeRef);
+                if(noticeSnap.exists()) {
+                    // Move to recycle bin
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'recycleBin', 'notice_' + id), {
+                        ...noticeSnap.data(),
+                        _type: 'notice',
+                        _deletedAt: Date.now()
+                    });
+                }
+                await deleteDoc(noticeRef);
+                showToast("নোটিশটি রিসাইকেল বিনে সরানো হয়েছে");
             } catch (err) {
                 console.error("Delete notice error:", err);
                 showToast("মুছে ফেলতে সমস্যা হয়েছে");
@@ -3446,6 +3694,9 @@
 
                 document.getElementById('admin-pin-screen').classList.add('hidden');
                 document.getElementById('admin-dashboard-screen').classList.remove('hidden');
+
+                // Show admin button in bottom nav
+                if (typeof window.showAdminNavBtn === 'function') window.showAdminNavBtn();
                 
                 resetPaginationAndRender();
                 renderNotices();
@@ -3470,12 +3721,213 @@
             if (bellComposer) bellComposer.classList.add('hidden');
             if (gridComposer) gridComposer.classList.add('hidden');
 
+            // Hide admin-only edit buttons
+            const routineBtn = document.getElementById('routine-admin-btn-container');
+            const sakkhatBtn = document.getElementById('sakkhat-admin-btn');
+            if(routineBtn) routineBtn.classList.add('hidden');
+            if(sakkhatBtn) sakkhatBtn.classList.add('hidden');
+
+            // Hide admin button from bottom nav — back to visitor mode
+            if (typeof window.hideAdminNavBtn === 'function') window.hideAdminNavBtn();
+
             closeModal('admin-modal');
             showToast("লগআউট করা হয়েছে");
             logUserAction("অ্যাডমিন লগআউট সফল");
             renderNotices(); 
             renderNotes();
         };
+
+        /* ======= ROUTINE ADMIN EDIT ======= */
+        window.editRoutine = () => {
+            const display = document.getElementById('routine-display');
+            const form = document.getElementById('routine-edit-form');
+            const textarea = document.getElementById('routine-edit-text');
+            if(!display || !form || !textarea) return;
+            textarea.value = display.innerHTML.replace(/<br>/g, '\n');
+            display.classList.add('hidden');
+            form.classList.remove('hidden');
+        };
+        window.cancelRoutineEdit = () => {
+            document.getElementById('routine-display').classList.remove('hidden');
+            document.getElementById('routine-edit-form').classList.add('hidden');
+        };
+        window.saveRoutineText = async () => {
+            const textarea = document.getElementById('routine-edit-text');
+            const display = document.getElementById('routine-display');
+            const newText = textarea.value.trim();
+            if(!newText) { showToast('রুটিন খালি রাখা যাবে না!'); return; }
+            const htmlText = newText.replace(/\n/g, '<br>');
+            display.innerHTML = htmlText;
+            display.classList.remove('hidden');
+            document.getElementById('routine-edit-form').classList.add('hidden');
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'config', 'routine'), { text: htmlText });
+                showToast('রুটিন সেভ হয়েছে!');
+                logUserAction('রুটিন আপডেট');
+            } catch(e) { showToast('সেভ করতে সমস্যা হয়েছে'); }
+        };
+        // Load routine from Firebase on start
+        (async () => {
+            try {
+                const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'config', 'routine'));
+                if(snap.exists()) {
+                    const display = document.getElementById('routine-display');
+                    if(display) display.innerHTML = snap.data().text;
+                }
+            } catch(e) {}
+        })();
+
+        /* ======= SAKKHAT ADMIN EDIT ======= */
+        window.editSakkhat = () => {
+            document.getElementById('sakkhat-display').classList.add('hidden');
+            document.getElementById('sakkhat-edit-form').classList.remove('hidden');
+            document.getElementById('sakkhat-edit-morning').value = document.getElementById('sakkhat-morning').innerText;
+            document.getElementById('sakkhat-edit-noon').value = document.getElementById('sakkhat-noon').innerText;
+            document.getElementById('sakkhat-edit-afternoon').value = document.getElementById('sakkhat-afternoon').innerText;
+            document.getElementById('sakkhat-edit-night').value = document.getElementById('sakkhat-night').innerText;
+        };
+        window.cancelSakkhatEdit = () => {
+            document.getElementById('sakkhat-display').classList.remove('hidden');
+            document.getElementById('sakkhat-edit-form').classList.add('hidden');
+        };
+        window.saveSakkhat = async () => {
+            const morning = document.getElementById('sakkhat-edit-morning').value.trim();
+            const noon = document.getElementById('sakkhat-edit-noon').value.trim();
+            const afternoon = document.getElementById('sakkhat-edit-afternoon').value.trim();
+            const night = document.getElementById('sakkhat-edit-night').value.trim();
+            document.getElementById('sakkhat-morning').innerText = morning;
+            document.getElementById('sakkhat-noon').innerText = noon;
+            document.getElementById('sakkhat-afternoon').innerText = afternoon;
+            document.getElementById('sakkhat-night').innerText = night;
+            document.getElementById('sakkhat-display').classList.remove('hidden');
+            document.getElementById('sakkhat-edit-form').classList.add('hidden');
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'config', 'sakkhat'), { morning, noon, afternoon, night });
+                showToast('সাক্ষাত সময় সেভ হয়েছে!');
+                logUserAction('সাক্ষাত সময় আপডেট');
+            } catch(e) { showToast('সেভ করতে সমস্যা হয়েছে'); }
+        };
+        // Load sakkhat from Firebase on start
+        (async () => {
+            try {
+                const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'config', 'sakkhat'));
+                if(snap.exists()) {
+                    const d = snap.data();
+                    if(d.morning) document.getElementById('sakkhat-morning').innerText = d.morning;
+                    if(d.noon) document.getElementById('sakkhat-noon').innerText = d.noon;
+                    if(d.afternoon) document.getElementById('sakkhat-afternoon').innerText = d.afternoon;
+                    if(d.night) document.getElementById('sakkhat-night').innerText = d.night;
+                }
+            } catch(e) {}
+        })();
+
+        /* Show admin buttons when admin logs in - hook into verifyAdminPin */
+        const _origVerify = window.verifyAdminPin;
+        window.verifyAdminPin = () => {
+            _origVerify();
+            // Show admin edit buttons for routine and sakkhat
+            setTimeout(() => {
+                if(window.isAdminLoggedIn) {
+                    const routineBtn = document.getElementById('routine-admin-btn-container');
+                    const sakkhatBtn = document.getElementById('sakkhat-admin-btn');
+                    if(routineBtn) routineBtn.classList.remove('hidden');
+                    if(sakkhatBtn) sakkhatBtn.classList.remove('hidden');
+                    // Also ensure admin nav button is visible
+                    if (typeof window.showAdminNavBtn === 'function') window.showAdminNavBtn();
+                }
+            }, 200);
+        };
+
+        /* ======= PDF EXPORT (Download as PDF) ======= */
+        window.exportStudentDataPDF = () => {
+            window.exportStudentData(); // existing print function handles this
+        };
+    </script>
+    <!-- ===== DYNAMIC GPS LOCATION ===== -->
+    <script>
+    (function() {
+        const GOOGLE_MAPS_API_KEY = ''; // ← আপনার Google Maps API Key এখানে দিন (Geocoding API enable করতে হবে)
+
+        function setLocationText(text) {
+            const el1 = document.getElementById('location-text');
+            const el2 = document.getElementById('header-location-text');
+            if (el1) el1.textContent = text;
+            if (el2) el2.textContent = '📍 ' + text;
+        }
+
+        async function reverseGeocode(lat, lon) {
+            try {
+                if (GOOGLE_MAPS_API_KEY) {
+                    // Google Maps Geocoding API
+                    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&language=bn&key=${GOOGLE_MAPS_API_KEY}`;
+                    const res = await fetch(url);
+                    const data = await res.json();
+                    if (data.status === 'OK' && data.results.length > 0) {
+                        // উপজেলা / জেলা / বিভাগ বের করা
+                        const comps = data.results[0].address_components;
+                        let subdistrict = '', district = '';
+                        for (const c of comps) {
+                            if (c.types.includes('administrative_area_level_3') || c.types.includes('sublocality')) {
+                                subdistrict = c.long_name;
+                            }
+                            if (c.types.includes('administrative_area_level_2')) {
+                                district = c.long_name;
+                            }
+                        }
+                        const location = subdistrict ? `${subdistrict}, ${district}` : district || data.results[0].formatted_address.split(',')[0];
+                        setLocationText(location);
+                        return;
+                    }
+                }
+                // Fallback: OpenStreetMap Nominatim (no API key needed)
+                const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=bn`;
+                const res = await fetch(url, { headers: { 'Accept-Language': 'bn' } });
+                const data = await res.json();
+                if (data && data.address) {
+                    const a = data.address;
+                    const place = a.town || a.city || a.village || a.county || a.state_district || a.state || '';
+                    const region = a.state_district || a.state || '';
+                    const label = place && region && place !== region ? `${place}, ${region}` : (place || region || 'অজানা স্থান');
+                    setLocationText(label);
+                } else {
+                    setLocationText('অজানা স্থান');
+                }
+            } catch(e) {
+                setLocationText('অফলাইন মোড');
+            }
+        }
+
+        function fetchLocation() {
+            if (!navigator.geolocation) {
+                setLocationText('লোকেশন পাওয়া যায়নি');
+                return;
+            }
+            setLocationText('📍 লোড হচ্ছে...');
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    reverseGeocode(pos.coords.latitude, pos.coords.longitude);
+                },
+                (err) => {
+                    // Permission denied বা unavailable হলে fallback
+                    switch(err.code) {
+                        case 1: setLocationText('লোকেশন অনুমতি নেই'); break;
+                        case 2: setLocationText('লোকেশন পাওয়া যায়নি'); break;
+                        case 3: setLocationText('টাইমআউট হয়েছে'); break;
+                        default: setLocationText('লোকেশন ত্রুটি');
+                    }
+                },
+                { timeout: 10000, maximumAge: 5 * 60 * 1000 }
+            );
+        }
+
+        // Global function for refresh button
+        window.requestLocationUpdate = function() {
+            fetchLocation();
+        };
+
+        // Auto fetch on load
+        fetchLocation();
+    })();
     </script>
 </body>
 </html>
