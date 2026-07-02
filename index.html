@@ -3071,18 +3071,18 @@
             }
         });
 
-        window.handleGoogleLogin = async () => {
-            try {
-                const remember = document.getElementById('auth-remember') ? document.getElementById('auth-remember').checked : true;
-                await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
-                await signInWithPopup(auth, googleProvider);
-                logUserAction("Google দিয়ে লগইন");
-                closeModal('login-modal');
-            } catch (e) {
-                console.error(e);
-                showToast("Google লগইন ব্যর্থ হয়েছে: " + e.message);
-            }
-        };
+window.handleGoogleLogin = async () => {
+    try {
+        // কোনো পারসিস্টেন্সের ঝামেলা ছাড়া সরাসরি পপ-আপ দিয়ে সাইন-ইন
+        await signInWithPopup(auth, googleProvider);
+        
+        logUserAction("Google দিয়ে লগইন");
+        closeModal('login-modal');
+    } catch (e) {
+        console.error(e);
+        showToast("Google লগইন ব্যর্থ হয়েছে: " + e.message);
+    }
+};
 
         async function fetchAdminPinCode() {
             try {
