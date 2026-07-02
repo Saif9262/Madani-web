@@ -3073,36 +3073,25 @@
 
 window.handleGoogleLogin = async () => {
     try {
-        // ১. পপ-আপ বা সাধারণ রিডাইরেক্টের বদলে ফায়ারবেসের রিডাইরেক্ট মেথড কল করা
-        const { signInWithRedirect } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
-        
-        // ২. সেশন সিকিউরিটি নিশ্চিত করতে প্রম্পট প্যারামিটার যুক্ত করা
+        // গুগল প্রোভাইডারের সেশন সিকিউরিটি প্যারামিটার সেট করা
         googleProvider.setCustomParameters({
             prompt: 'select_account'
         });
 
-        // ৩. রিডাইরেক্ট প্রসেস শুরু করা
-        await signInWithRedirect(auth, googleProvider);
+        // পপ-আপের মাধ্যমে সরাসরি সাইন-ইন শুরু
+        const result = await signInWithPopup(auth, googleProvider);
+        
+        // লগইন সফল হলে আপনার আগের বাকি কাজগুলো রান হবে
+        logUserAction("Google দিয়ে লগইন");
+        closeModal('login-modal');
+        
+        // ব্রাউজার ও অ্যাপের সেশন ক্যাশ বা জ্যাম দূর করতে পেজটি একবার রিফ্রেশ হবে
+        window.location.reload();
     } catch (e) {
         console.error("লগইন এরর:", e);
         showToast("Google লগইন ব্যর্থ হয়েছে: " + e.message);
     }
 };
-
-// ৪. রিডাইরেক্ট হয়ে যখন ব্রাউজার আবার আপনার গিটহাব পেজে ফিরে আসবে, তখন সেশন রিসিভ করার কোড:
-import { getRedirectResult } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-
-getRedirectResult(auth)
-    .then((result) => {
-        if (result?.user) {
-            logUserAction("Google দিয়ে সফল লগইন");
-            closeModal('login-modal');
-            // সেশনটি ব্রাউজার ও অ্যাপে পুরোপুরি রেজিস্টার করার জন্য পেজ রিফ্রেশ
-            window.location.reload(); 
-        }
-    }).catch((error) => {
-        console.error("Redirect Result Error:", error);
-    });
 
         async function fetchAdminPinCode() {
             try {
