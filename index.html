@@ -3073,14 +3073,22 @@
 
 window.handleGoogleLogin = async () => {
     try {
-        // ফায়ারবেস পপ-আপের সাথে ব্রাউজার পপ-আপ রিজলভার যুক্ত করা হলো
-        const { browserPopupRedirectResolver } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
-        await signInWithPopup(auth, googleProvider, browserPopupRedirectResolver);
+        // ১. ফায়ারবেসকে গিটহাব ডোমেইনের সাথে রিলেট করার জন্য কাস্টম প্রোভাইডার সেটিংস
+        googleProvider.setCustomParameters({
+            prompt: 'select_account'
+        });
+
+        // ২. সরাসরি পপ-আপ কল করা
+        const result = await signInWithPopup(auth, googleProvider);
         
+        // লগইন সফল হলে আপনার বাকি কাজ
         logUserAction("Google দিয়ে লগইন");
         closeModal('login-modal');
+        
+        // লগইন সেশন নিশ্চিত করতে পেজটি একবার রিলোড বা রিডাইরেক্ট করতে পারেন
+        window.location.reload(); 
     } catch (e) {
-        console.error(e);
+        console.error("লগইন এরর ডিটেইলস:", e);
         showToast("Google লগইন ব্যর্থ হয়েছে: " + e.message);
     }
 };
