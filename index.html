@@ -3815,27 +3815,39 @@
         };
 
         window.handleLogoSelect = async (event, type) => {
-            const file = event.target.files[0];
-            if (!file) return;
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = async function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 120;
+            canvas.height = 120;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, 120, 120);
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+            
+            // --- লোগো স্ক্রিনে শো করানোর জন্য নতুন কোড (সংযোজন) ---
+            if (type === 'header') {
+                const logoImg = document.getElementById('madrasa-logo-header');
+                const logoSvg = document.getElementById('madrasa-logo-svg');
+                if (logoImg && logoSvg) {
+                    logoImg.src = compressedBase64;       // ইমেজ সোর্স সেট করা
+                    logoImg.classList.remove('hidden');   // ইমেজটি দৃশ্যমান করা
+                    logoSvg.classList.add('hidden');      // ডিফল্ট SVG আইকন লুকিয়ে ফেলা
+                }
+            }
+            // --------------------------------------------------
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = async function() {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 120;
-                    canvas.height = 120;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, 120, 120);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
-                    if (window.uploadLogoFirebase) {
-                        await window.uploadLogoFirebase(compressedBase64, type);
-                    }
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
+            if (window.uploadLogoFirebase) {
+                await window.uploadLogoFirebase(compressedBase64, type);
+            }
         };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+};
 
         function getBanglaDate(date) {
             const day = date.getDate(); const month = date.getMonth(); const year = date.getFullYear();
