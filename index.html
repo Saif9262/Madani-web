@@ -9,13 +9,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- Cropper.js for image cropping -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
     <script>
         tailwind.config = {
             darkMode: 'class', 
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100..800&family=Atma:wght@300..700&family=Galada&family=Hind+Siliguri:wght@300..700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@100..900&family=Tiro+Bangla:ital@0;1&display=swap');
         
         :root {
             --bg-body: #f0fdf4; 
@@ -145,18 +150,31 @@
     <input type="file" id="logo-about-input" onchange="handleLogoSelect(event, 'about')" accept="image/*" class="hidden">
     <input type="file" id="csv-import-input" onchange="handleCSVImport(event)" accept=".csv" class="hidden">
 
+    <!-- Crop Dialog Modal (Square Cropper UI) -->
+    <div id="crop-modal" class="fixed inset-0 modal-overlay z-[250] hidden flex flex-col items-center justify-center p-4">
+        <div class="theme-card rounded-2xl w-full max-w-md p-5 shadow-2xl border flex flex-col max-h-[90vh]">
+            <h3 class="font-bold theme-text text-base mb-3 flex items-center gap-2">✂️ লোগো ক্রপ করুন (১:১)</h3>
+            <div class="flex-1 overflow-hidden bg-gray-100 dark:bg-gray-950 flex items-center justify-center rounded-xl relative max-h-[50vh]">
+                <img id="crop-image" class="max-w-full max-h-[40vh] block" alt="Crop Area">
+            </div>
+            <div class="flex gap-3 mt-4">
+                <button onclick="executeCrop()" class="flex-1 bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2.5 rounded-lg">ক্রপ ও সেভ</button>
+                <button onclick="closeCropModal()" class="flex-1 bg-gray-300 dark:bg-gray-700 theme-text text-xs font-bold py-2.5 rounded-lg">বাতিল</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Header with Secret Click Area -->
     <header class="theme-header p-4 text-center shadow-sm border-b flex flex-col items-center justify-center select-none">
         <div id="secret-login-trigger" class="flex items-center gap-3 cursor-pointer p-1 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
-            <!-- Dynamic Logo Upload Container -->
-            <div onclick="triggerLogoUpload('header')" class="w-11 h-11 rounded-full bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/40 dark:to-green-900/40 flex items-center justify-center border border-green-300 dark:border-green-800 text-green-700 shadow-sm shrink-0 overflow-hidden cursor-pointer relative group">
+            <!-- Dynamic Logo Container (Landing page upload removed to force admin panels) -->
+            <div class="w-11 h-11 rounded-full bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/40 dark:to-green-900/40 flex items-center justify-center border border-green-300 dark:border-green-800 text-green-700 shadow-sm shrink-0 overflow-hidden relative group">
                 <img id="madrasa-logo-header" class="w-full h-full object-cover hidden" alt="Logo">
                 <svg id="madrasa-logo-svg" class="w-7 h-7 text-green-600 dark:text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="currentColor" fill-opacity="0.08"/>
                     <path d="M12 8v7M9 11h6M12 5.5v.5"/>
                     <circle cx="12" cy="12" r="5" stroke-dasharray="2 2"/>
                 </svg>
-                <div id="header-logo-edit-indicator" class="absolute inset-0 bg-black/50 text-[9px] text-white flex items-center justify-center font-bold opacity-0 transition-opacity duration-200 pointer-events-none hidden">এডিট</div>
             </div>
             <h1 id="madrasa-title-text" class="text-xl font-bold theme-text tracking-wide">জামেয়া ইমদাদিয়া মাদানীনগর</h1>
         </div>
@@ -233,12 +251,11 @@
         </div>
 
         <!-- Dynamic Marquee Scrolling Notice Board -->
-        <div class="theme-card border border-green-200 dark:border-green-900 rounded-xl p-2.5 shadow-sm overflow-hidden relative flex items-center gap-3">
+        <div id="marquee-container-box" class="theme-card border border-green-200 dark:border-green-900 rounded-xl p-2.5 shadow-sm overflow-hidden relative flex items-center gap-3">
             <div id="notice-badge-container" class="bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg animate-pulse shrink-0 select-none hidden">
                 📢 নোটিশ
             </div>
             <div class="flex-1 overflow-hidden select-none">
-                <!-- Removed default red styling classes to prevent override of admin color configurations -->
                 <marquee id="marquee-notice-text" scrollamount="4" class="font-bold">
                     লোড হচ্ছে...
                 </marquee>
@@ -263,7 +280,7 @@
                 <span class="text-2xl mb-1">📢</span><p id="grid-btn-text-notice" class="text-[10px] font-bold theme-text leading-tight">নোটিশ</p>
             </div>          
             <div onclick="openExternalUrl('studentProfile')" class="theme-card p-3 rounded-xl shadow-sm text-center border flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-all hover:bg-[var(--bg-body)]">
-                <span class="text-2xl mb-1">‍🎓</span><p id="grid-btn-text-profile" class="text-[10px] font-bold theme-text leading-tight">শিক্ষার্থীর প্রোফাইল</p>            
+                <span class="text-2xl mb-1">🎓</span><p id="grid-btn-text-profile" class="text-[10px] font-bold theme-text leading-tight">শিক্ষার্থীর প্রোফাইল</p>            
             </div>            
         </section>
 
@@ -770,13 +787,21 @@
                 <div id="admin-students-list-view" class="hidden flex-1 flex flex-col overflow-hidden">
                     <div class="p-3 bg-[var(--bg-card)] shrink-0 space-y-2 border-b border-[var(--border-color)]">
                         <div class="flex gap-2">
-                            <select id="admin-class-filter" onchange="resetPaginationAndRender()" class="flex-1 p-2 border border-[var(--border-color)] rounded-lg outline-none font-bold text-sm bg-transparent theme-text font-sans">
+                            <!-- Year Selection Dropdown -->
+                            <select id="admin-year-filter" onchange="resetPaginationAndRender()" class="flex-1 p-2 border border-[var(--border-color)] rounded-lg outline-none font-bold text-xs bg-transparent theme-text font-sans">
+                                <option value="2026" class="bg-[var(--bg-card)]">২০২৬ সাল (আরবি ১৪৪৭)</option>
+                                <option value="2027" class="bg-[var(--bg-card)]">২০২৭ সাল (আরবি ১৪৪৮)</option>
+                                <option value="2028" class="bg-[var(--bg-card)]">২০২৮ সাল (আরবি ১৪৪৯)</option>
+                                <option value="2025" class="bg-[var(--bg-card)]">২০২৫ সাল (আরবি ১৪৪৬)</option>
+                                <option value="2024" class="bg-[var(--bg-card)]">২০২৪ সাল (আরবি ১৪৪৫)</option>
                             </select>
-                            <button onclick="exportStudentData()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-bold flex items-center gap-1 hover:bg-blue-700">
+                            <select id="admin-class-filter" onchange="resetPaginationAndRender()" class="flex-1 p-2 border border-[var(--border-color)] rounded-lg outline-none font-bold text-xs bg-transparent theme-text font-sans">
+                            </select>
+                            <button onclick="exportStudentData()" class="bg-blue-600 text-white px-2 py-2 rounded-lg text-xs font-bold flex items-center gap-1 hover:bg-blue-700 shrink-0">
                                 <span>📄</span> প্রিন্ট / PDF
                             </button>
                             <!-- Excel / CSV Import Button -->
-                            <button onclick="triggerCSVImport()" class="bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm font-bold flex items-center gap-1 hover:bg-indigo-700 shrink-0">
+                            <button onclick="triggerCSVImport()" class="bg-indigo-600 text-white px-2 py-2 rounded-lg text-xs font-bold flex items-center gap-1 hover:bg-indigo-700 shrink-0">
                                 <span>📥</span> ইম্পোর্ট
                             </button>
                         </div>
@@ -839,7 +864,7 @@
                         <!-- Block B: Logos Management -->
                         <div class="border-b border-[var(--border-color)] pb-3 space-y-2">
                             <h4 class="font-bold text-xs text-green-700 dark:text-green-400 flex items-center gap-1">🖼️ লোগো ও ছবি ম্যানেজমেন্ট</h4>
-                            <p class="text-[10px] theme-text-muted leading-tight">ডিভাইস থেকে সরাসরি ছবি বা লোগো আপলোড করুন।</p>
+                            <p class="text-[10px] theme-text-muted leading-tight">ডিভাইস থেকে সরাসরি ছবি বা লোগো আপলোড এবং ক্রপ করুন।</p>
                             <div class="grid grid-cols-2 gap-2 pt-1">
                                 <div onclick="triggerLogoUpload('header')" class="border border-[var(--border-color)] rounded-xl p-3 text-center bg-[var(--bg-body)] hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer active:scale-95 transition-all">
                                     <span class="text-xl block mb-1">🕌</span>
@@ -902,7 +927,7 @@
                         <!-- Block E: Donation Banner Customization -->
                         <div class="border-b border-[var(--border-color)] pb-3 space-y-2">
                             <h4 class="font-bold text-xs text-green-700 dark:text-green-400 flex items-center gap-1">🤲 দান-অনুদান ফান্ড কাস্টমাইজেশন</h4>
-                            <p class="text-[10px] theme-text-muted leading-tight">ডোনেশন কার্ডের তথ্য এবং পেমেন্ট গেটওয়ে লিংক পরিবর্তন করুন।</p>
+                            <p class="text-[10px] theme-text-muted leading-tight">ডোনেশন কাস্টমাইজেশন</p>
                             <div class="space-y-2">
                                 <div>
                                     <label class="block text-[10px] theme-text-muted mb-1">ডোনেশন ফান্ডের শিরোনাম</label>
@@ -928,64 +953,75 @@
                         <!-- Block F: External Links Customization -->
                         <div class="border-b border-[var(--border-color)] pb-3 space-y-2">
                             <h4 class="font-bold text-xs text-green-700 dark:text-green-400 flex items-center gap-1">🔗 এক্সটার্নাল লিংক কাস্টমাইজেশন</h4>
-                            <p class="text-[10px] theme-text-muted leading-tight">গ্রুপ, পোর্টাল ও মাদ্রাসার ওয়েবসাইট লিংকগুলো এখান থেকে পরিবর্তন করুন।</p>
                             <div class="space-y-2">
                                 <div>
                                     <label class="block text-[10px] theme-text-muted mb-1">হোয়াটসঅ্যাপ গ্রুপ লিংক</label>
-                                    <input type="text" id="cust-link-whatsapp" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-xs bg-transparent theme-text" placeholder="https://chat.whatsapp.com/G8R9T1wgLzfGYh4JdJe5XG">
+                                    <input type="text" id="cust-link-whatsapp" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-xs bg-transparent theme-text">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] theme-text-muted mb-1">গার্জিয়ান পোর্টাল লিংক</label>
-                                    <input type="text" id="cust-link-guardian" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-xs bg-transparent theme-text" placeholder="https://qmmsoft.com/10012">
+                                    <input type="text" id="cust-link-guardian" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-xs bg-transparent theme-text">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] theme-text-muted mb-1">মাদ্রাসার ওয়েবসাইট লিংক</label>
-                                    <input type="text" id="cust-link-website" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-xs bg-transparent theme-text" placeholder="https://madaninagarbd.com">
+                                    <input type="text" id="cust-link-website" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-xs bg-transparent theme-text">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] theme-text-muted mb-1">শিক্ষার্থীর প্রোফাইল লিংক</label>
-                                    <input type="text" id="cust-link-std-profile" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-xs bg-transparent theme-text" placeholder="https://qmmsoft.com/10012/login">
+                                    <input type="text" id="cust-link-std-profile" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-xs bg-transparent theme-text">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] theme-text-muted mb-1">শিক্ষক প্রোফাইল লিংক</label>
-                                    <input type="text" id="cust-link-teacher-profile" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-xs bg-transparent theme-text" placeholder="https://qmmsoft.com/login">
+                                    <input type="text" id="cust-link-teacher-profile" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-xs bg-transparent theme-text">
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Block G: Marquee/Notice Styling Customizations -->
+                        <!-- Block G: Marquee/Notice Styling Customizations (Fixed colors and added 8 Bengali Fonts) -->
                         <div class="border-b border-[var(--border-color)] pb-3 space-y-2">
-                            <h4 class="font-bold text-xs text-green-700 dark:text-green-400 flex items-center gap-1">⚙️ চলমান নোটিশ ও হাদিস স্টাইলিং</h4>
-                            <p class="text-[10px] theme-text-muted leading-tight">চলমান নোটিশ এবং হাদিস/বাণীর ফন্ট, সাইজ এবং টেক্সটের কালার পরিবর্তন করুন।</p>
+                            <h4 class="font-bold text-xs text-green-700 dark:text-green-400 flex items-center gap-1">🎨 নোটিশ ও বাণী স্টাইল ও কালার</h4>
                             <div class="grid grid-cols-2 gap-2">
                                 <div>
                                     <label class="block text-[10px] theme-text-muted mb-1">নোটিশের লেখার কালার</label>
                                     <input type="color" id="cust-marquee-notice-color" class="w-full h-8 p-0.5 border border-[var(--border-color)] rounded bg-transparent cursor-pointer" value="#dc2626">
                                 </div>
                                 <div>
-                                    <label class="block text-[10px] theme-text-muted mb-1">হাদিস/বাণীর লেখার কালার</label>
+                                    <label class="block text-[10px] theme-text-muted mb-1">বাণী/হাদিস লেখার কালার</label>
                                     <input type="color" id="cust-marquee-quote-color" class="w-full h-8 p-0.5 border border-[var(--border-color)] rounded bg-transparent cursor-pointer" value="#047857">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] theme-text-muted mb-1">ফন্ট সাইজ (Font Size)</label>
                                     <select id="cust-marquee-size" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-xs bg-transparent theme-text outline-none">
-                                        <option value="11px">১১ পিক্সেল (ছোট)</option>
+                                        <option value="11px">১১ পিক্সেল</option>
                                         <option value="12px">১২ পিক্সেল (ডিফল্ট)</option>
-                                        <option value="14px">১৪ পিক্সেল (মাঝারি)</option>
-                                        <option value="16px">১৬ পিক্সেল (বড়)</option>
-                                        <option value="18px">১৮ পিক্সেল (খুব বড়)</option>
+                                        <option value="14px">১৪ পিক্সেল</option>
+                                        <option value="16px">১৬ পিক্সেল</option>
+                                        <option value="18px">১৮ পিক্সেল (বড়)</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-[10px] theme-text-muted mb-1">ফন্ট ফ্যামিলি (Font Family)</label>
+                                    <label class="block text-[10px] theme-text-muted mb-1">ফন্ট ফ্যামিলি (৮টি বাংলা ফন্ট)</label>
                                     <select id="cust-marquee-font" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-xs bg-transparent theme-text outline-none">
-                                        <option value="'Noto Sans Bengali', 'Hind Siliguri', sans-serif">Noto Sans Bengali</option>
+                                        <option value="'Noto Sans Bengali', sans-serif">Noto Sans Bengali</option>
                                         <option value="'Hind Siliguri', sans-serif">Hind Siliguri</option>
-                                        <option value="system-ui, sans-serif">System UI (ডিভাইস ডিফল্ট)</option>
-                                        <option value="Georgia, serif">Serif ফন্ট</option>
+                                        <option value="'Anek Bangla', sans-serif">Anek Bangla</option>
+                                        <option value="'Tiro Bangla', serif">Tiro Bangla</option>
+                                        <option value="'Atma', system-ui">Atma (Artistic)</option>
+                                        <option value="'Mina', sans-serif">Mina</option>
+                                        <option value="'Galada', cursive">Galada (Stylish)</option>
+                                        <option value="system-ui, sans-serif">System UI</option>
                                     </select>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Block H: Database Operations (Danger Zone) -->
+                        <div class="border-b border-[var(--border-color)] pb-3 space-y-2">
+                            <h4 class="font-bold text-xs text-red-600 dark:text-red-400 flex items-center gap-1">⚠️ ডেঞ্জার জোন (Database Action)</h4>
+                            <p class="text-[10px] theme-text-muted leading-tight">ডাটাবেজ থেকে সমস্ত শিক্ষার্থীদের ডাটা একবারে স্থায়ীভাবে ডিলিট করতে নীচের বোতামটি ব্যবহার করুন।</p>
+                            <button onclick="deleteAllStudentsConfirm()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl transition-all shadow-sm active:scale-95 text-xs">
+                                💥 সমস্ত শিক্ষার্থীর ডাটা ডিলিট করুন
+                            </button>
                         </div>
 
                         <button onclick="saveAdminCustomizations()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-all shadow-md active:scale-95 text-xs">সব তথ্য সংরক্ষণ করুন ➔</button>
@@ -1141,10 +1177,9 @@
                 <button onclick="closeModal('about-modal')" class="w-8 h-8 bg-gray-200 dark:bg-gray-800 rounded-full theme-text font-bold">✕</button>
             </div>
             <div class="p-6 bg-[var(--bg-card)]">
-                <div onclick="triggerLogoUpload('about')" class="w-20 h-20 bg-green-100 dark:bg-green-950/20 rounded-full mx-auto flex items-center justify-center border-2 border-green-300 dark:border-green-800 overflow-hidden shadow-inner cursor-pointer relative group">
+                <div class="w-20 h-20 bg-green-100 dark:bg-green-950/20 rounded-full mx-auto flex items-center justify-center border-2 border-green-300 dark:border-green-800 overflow-hidden shadow-inner relative group">
                     <img id="madrasa-logo-about" class="w-full h-full object-cover hidden" alt="Logo">
                     <span id="about-logo-placeholder" class="text-4xl text-green-700 dark:text-green-400">🕌</span>
-                    <div id="about-logo-edit-indicator" class="absolute inset-0 bg-black/50 text-[11px] text-white flex items-center justify-center font-bold opacity-0 transition-opacity duration-200 pointer-events-none hidden">পরিবর্তন</div>
                 </div>
                 <h2 class="text-lg font-bold theme-text mt-2">ড্যাশবোর্ড ইনফো</h2>
                 <p class="text-sm theme-text-muted mt-2">এই ড্যাশবোর্ডটি আধুনিক প্রযুক্তি ব্যবহার করে তৈরি করা হয়েছে। এটি মাদ্রাসার শিক্ষক, শিক্ষার্থী এবং অ্যাডমিনদের কাজকে আরও সহজ ও দ্রুত করার উদ্দেশ্যে ডিজাইন করা হয়েছে।</p>
@@ -1401,9 +1436,7 @@
         ];
 
         const MALE_STUDENTS = [
-			//তাকমীল বালক
-{ id: '3247', name: 'মোহাম্মাদ হুজাইফা', fname: 'মোঃ সাইফুল্লাহ', addr: 'শ্যামকুড়', status: 'একটিভ', cls: 'তাকমীল', phone: '01948146585', branch: 'male' },
-{ id: '32411', name: 'মোঃ আব্দুর রহমান', fname: 'শেখ আঃ হালিম', addr: 'দিয়াড়া', status: 'একটিভ', cls: 'তাকমীল', phone: '01779635058', branch: 'male' },
+			{ id: '32411', name: 'মোঃ আব্দুর রহমান', fname: 'শেখ আঃ হালিম', addr: 'দিয়াড়া', status: 'একটিভ', cls: 'তাকমীল', phone: '01779635058', branch: 'male' },
 { id: '32412', name: 'মোঃ তালহা', fname: 'মাওলানা রশিদ আহম্মদ', addr: 'বিজয়রামপুর', status: 'একটিভ', cls: 'তাকমীল', phone: '01920855922', branch: 'male' },
 { id: '32413', name: 'মোঃ ইমরান হোসাইন', fname: 'মোঃ বাবর আলী', addr: 'আটঘরা', status: 'একটিভ', cls: 'তাকমীল', phone: '01968290173', branch: 'male' },
 { id: '3245', name: 'মোঃ নাজমুস সাকিব', fname: 'মোঃ আব্দুল হামিদ', addr: 'তাহেরপুর', status: 'একটিভ', cls: 'তাকমীল', phone: '01969250284', branch: 'male' },
@@ -3589,9 +3622,8 @@
 			"“ইসলাম মানেই শান্তি ও আত্মসমর্পণ।”"
         ];
 
-        window.mockStudents = [...MALE_STUDENTS, ...FEMALE_STUDENTS]; 
+        window.mockStudents = [...MALE_STUDENTS]; 
         window.contactsList = [...DEFAULT_CONTACTS];
-        // Loading local stored notices as offline fallback
         window.notices = JSON.parse(localStorage.getItem('local_notices') || '[]');
         window.alerts = [];
         window.notesList = [];
@@ -3603,7 +3635,6 @@
         window.studentCurrentPage = 1;
         window.studentPageSize = 50;
 
-        // Custom styling marquee configuration defaults
         window.marqueeConfig = {
             noticeColor: '#dc2626',
             quoteColor: '#047857',
@@ -3768,6 +3799,107 @@
             }
         });
 
+        let cropperInstance = null;
+        let currentLogoType = ''; 
+
+        window.triggerLogoUpload = (type) => {
+            if (window.isAdminLoggedIn) {
+                if (type === 'header') {
+                    document.getElementById('logo-header-input').click();
+                } else if (type === 'about') {
+                    document.getElementById('logo-about-input').click();
+                }
+            } else {
+                showToast("লোগো পরিবর্তন করতে প্রথমে অ্যাডমিন প্যানেলে লগইন করুন!");
+            }
+        };
+
+        window.handleLogoSelect = (event, type) => {
+            const file = event.target.files[0];
+            if (!file) return;
+            currentLogoType = type;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const cropImg = document.getElementById('crop-image');
+                cropImg.src = e.target.result;
+
+                // Open Crop Modal
+                const modal = document.getElementById('crop-modal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+
+                if (cropperInstance) {
+                    cropperInstance.destroy();
+                }
+
+                // Initialize 1:1 Square Cropper
+                setTimeout(() => {
+                    cropperInstance = new Cropper(cropImg, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        dragMode: 'move',
+                        autoCropArea: 0.9,
+                        restore: false,
+                        guides: true,
+                        center: true,
+                        highlight: false,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: false
+                    });
+                }, 150);
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.closeCropModal = () => {
+            const modal = document.getElementById('crop-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            if (cropperInstance) {
+                cropperInstance.destroy();
+                cropperInstance = null;
+            }
+            document.getElementById('logo-header-input').value = '';
+            document.getElementById('logo-about-input').value = '';
+        };
+
+        window.executeCrop = async () => {
+            if (!cropperInstance) return;
+            const canvas = cropperInstance.getCroppedCanvas({
+                width: 150,
+                height: 150
+            });
+            const croppedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+
+            // Immediately apply cropped view on frontend
+            if (currentLogoType === 'header') {
+                const logoImg = document.getElementById('madrasa-logo-header');
+                const logoSvg = document.getElementById('madrasa-logo-svg');
+                if (logoImg && logoSvg) {
+                    logoImg.src = croppedBase64;
+                    logoImg.classList.remove('hidden');
+                    logoSvg.classList.add('hidden');
+                }
+            } else if (currentLogoType === 'about') {
+                const logoImg = document.getElementById('madrasa-logo-about');
+                const spanEl = document.getElementById('about-logo-placeholder');
+                if (logoImg && spanEl) {
+                    logoImg.src = croppedBase64;
+                    logoImg.classList.remove('hidden');
+                    spanEl.classList.add('hidden');
+                }
+            }
+
+            // Sync to database
+            if (window.uploadLogoFirebase) {
+                await window.uploadLogoFirebase(croppedBase64, currentLogoType);
+            }
+
+            closeCropModal();
+        };
+
         let _actionContext = { type: null, id: null };
         window.showActionMenu = (event, type, id) => {
             event.stopPropagation();
@@ -3801,53 +3933,6 @@
             const menu = document.getElementById('shared-action-menu');
             if(menu) menu.classList.add('hidden');
         };
-
-        window.triggerLogoUpload = (type) => {
-            if (window.isAdminLoggedIn) {
-                if (type === 'header') {
-                    document.getElementById('logo-header-input').click();
-                } else if (type === 'about') {
-                    document.getElementById('logo-about-input').click();
-                }
-            } else {
-                showToast("লোগো পরিবর্তন করতে প্রথমে অ্যাডমিন প্যানেলে লগইন করুন!");
-            }
-        };
-
-        window.handleLogoSelect = async (event, type) => {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const img = new Image();
-        img.onload = async function() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 120;
-            canvas.height = 120;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, 120, 120);
-            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
-            
-            // --- লোগো স্ক্রিনে শো করানোর জন্য নতুন কোড (সংযোজন) ---
-            if (type === 'header') {
-                const logoImg = document.getElementById('madrasa-logo-header');
-                const logoSvg = document.getElementById('madrasa-logo-svg');
-                if (logoImg && logoSvg) {
-                    logoImg.src = compressedBase64;       // ইমেজ সোর্স সেট করা
-                    logoImg.classList.remove('hidden');   // ইমেজটি দৃশ্যমান করা
-                    logoSvg.classList.add('hidden');      // ডিফল্ট SVG আইকন লুকিয়ে ফেলা
-                }
-            }
-            // --------------------------------------------------
-
-            if (window.uploadLogoFirebase) {
-                await window.uploadLogoFirebase(compressedBase64, type);
-            }
-        };
-        img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-};
 
         function getBanglaDate(date) {
             const day = date.getDate(); const month = date.getMonth(); const year = date.getFullYear();
@@ -4120,6 +4205,7 @@
                 const text = e.target.result;
                 const lines = text.split('\n');
                 let count = 0;
+                const selectedYear = document.getElementById('admin-year-filter').value;
                 
                 for (let i = 1; i < lines.length; i++) {
                     const line = lines[i].trim();
@@ -4143,6 +4229,7 @@
                                 phone: phone,
                                 addr: addr,
                                 branch: window.selectedbranch,
+                                year: selectedYear,
                                 status: 'ভর্তি সম্পন্ন'
                             });
                             count++;
@@ -4159,20 +4246,19 @@
         window.startMarqueeEngine = () => {
             const marqueeEl = document.getElementById('marquee-notice-text');
             const noticeBadge = document.getElementById('notice-badge-container');
+            const marqueeContainer = document.getElementById('marquee-container-box');
             if (!marqueeEl) return;
 
             const now = new Date();
-            now.setHours(0, 0, 0, 0); // Strictly compare date only
+            now.setHours(0, 0, 0, 0); 
 
-            // Filter notices strictly by Expiry date (মেয়াদ)
             const activeNotices = (window.notices || []).filter(n => {
-                if (!n.expiry) return true; // Show permanently if no expiry set
+                if (!n.expiry) return true; 
                 const expiryDate = new Date(n.expiry);
-                expiryDate.setHours(23, 59, 59, 999); // Valid until midnight of the expiry day
+                expiryDate.setHours(23, 59, 59, 999); 
                 return expiryDate.getTime() >= now.getTime();
             });
 
-            // Get styling configuration defaults or customized profiles
             const config = window.marqueeConfig || {
                 noticeColor: '#dc2626',
                 quoteColor: '#047857',
@@ -4180,18 +4266,19 @@
                 fontFamily: "'Noto Sans Bengali', 'Hind Siliguri', sans-serif"
             };
 
-            // Set global font configurations
+            // Inject custom styles directly to ensure immediate visual apply
             marqueeEl.style.fontSize = config.fontSize;
             marqueeEl.style.fontFamily = config.fontFamily;
+            if (marqueeContainer) {
+                marqueeContainer.style.fontFamily = config.fontFamily;
+            }
 
             if (activeNotices.length > 0) {
-                // If notices are active, render notices with customized Notice Color
                 const noticeString = activeNotices.map(n => `📢 ${n.title}: ${n.desc}`).join('   ❖   ');
                 marqueeEl.innerHTML = noticeString;
                 if (noticeBadge) noticeBadge.classList.remove('hidden');
                 marqueeEl.style.color = config.noticeColor;
             } else {
-                // If no active notice exists, display beautiful quotes with Quote Color (Not Red!)
                 const quotesString = ISLAMIC_QUOTES.join('   ❖   ');
                 marqueeEl.innerHTML = quotesString;
                 if (noticeBadge) noticeBadge.classList.add('hidden');
@@ -4450,7 +4537,7 @@
                 if (fetchedStudents.length > 0) {
                     window.mockStudents = fetchedStudents;
                 } else {
-                    window.mockStudents = [...MALE_STUDENTS, ...FEMALE_STUDENTS];
+                    window.mockStudents = [...MALE_STUDENTS];
                 }
                 renderStudentList();
             }, (error) => {
@@ -4615,7 +4702,7 @@
                 noticeColor: data.marqueeNoticeColor || '#dc2626',
                 quoteColor: data.marqueeQuoteColor || '#047857',
                 fontSize: data.marqueeSize || '12px',
-                fontFamily: data.marqueeFont || "'Noto Sans Bengali', 'Hind Siliguri', sans-serif"
+                fontFamily: data.marqueeFont || "'Noto Sans Bengali', sans-serif"
             };
 
             const noticeColEl = document.getElementById('cust-marquee-notice-color');
@@ -4628,7 +4715,6 @@
             if (mSizeEl) mSizeEl.value = window.marqueeConfig.fontSize;
             if (mFontEl) mFontEl.value = window.marqueeConfig.fontFamily;
 
-            // Trigger scroller re-render instantly with synchronized style profiles
             startMarqueeEngine();
         }
 
@@ -4754,9 +4840,6 @@
                 const studentsCol = collection(db, 'artifacts', appId, 'public', 'data', 'students');
                 const studentSnap = await getDocs(studentsCol);
                 if (studentSnap.empty) {
-                    for (let s of FEMALE_STUDENTS) {
-                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', String(s.id)), s);
-                    }
                     for (let s of MALE_STUDENTS) {
                         await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', String(s.id)), s);
                     }
@@ -4877,11 +4960,6 @@
                 document.getElementById('admin-branch-selection-screen').classList.remove('hidden');
                 document.getElementById('admin-students-list-view').classList.add('hidden');
 
-                const headerInd = document.getElementById('header-logo-edit-indicator');
-                const aboutInd = document.getElementById('about-logo-edit-indicator');
-                if (headerInd) headerInd.classList.remove('hidden');
-                if (aboutInd) aboutInd.classList.remove('hidden');
-
                 showToast("অ্যাডমিন লগইন সফল!");
                 renderContacts(); 
                 renderNotices();
@@ -4901,11 +4979,6 @@
 
             document.getElementById('nav-visitor-group').classList.remove('hidden');
             document.getElementById('nav-admin-group').classList.add('hidden');
-
-            const headerInd = document.getElementById('header-logo-edit-indicator');
-            const aboutInd = document.getElementById('about-logo-edit-indicator');
-            if (headerInd) headerInd.classList.add('hidden');
-            if (aboutInd) aboutInd.classList.add('hidden');
 
             closeModal('admin-modal');
             renderContacts(); 
@@ -5056,7 +5129,7 @@
                 timestamp: Date.now()
             };
 
-            // Double Sync: 1. Save locally to LocalStorage first (Offline-ready)
+            // Double Sync: 1. Save locally first
             let localNotices = JSON.parse(localStorage.getItem('local_notices') || '[]');
             localNotices.unshift(newNotice);
             localStorage.setItem('local_notices', JSON.stringify(localNotices));
@@ -5073,7 +5146,6 @@
             } catch (err) {
                 console.warn("Firestore save error, fallback to offline storage:", err);
                 showToast("নোটিশ অফলাইনে সেভ ও পাবলিশ হয়েছে!");
-                logUserAction("নতুন নোটিশ পাবলিশ (অফলাইন): " + title);
             }
 
             titleInput.value = "";
@@ -5085,13 +5157,11 @@
             if (!window.isAdminLoggedIn) return;
             
             showConfirm("আপনি কি নিশ্চিতভাবে এই নোটিশটি ডিলিট করতে চান?", async () => {
-                // Double Sync: 1. Remove from LocalStorage
                 let localNotices = JSON.parse(localStorage.getItem('local_notices') || '[]');
                 const targetNotice = localNotices.find(n => String(n.id) === String(id));
                 localNotices = localNotices.filter(n => String(n.id) !== String(id));
                 localStorage.setItem('local_notices', JSON.stringify(localNotices));
 
-                // Save to Recycle Bin locally
                 if (targetNotice) {
                     let localRecycle = JSON.parse(localStorage.getItem('local_recycle_bin') || '[]');
                     localRecycle.push({
@@ -5108,7 +5178,6 @@
                 startMarqueeEngine();
 
                 try {
-                    // Double Sync: 2. Remove from Cloud Firestore Database
                     const noticeRef = doc(db, 'artifacts', appId, 'public', 'data', 'notices', String(id));
                     if (targetNotice) {
                         await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'recycleBin', 'notice_' + id), {
@@ -5119,10 +5188,8 @@
                     }
                     await deleteDoc(noticeRef);
                     showToast("নোটিশটি ডিলিট করা হয়েছে!");
-                    logUserAction("নোটিশ ডিলিট: ID " + id);
                 } catch (err) {
-                    console.warn("Firestore delete failed, saved offline deletions:", err);
-                    showToast("নোটিশটি অফলাইনে ডিলিট করা হয়েছে!");
+                    console.warn("Firestore delete failed, saved offline:", err);
                 }
             });
         };
@@ -5135,6 +5202,7 @@
             let phone = document.getElementById('new-std-phone').value.trim();
             let addr = document.getElementById('new-std-addr').value.trim();
             let editId = document.getElementById('edit-std-id').value;
+            const currentSelectedYear = document.getElementById('admin-year-filter').value;
 
             if(!id || !name) { showToast("আইডি এবং নাম আবশ্যক"); return; }
 
@@ -5146,7 +5214,8 @@
                     fname: fname,
                     phone: phone,
                     addr: addr,
-                    branch: window.selectedbranch
+                    branch: window.selectedbranch,
+                    year: currentSelectedYear 
                 };
                 if(!editId) payload.status = 'ভর্তি সম্পন্ন';
 
@@ -5154,7 +5223,7 @@
                 if(editId && editId !== id) {
                     await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', String(editId)));
                 }
-                showToast("সংরক্ষণ সম্পন্ন হয়েছে");
+                showToast("সংরখন সম্পন্ন হয়েছে");
                 closeAddStudentForm();
                 renderStudentList();
             } catch (e) {
@@ -5165,6 +5234,7 @@
         window.saveBulkStudents = async () => {
             const text = document.getElementById('student-bulk-textarea').value.trim();
             const cls = document.getElementById('bulk-std-class').value;
+            const currentSelectedYear = document.getElementById('admin-year-filter').value;
             if (!text) {
                 showToast("দয়া করে টেক্সট বক্সে শিক্ষার্থীদের তথ্য দিন!");
                 return;
@@ -5220,6 +5290,7 @@
                             addr: addr,
                             phone: phone,
                             branch: window.selectedbranch,
+                            year: currentSelectedYear, 
                             status: 'ভর্তি সম্পন্ন'
                         });
                     }
@@ -5274,7 +5345,6 @@
                         await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', String(id)));
                         showToast("শিক্ষার্থী রিসাইকেল বিনে পাঠানো হয়েছে");
                         renderStudentList();
-                        logUserAction("শিক্ষার্থী ডিলিট সম্পন্ন");
                     } catch (e) {
                         console.error(e);
                     }
@@ -5403,7 +5473,6 @@
                     } else if(item.type === 'contact') {
                         await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'contacts', String(item.data.id)), item.data);
                     } else if(item.type === 'notice') {
-                        // Restore notice list in local storage
                         let localNotices = JSON.parse(localStorage.getItem('local_notices') || '[]');
                         localNotices.unshift(item.data);
                         localStorage.setItem('local_notices', JSON.stringify(localNotices));
@@ -5414,14 +5483,12 @@
                         await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'notices', String(item.data.id)), item.data);
                     }
                     
-                    // Clean up recycle bin locally
                     localRecycle = localRecycle.filter(r => r.id !== item.id);
                     localStorage.setItem('local_recycle_bin', JSON.stringify(localRecycle));
                     
                     await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'recycleBin', item.id));
                     showToast("পুনরুদ্ধার সফল হয়েছে!");
                 } catch (e) {
-                    // Force clean local anyway if DB failed offline
                     localRecycle = localRecycle.filter(r => r.id !== item.id);
                     localStorage.setItem('local_recycle_bin', JSON.stringify(localRecycle));
                     showToast("সফলভাবে পুনরুদ্ধার সম্পন্ন হয়েছে!");
@@ -5448,6 +5515,25 @@
                 showToast("স্থায়ীভাবে মুছে ফেলা হয়েছে (লোকাল)!");
                 renderRecycleBin();
             }
+        };
+
+        window.deleteAllStudentsConfirm = () => {
+            showConfirm("আপনি কি নিশ্চিতভাবে ডাটাবেজ থেকে সমস্ত শিক্ষার্থীর ডাটা চিরতরে ডিলিট করতে চান? এই কাজ পুনরায় ফিরে আনা সম্ভব নয়!", async () => {
+                showToast("সমস্ত শিক্ষার্থীর ডাটা ডিলিট করা হচ্ছে...");
+                try {
+                    const promises = window.mockStudents.map(async (s) => {
+                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', String(s.id)));
+                    });
+                    await Promise.all(promises);
+                    window.mockStudents = [];
+                    renderStudentList();
+                    showToast("সাফল্যের সাথে সমস্ত শিক্ষার্থীর ডাটা মুছে ফেলা হয়েছে!");
+                    logUserAction("সব শিক্ষার্থীর তথ্য মুছে ফেলা হয়েছে");
+                } catch (e) {
+                    console.error("Delete all failed: ", e);
+                    showToast("ডাটা মুছতে সমস্যা হয়েছে!");
+                }
+            });
         };
 
         window.changeAdminPinFirebase = async () => {
@@ -5525,7 +5611,6 @@
                     linkStudentProfile: document.getElementById('cust-link-std-profile').value.trim() || 'https://qmmsoft.com/10012/login',
                     linkTeacherProfile: document.getElementById('cust-link-teacher-profile').value.trim() || 'https://qmmsoft.com/login',
 
-                    // Fetch customized scroller styles
                     marqueeNoticeColor: document.getElementById('cust-marquee-notice-color').value,
                     marqueeQuoteColor: document.getElementById('cust-marquee-quote-color').value,
                     marqueeSize: document.getElementById('cust-marquee-size').value,
@@ -5549,14 +5634,17 @@
         window.renderStudentList = () => {
             const filter = document.getElementById('admin-class-filter') ? document.getElementById('admin-class-filter').value : 'all';
             const query = document.getElementById('admin-search').value.toLowerCase().trim();
+            const selectedYear = document.getElementById('admin-year-filter') ? document.getElementById('admin-year-filter').value : '2026';
             const container = document.getElementById('student-list-container');
             if(!container) return;
 
             let filtered = window.mockStudents.filter(s => {
                 const matchbranch = s.branch === window.selectedbranch;
                 const matchClass = filter === 'all' || s.cls === filter;
+                const studentYear = s.year || '2026'; // Fallback for existing students
+                const matchYear = studentYear === selectedYear;
                 const matchSearch = query === '' || s.name.toLowerCase().includes(query) || s.phone.includes(query) || s.id.includes(query);
-                return matchbranch && matchClass && matchSearch;
+                return matchbranch && matchClass && matchYear && matchSearch;
             });
 
             const totalEl = document.getElementById('admin-stats-total');
