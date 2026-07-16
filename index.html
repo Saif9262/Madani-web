@@ -19,9 +19,14 @@
             darkMode: 'class', 
         }
     </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100..800&family=Atma:wght@300..700&family=Galada&family=Hind+Siliguri:wght@300..700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@100..900&family=Tiro+Bangla:ital@0;1&display=swap');
-        
+		<style>
+			/* সোলায়মানি লিপি এবং তির বাংলা ফন্ট ইম্পোর্ট */
+			@font-face {
+				font-family: 'SolaimanLipi';
+				src: url('https://cdnjs.cloudflare.com/ajax/libs/solaimanlipi/1.0.0/SolaimanLipi.woff') format('woff');
+				font-weight: normal;
+				font-style: normal;
+			}
         :root {
             --bg-body: #f0fdf4; 
             --bg-card: #ffffff;
@@ -53,13 +58,13 @@
         }
 
         body { 
-            font-family: 'Noto Sans Bengali', 'Hind Siliguri', sans-serif; 
-            background-color: var(--bg-body); 
-            color: var(--text-main);
-            -webkit-tap-highlight-color: transparent; 
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-            position: relative;
-        }
+			font-family: 'SolaimanLipi', 'Tiro Bangla', 'Noto Sans Bengali', sans-serif; 
+			background-color: var(--bg-body); 
+			color: var(--text-main);
+			-webkit-tap-highlight-color: transparent; 
+			transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+			position: relative;
+		}
 
         body::before {
             content: "";
@@ -1000,9 +1005,10 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-[10px] theme-text-muted mb-1">ফন্ট ফ্যামিলি (৮টি বাংলা ফন্ট)</label>
+                                    <label class="block text-[10px] theme-text-muted mb-1">ফন্ট ফ্যামিলি (৯টি বাংলা ফন্ট)</label>
                                     <select id="cust-marquee-font" class="w-full border border-[var(--border-color)] rounded-lg p-2 text-xs bg-transparent theme-text outline-none">
                                         <option value="'Noto Sans Bengali', sans-serif">Noto Sans Bengali</option>
+										<option value="'SolaimanLipi', sans-serif">Solaiman Lipi</option>
                                         <option value="'Hind Siliguri', sans-serif">Hind Siliguri</option>
                                         <option value="'Anek Bangla', sans-serif">Anek Bangla</option>
                                         <option value="'Tiro Bangla', serif">Tiro Bangla</option>
@@ -1321,7 +1327,7 @@
     </div>
 
     <script>
-        window.appUrls = {
+window.appUrls = {
             whatsapp: 'https://chat.whatsapp.com/G8R9T1wgLzfGYh4JdJe5XG',
             guardian: 'https://qmmsoft.com/10012',
             website: 'https://madaninagarbd.com',
@@ -3620,13 +3626,12 @@
 			"“ইসলাম মানেই শান্তি ও আত্মসমর্পণ।”"
         ];
 
-        window.mockStudents = [...MALE_STUDENTS]; 
+  window.mockStudents = [...MALE_STUDENTS]; 
         window.contactsList = [...DEFAULT_CONTACTS];
         window.notices = JSON.parse(localStorage.getItem('local_notices') || '[]');
         window.alerts = [];
         window.notesList = [];
         window.recycleBin = [];
-        
         window.isAdminLoggedIn = false;
         window.selectedbranch = 'female'; 
 
@@ -3711,6 +3716,7 @@
                 modal.children[0].classList.add('scale-100');
             }, 10);
         };
+
         window.closeConfirmModal = () => {
             const modal = document.getElementById('confirm-modal');
             modal.children[0].classList.remove('scale-100');
@@ -3720,6 +3726,7 @@
                 modal.classList.remove('flex');
             }, 200);
         };
+
         document.getElementById('confirm-yes-btn').onclick = () => {
             if (confirmCallback) confirmCallback();
             closeConfirmModal();
@@ -3753,7 +3760,7 @@
             setTimeout(() => {
                 modal.classList.add('hidden');
                 if(activeModal === id) activeModal = null;
-            }, 300); 
+            }, 300);
         };
 
         window.closeAllModals = () => { if(activeModal) closeModal(activeModal); };
@@ -3779,6 +3786,7 @@
             const menu = document.getElementById('profile-dropdown');
             menu.classList.toggle('hidden');
         };
+
         window.closeProfileMenu = () => {
             const dropdown = document.getElementById('profile-dropdown');
             if (dropdown) dropdown.classList.add('hidden');
@@ -3822,7 +3830,6 @@
                 const cropImg = document.getElementById('crop-image');
                 cropImg.src = e.target.result;
 
-                // Open Crop Modal
                 const modal = document.getElementById('crop-modal');
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
@@ -3831,7 +3838,6 @@
                     cropperInstance.destroy();
                 }
 
-                // Initialize 1:1 Square Cropper
                 setTimeout(() => {
                     cropperInstance = new Cropper(cropImg, {
                         aspectRatio: 1,
@@ -3871,7 +3877,6 @@
             });
             const croppedBase64 = canvas.toDataURL('image/jpeg', 0.85);
 
-            // Immediately apply cropped view on frontend
             if (currentLogoType === 'header') {
                 const logoImg = document.getElementById('madrasa-logo-header');
                 const logoSvg = document.getElementById('madrasa-logo-svg');
@@ -3890,7 +3895,6 @@
                 }
             }
 
-            // Sync to database
             if (window.uploadLogoFirebase) {
                 await window.uploadLogoFirebase(croppedBase64, currentLogoType);
             }
@@ -3905,7 +3909,6 @@
             const menu = document.getElementById('shared-action-menu');
             const editBtn = document.getElementById('action-edit-btn');
             const deleteBtn = document.getElementById('action-delete-btn');
-
             if (type === 'note') {
                 editBtn.onclick = () => { hideActionMenu(); window.editNote(id); };
                 deleteBtn.onclick = () => { hideActionMenu(); window.deleteNote(id); };
@@ -3926,28 +3929,42 @@
             menu.style.left = Math.min(rect.left, window.innerWidth - 130) + 'px';
             menu.classList.remove('hidden');
         };
-        
+
         window.hideActionMenu = () => {
             const menu = document.getElementById('shared-action-menu');
             if(menu) menu.classList.add('hidden');
         };
 
         function getBanglaDate(date) {
-            const day = date.getDate(); const month = date.getMonth(); const year = date.getFullYear();
-            let bMonth = ""; let bDay = 0; let bYear = year - 593; let season = "";
+            const day = date.getDate();
+            const month = date.getMonth(); 
+            const year = date.getFullYear();
+            let bMonth = ""; 
+            let bDay = 0;
+            let bYear = year - 593; 
+            let season = "";
             if (month === 5) {
-                if (day <= 14) { bMonth = "জ্যৈষ্ঠ"; bDay = day + 17; season = "গ্রীষ্মকাল"; } 
-                else { bMonth = "আষাঢ়"; bDay = day - 14; season = "বর্ষাকাল"; }
+                if (day <= 14) { 
+                    bMonth = "জ্যৈষ্ঠ";
+                    bDay = day + 17; 
+                    season = "গ্রীষ্মকাল"; 
+                } else { 
+                    bMonth = "আষাঢ়";
+                    bDay = day - 14; 
+                    season = "বর্ষাকাল"; 
+                }
             } else {
                 const bNames = ["পৌষ", "মাঘ", "ফাল্গুন", "চৈত্র", "বৈশাখ", "জ্যৈষ্ঠ", "আষাঢ়", "শ্রাবণ", "ভাদ্র", "আশ্বিন", "কার্তিক", "অগ্রহায়ণ"];
-                bMonth = bNames[month]; bDay = day;
+                bMonth = bNames[month]; 
+                bDay = day;
             }
             return { day: toBanglaNum(bDay), month: bMonth, year: toBanglaNum(bYear), season: season };
         }
 
         function updateDates(date) {
             const options = { day: 'numeric', month: 'long', year: 'numeric' };
-            document.getElementById('display-month-year').innerText = `▼ ${new Intl.DateTimeFormat('bn-BD', options).format(date)}`;
+            const dateEl = document.getElementById('display-month-year');
+            if(dateEl) dateEl.innerText = `▼ ${new Intl.DateTimeFormat('bn-BD', options).format(date)}`;
             
             const hijriMonthsBangla = ['মুহাররাম','সফর','রবিউল আউয়াল','রবিউস সানী','জুমাদাল উলা','জুমাদাস সানী','রজব','শাবান','রামাদান','শাওয়াল','জিলকদ','জিলহজ'];
             const hijriEnFormatter = new Intl.DateTimeFormat('en-u-ca-islamic', { day: 'numeric', month: 'numeric', year: 'numeric' });
@@ -3959,11 +3976,15 @@
                 if(p.type === 'year') hYear = parseInt(p.value);
             });
             const hijriMonthName = hijriMonthsBangla[hMonth] || '';
-            document.getElementById('display-hijri').innerText = `${toBanglaNum(hDay)} ${hijriMonthName} ${toBanglaNum(hYear)} হি.`;
+            const hijriEl = document.getElementById('display-hijri');
+            if(hijriEl) hijriEl.innerText = `${toBanglaNum(hDay)} ${hijriMonthName} ${toBanglaNum(hYear)} হি.`;
             
             const bangla = getBanglaDate(date);
             const weekday = new Intl.DateTimeFormat('bn-BD', { weekday: 'long' }).format(date);
-            document.getElementById('display-bangla').innerText = `${weekday}, ${bangla.day} ${bangla.month} ${bangla.year} বঙ্গাব্দ${bangla.season ? ', '+bangla.season : ''}`;
+            const banglaEl = document.getElementById('display-bangla');
+            if(banglaEl) {
+                banglaEl.innerText = `${weekday}, ${bangla.day} ${bangla.month} ${bangla.year} বঙ্গাব্দ${bangla.season ? ', ' + bangla.season : ''}`;
+            }
         }
 
         /* Calculator Logic */
@@ -3973,7 +3994,6 @@
             document.querySelectorAll('.calc-section').forEach(el => el.classList.add('hidden'));
             let targetSec = document.getElementById('calc-' + tab);
             if(targetSec) targetSec.classList.remove('hidden');
-            
             ['half', 'full'].forEach(t => {
                 let btn = document.getElementById('tab-' + t);
                 if(btn) {
@@ -3992,7 +4012,7 @@
                 if(days > 30) days = 30;
                 total = Math.round((monthlyRate / 30) * days);
             } else if (currentCalcTab === 'full') {
-                let baseMonthly = 3300; 
+                let baseMonthly = 3300;
                 let days = parseInt(document.getElementById('full-khana-days').value) || 0;
                 if(days > 30) days = 30;
                 total = Math.round((baseMonthly / 30) * days);
@@ -4105,7 +4125,6 @@
             const bulkSec = document.getElementById('due-bulk-section');
             const btnSingle = document.getElementById('tab-due-single');
             const btnBulk = document.getElementById('tab-due-bulk');
-            
             if (tab === 'single') {
                 singleSec.classList.remove('hidden');
                 bulkSec.classList.add('hidden');
@@ -4124,7 +4143,6 @@
             const bulkSec = document.getElementById('student-bulk-section');
             const btnSingle = document.getElementById('tab-student-single');
             const btnBulk = document.getElementById('tab-student-bulk');
-            
             if (tab === 'single') {
                 singleSec.classList.remove('hidden');
                 bulkSec.classList.add('hidden');
@@ -4142,7 +4160,6 @@
             const selectedClass = document.getElementById('due-class-select').value;
             const studentSelect = document.getElementById('due-student-select');
             const filtered = window.mockStudents.filter(s => s.branch === window.selectedbranch && s.cls === selectedClass);
-            
             if (filtered.length === 0) {
                 studentSelect.innerHTML = `<option value="">কোনো শিক্ষার্থী নেই</option>`;
             } else {
@@ -4168,16 +4185,13 @@
             const newStdClassSelect = document.getElementById('new-std-class');
             const bulkStdClassSelect = document.getElementById('bulk-std-class');
             const classes = branch === 'male' ? BOYS_CLASSES : GIRLS_CLASSES;
-            
             if (filterSelect) {
                 filterSelect.innerHTML = `<option value="all" class="bg-[var(--bg-card)]">সকল ক্লাস</option>` + 
                     classes.map(c => `<option value="${c}" class="bg-[var(--bg-card)]">${c}</option>`).join('');
             }
-            
             if (newStdClassSelect) {
                 newStdClassSelect.innerHTML = classes.map(c => `<option value="${c}" class="bg-[var(--bg-card)]">${c}</option>`).join('');
             }
-
             if (bulkStdClassSelect) {
                 bulkStdClassSelect.innerHTML = classes.map(c => `<option value="${c}" class="bg-[var(--bg-card)]">${c}</option>`).join('');
             }
@@ -4204,7 +4218,6 @@
                 const lines = text.split('\n');
                 let count = 0;
                 const selectedYear = document.getElementById('admin-year-filter').value;
-                
                 for (let i = 1; i < lines.length; i++) {
                     const line = lines[i].trim();
                     if (!line) continue;
@@ -4217,7 +4230,6 @@
                         const fname = cols[3] ? cols[3].trim() : '';
                         const phone = cols[4] ? cols[4].trim() : '';
                         const addr = cols[5] ? cols[5].trim() : '';
-
                         if (stdId && name && window.importStudentDirect) {
                             await window.importStudentDirect({
                                 id: stdId,
@@ -4240,7 +4252,7 @@
             reader.readAsText(file, 'UTF-8');
         };
 
-        /* High-Performance Marquee Scroller Engine with Custom Colors, Font Family and Sizes */
+        /* High-Performance Marquee Scroller Engine */
         window.startMarqueeEngine = () => {
             const marqueeEl = document.getElementById('marquee-notice-text');
             const noticeBadge = document.getElementById('notice-badge-container');
@@ -4248,8 +4260,7 @@
             if (!marqueeEl) return;
 
             const now = new Date();
-            now.setHours(0, 0, 0, 0); 
-
+            now.setHours(0, 0, 0, 0);
             const activeNotices = (window.notices || []).filter(n => {
                 if (!n.expiry) return true; 
                 const expiryDate = new Date(n.expiry);
@@ -4264,7 +4275,6 @@
                 fontFamily: "'Noto Sans Bengali', 'Hind Siliguri', sans-serif"
             };
 
-            // Inject custom styles directly to ensure immediate visual apply
             marqueeEl.style.fontSize = config.fontSize;
             marqueeEl.style.fontFamily = config.fontFamily;
             if (marqueeContainer) {
@@ -4272,12 +4282,12 @@
             }
 
             if (activeNotices.length > 0) {
-                const noticeString = activeNotices.map(n => `📢 ${n.title}: ${n.desc}`).join('   ❖   ');
+                const noticeString = activeNotices.map(n => `📢 ${n.title}: ${n.desc}`).join(' ❖ ');
                 marqueeEl.innerHTML = noticeString;
                 if (noticeBadge) noticeBadge.classList.remove('hidden');
                 marqueeEl.style.color = config.noticeColor;
             } else {
-                const quotesString = ISLAMIC_QUOTES.join('   ❖   ');
+                const quotesString = ISLAMIC_QUOTES.join(' ❖ ');
                 marqueeEl.innerHTML = quotesString;
                 if (noticeBadge) noticeBadge.classList.add('hidden');
                 marqueeEl.style.color = config.quoteColor;
@@ -4322,20 +4332,15 @@
         window.renderRecycleBin = () => {
             const container = document.getElementById('recycle-bin-list');
             if (!container) return;
-            
             let localRecycle = JSON.parse(localStorage.getItem('local_recycle_bin') || '[]');
             let activeRecycle = (window.recycleBin && window.recycleBin.length > 0) ? window.recycleBin : localRecycle;
-            
             if (activeRecycle.length === 0) {
                 container.innerHTML = '<p class="text-center theme-text-muted py-10 text-xs">রিসাইকেল বিন খালি</p>';
                 return;
             }
             container.innerHTML = activeRecycle.map((item, idx) => {
                 const d = item.data || item;
-                const label = item.type === 'note' ? (d.text ? d.text.substring(0, 50) : 'নোট') 
-                            : item.type === 'student' ? (d.name || 'শিক্ষার্থী') 
-                            : item.type === 'contact' ? (d.name || 'যোগাযোগ')
-                            : (d.title || 'নোটিশ');
+                const label = item.type === 'note' ? (d.text ? d.text.substring(0, 50) : 'নোট') : item.type === 'student' ? (d.name || 'শিক্ষার্থী') : item.type === 'contact' ? (d.name || 'যোগাযোগ') : (d.title || 'নোটিশ');
                 const icon = item.type === 'note' ? '📝' : item.type === 'student' ? '👤' : '📢';
                 return `
                 <div class="p-3 theme-card rounded-xl border shadow-sm flex items-start gap-3">
@@ -4344,7 +4349,7 @@
                         <p class="text-sm font-bold theme-text truncate">${label}</p>
                         <p class="text-[10px] theme-text-muted mt-0.5">${item.type === 'student' ? 'শিক্ষার্থী' : item.type === 'note' ? 'নোট' : 'নোটিশ'}</p>
                     </div>
-                    <button onclick="restoreItem(${idx})" class="shrink-0 bg-green-600 text-white text-[10px] font-bold px-2 py-1 rounded-lg active:scale-95">পুনруд</button>
+                    <button onclick="restoreItem(${idx})" class="shrink-0 bg-green-600 text-white text-[10px] font-bold px-2 py-1 rounded-lg active:scale-95">পুনরুদ্ধার</button>
                     <button onclick="deletePermanentPrompt(${idx})" class="shrink-0 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-lg active:scale-95">মুছুন</button>
                 </div>`;
             }).join('');
@@ -4352,7 +4357,16 @@
 
         window.deletePermanentPrompt = (idx) => {
             showConfirm("আপনি কি নিশ্চিত? এই তথ্যটি স্থায়ীভাবে মুছে ফেলা হবে এবং তা আর ফিরিয়ে আনা যাবে না।", () => {
-                window.permanentDeleteItem(idx);
+                if (window.permanentDeleteItem) {
+                    window.permanentDeleteItem(idx);
+                } else {
+                    let localRecycle = JSON.parse(localStorage.getItem('local_recycle_bin') || '[]');
+                    localRecycle.splice(idx, 1);
+                    localStorage.setItem('local_recycle_bin', JSON.stringify(localRecycle));
+                    window.recycleBin = localRecycle;
+                    renderRecycleBin();
+                    showToast("স্থায়ীভাবে মুছে ফেলা হয়েছে");
+                }
             });
         };
 
@@ -4360,7 +4374,6 @@
             event.stopPropagation();
             const submenu = document.getElementById('theme-submenu');
             const arrow = document.getElementById('theme-arrow');
-            
             if (submenu.classList.contains('hidden')) {
                 submenu.classList.remove('hidden');
                 arrow.style.transform = 'rotate(90deg)';
@@ -4368,6 +4381,19 @@
                 submenu.classList.add('hidden');
                 arrow.style.transform = 'rotate(0deg)';
             }
+        };
+		
+		// এই পর্যন্ত হয়েছে
+
+ window.toBanglaNum = (num) => {
+            if (num === null || num === undefined) return '০';
+            const banglaDigits = {'0':'০', '1':'১', '2':'২', '3':'৩', '4':'৪', '5':'৫', '6':'৬', '7':'৭', '8':'৮', '9':'৯'};
+            return String(num).replace(/[0-9]/g, (digit) => banglaDigits[digit]);
+        };
+
+        // ইউজার অ্যাকশন লগ করার ফাংশন (যা পূর্বে অনুপস্থিত ছিল)
+        window.logUserAction = (action) => {
+            console.log(`[Action Logged] ${action} at ${new Date().toLocaleString('bn-BD')}`);
         };
 
         window.searchDueStudents = () => {
@@ -4405,7 +4431,7 @@
                 let bgStyle = "background-color:rgba(16,185,129,0.05);border-color:rgba(52,211,153,0.3);";
                 const dueVal = s.due || 0;
                 
-                const dueLabel = dueVal > 0 ? `${toBanglaNum(dueVal)} ৳` : `০ ৳ (পরিশোধিত)`;
+                const dueLabel = dueVal > 0 ? `${window.toBanglaNum(dueVal)} ৳` : `০ ৳ (পরিশোধিত)`;
                 const dueColorClass = dueVal > 0 ? 'text-red-600 dark:text-red-400 font-bold' : 'text-emerald-600 dark:text-emerald-400 font-bold';
                 
                 return `
@@ -4414,7 +4440,7 @@
                             <div class="space-y-1">
                                 <span class="text-[10px] bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-400 px-2.5 py-0.5 rounded-full font-bold inline-block">${s.cls}</span>
                                 <h4 class="font-bold theme-text text-base leading-tight">
-                                    [আইডি: ${toBanglaNum(s.id)}] ${s.name}
+                                    [আইডি: ${window.toBanglaNum(s.id)}] ${s.name}
                                 </h4>
                                 <p class="text-xs theme-text-muted">পিতার নাম: <span class="font-bold theme-text">${s.fname || '---'}</span></p>
                                 <p class="text-xs theme-text-muted font-sans">মোবাইল: <span class="font-semibold theme-text">${s.phone || '---'}</span></p>
@@ -4535,7 +4561,7 @@
                 if (fetchedStudents.length > 0) {
                     window.mockStudents = fetchedStudents;
                 } else {
-                    window.mockStudents = [...MALE_STUDENTS];
+                    window.mockStudents = typeof MALE_STUDENTS !== 'undefined' ? [...MALE_STUDENTS] : [];
                 }
                 renderStudentList();
             }, (error) => {
@@ -4787,14 +4813,14 @@
                 
                 if (submitBtn.innerText === "লগইন করুন") {
                     await signInWithEmailAndPassword(auth, email, pass);
-                    logUserAction(`ইউজার লগইন: ${email}`);
+                    window.logUserAction(`ইউজার লগইন: ${email}`);
                 } else {
                     const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
                     if (name) {
                         const userDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', userCredential.user.uid);
                         await setDoc(userDocRef, { name: name, email: email, registeredAt: Date.now() });
                     }
-                    logUserAction(`নতুন রেজিস্ট্রেশন: ${email}`);
+                    window.logUserAction(`নতুন রেজিস্ট্রেশন: ${email}`);
                 }
                 closeModal('login-modal');
             } catch (e) {
@@ -4818,7 +4844,7 @@
             try {
                 await signOut(auth);
                 showToast("সাফল্যের সাথে লগআউট করা হয়েছে");
-                logUserAction("ইউজার লগআউট");
+                window.logUserAction("ইউজার লগআউট");
             } catch (e) {
                 console.error(e);
             }
@@ -4837,7 +4863,7 @@
 
                 const studentsCol = collection(db, 'artifacts', appId, 'public', 'data', 'students');
                 const studentSnap = await getDocs(studentsCol);
-                if (studentSnap.empty) {
+                if (studentSnap.empty && typeof MALE_STUDENTS !== 'undefined') {
                     for (let s of MALE_STUDENTS) {
                         await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', String(s.id)), s);
                     }
@@ -4845,7 +4871,7 @@
 
                 const contactsCol = collection(db, 'artifacts', appId, 'public', 'data', 'contacts');
                 const contactSnap = await getDocs(contactsCol);
-                if (contactSnap.empty) {
+                if (contactSnap.empty && typeof DEFAULT_CONTACTS !== 'undefined') {
                     for (let c of DEFAULT_CONTACTS) {
                         await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'contacts', String(c.id)), c);
                     }
@@ -4887,7 +4913,7 @@
                 });
                 showToast("যোগাযোগ সফলভাবে সংরক্ষিত হয়েছে!");
                 closeAddContactForm();
-                logUserAction("যোগাযোগ তালিকা আপডেট সম্পন্ন");
+                window.logUserAction("যোগাযোগ তালিকা আপডেট সম্পন্ন");
             } catch (e) {
                 showToast("সংরক্ষণ ব্যর্থ হয়েছে!");
             }
@@ -4961,7 +4987,7 @@
                 showToast("অ্যাডমিন লগইন সফল!");
                 renderContacts(); 
                 renderNotices();
-                logUserAction("অ্যাডমিন প্যানেল প্রবেশ");
+                window.logUserAction("অ্যাডমিন প্যানেল প্রবেশ");
             } else {
                 showToast("ভুল পিন কোড!");
                 document.getElementById('admin-pin').value = '';
@@ -4982,7 +5008,7 @@
             renderContacts(); 
             renderNotices();
             showToast("অ্যাডমিন লগআউট সফল!");
-            logUserAction("অ্যাডমিন প্যানেল প্রস্থান");
+            window.logUserAction("অ্যাডমিন প্যানেল প্রস্থান");
         };
 
         window.loadRoutineForSelectedClass = async () => {
@@ -5022,7 +5048,7 @@
                     updatedAt: Date.now()
                 });
                 showToast("রুটিন সফলভাবে আপডেট হয়েছে!");
-                logUserAction(`রুটিন এডিট: ${branch === 'male' ? 'বালক' : 'বালিকা'} - ${cls}`);
+                window.logUserAction(`রুটিন এডিট: ${branch === 'male' ? 'বালক' : 'বালিকা'} - ${cls}`);
                 
                 document.getElementById('routine-display').innerHTML = newText.replace(/\n/g, '<br>');
                 cancelRoutineEdit();
@@ -5082,7 +5108,7 @@
                     updatedAt: Date.now()
                 });
                 showToast("সাক্ষাতের সময়সূচী সফলভাবে সংরক্ষিত হয়েছে!");
-                logUserAction("সাক্ষাতের সময়সূচী আপডেট সম্পন্ন");
+                window.logUserAction("সাক্ষাতের সময়সূচী আপডেট সম্পন্ন");
                 
                 document.getElementById('sakkhat-morning').innerText = morning;
                 document.getElementById('sakkhat-noon').innerText = noon;
@@ -5140,7 +5166,7 @@
                 // Double Sync: 2. Sync / write to FireStore Database
                 await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'notices', noticeId), newNotice);
                 showToast("নোটিশ সফলভাবে সেভ ও পাবলিশ হয়েছে!");
-                logUserAction("নতুন নোটিশ পাবলিশ: " + title);
+                window.logUserAction("নতুন নোটিশ পাবলিশ: " + title);
             } catch (err) {
                 console.warn("Firestore save error, fallback to offline storage:", err);
                 showToast("নোটিশ অফলাইনে সেভ ও পাবলিশ হয়েছে!");
@@ -5300,7 +5326,7 @@
                 return;
             }
 
-            showToast(`${toBanglaNum(parsedStudents.length)} জন শিক্ষার্থীর তথ্য আপলোড হচ্ছে...`);
+            showToast(`${window.toBanglaNum(parsedStudents.length)} জন শিক্ষার্থীর তথ্য আপলোড হচ্ছে...`);
 
             try {
                 if (window.importStudentDirect) {
@@ -5320,10 +5346,10 @@
                 });
 
                 renderStudentList();
-                showToast(`সফলভাবে ${toBanglaNum(parsedStudents.length)} জন শিক্ষার্থীর ডাটা ডাটাবেজে সেভ হয়েছে!`);
+                showToast(`সফলভাবে ${window.toBanglaNum(parsedStudents.length)} জন শিক্ষার্থীর ডাটা ডাটাবেজে সেভ হয়েছে!`);
                 closeAddStudentForm();
                 document.getElementById('student-bulk-textarea').value = "";
-                logUserAction("একসাথে শিক্ষার্থী যুক্ত সম্পন্ন: " + parsedStudents.length + " জন");
+                window.logUserAction("একসাথে শিক্ষার্থী যুক্ত সম্পন্ন: " + parsedStudents.length + " জন");
             } catch (e) {
                 console.error("Bulk save failure:", e);
                 showToast("ডাটা সংরক্ষণ করতে সমস্যা হয়েছে!");
@@ -5374,7 +5400,7 @@
                 }, { merge: true });
                 showToast("বকেয়া টাকা ডাটাবেজে আপডেট হয়েছে!");
                 closeModal('due-modal');
-                logUserAction(`বকেয়া টাকা আপডেট: ID ${stdId}, পরিমাণ ${dueVal}৳`);
+                window.logUserAction(`বকেয়া টাকা আপডেট: ID ${stdId}, পরিমাণ ${dueVal}৳`);
                 
                 const stdObj = window.mockStudents.find(s => s.id === stdId);
                 if (stdObj) stdObj.due = dueVal;
@@ -5420,7 +5446,7 @@
                 return;
             }
 
-            showToast(`${toBanglaNum(updates.length)} জন শিক্ষার্থীর বকেয়া আপডেট করা হচ্ছে...`);
+            showToast(`${window.toBanglaNum(updates.length)} জন শিক্ষার্থীর বকেয়া আপডেট করা হচ্ছে...`);
 
             try {
                 const promises = updates.map(async (up) => {
@@ -5438,10 +5464,10 @@
                 });
 
                 renderStudentList();
-                showToast(`সফলভাবে ${toBanglaNum(updates.length)} জন শিক্ষার্থীর বকেয়া আপডেট করা হয়েছে!`);
+                showToast(`সফলভাবে ${window.toBanglaNum(updates.length)} জন শিক্ষার্থীর বকেয়া আপডেট করা হয়েছে!`);
                 closeModal('due-modal');
                 document.getElementById('due-bulk-textarea').value = "";
-                logUserAction("বকেয়া টাকা আপডেট সম্পন্ন: " + updates.length + " জন");
+                window.logUserAction("বকেয়া টাকা আপডেট সম্পন্ন: " + updates.length + " জন");
             } catch (e) {
                 console.error("Bulk update failed:", e);
                 updates.forEach(up => {
@@ -5526,7 +5552,7 @@
                     window.mockStudents = [];
                     renderStudentList();
                     showToast("সাফল্যের সাথে সমস্ত শিক্ষার্থীর ডাটা মুছে ফেলা হয়েছে!");
-                    logUserAction("সব শিক্ষার্থীর তথ্য মুছে ফেলা হয়েছে");
+                    window.logUserAction("সব শিক্ষার্থীর তথ্য মুছে ফেলা হয়েছে");
                 } catch (e) {
                     console.error("Delete all failed: ", e);
                     showToast("ডাটা মুছতে সমস্যা হয়েছে!");
@@ -5619,7 +5645,7 @@
 
                 await setDoc(docRef, payload, { merge: true });
                 showToast("মাদ্রাসার সকল তথ্য ও পেজ কাস্টমাইজেশন সংরক্ষিত হয়েছে!");
-                logUserAction("মাদ্রাসার কাস্টমাইজেশন সেটিংস ও লিংকসমূহ পরিবর্তন করা হয়েছে");
+                window.logUserAction("মাদ্রাসার কাস্টমাইজেশন সেটিংস ও লিংকসমূহ পরিবর্তন করা হয়েছে");
                 closeAdminCustomizer();
             } catch (e) {
                 console.error("Customization save error:", e);
@@ -5641,12 +5667,12 @@
                 const matchClass = filter === 'all' || s.cls === filter;
                 const studentYear = s.year || '2026'; // Fallback for existing students
                 const matchYear = studentYear === selectedYear;
-                const matchSearch = query === '' || s.name.toLowerCase().includes(query) || s.phone.includes(query) || s.id.includes(query);
+                const matchSearch = query === '' || s.name.toLowerCase().includes(query) || (s.phone && s.phone.includes(query)) || (s.id && String(s.id).includes(query));
                 return matchbranch && matchClass && matchYear && matchSearch;
             });
 
             const totalEl = document.getElementById('admin-stats-total');
-            if (totalEl) totalEl.innerText = toBanglaNum(filtered.length);
+            if (totalEl) totalEl.innerText = window.toBanglaNum(filtered.length);
             
             if(filtered.length === 0) {
                 container.innerHTML = '<p class="text-center theme-text-muted py-8 text-sm">কোনো শিক্ষার্থী পাওয়া যায়নি</p>';
@@ -5666,7 +5692,7 @@
             document.getElementById('admin-pagination-panel').classList.remove('hidden');
             document.getElementById('btn-prev-page').disabled = (window.studentCurrentPage === 1);
             document.getElementById('btn-next-page').disabled = (window.studentCurrentPage === totalPages);
-            document.getElementById('txt-page-info').innerText = `পৃষ্ঠা: ${toBanglaNum(window.studentCurrentPage)} / ${toBanglaNum(totalPages)}`;
+            document.getElementById('txt-page-info').innerText = `পৃষ্ঠা: ${window.toBanglaNum(window.studentCurrentPage)} / ${window.toBanglaNum(totalPages)}`;
 
             container.innerHTML = paginatedList.map((s, idx) => {
                 const absoluteIndex = startIndex + idx + 1;
@@ -5678,7 +5704,7 @@
 
                 const dueVal = s.due || 0;
                 
-                const dueLabel = dueVal > 0 ? `বকেয়া: ${toBanglaNum(dueVal)} ৳` : `বকেয়া: ০ ৳ (পরিশোধিত)`;
+                const dueLabel = dueVal > 0 ? `বকেয়া: ${window.toBanglaNum(dueVal)} ৳` : `বকেয়া: ০ ৳ (পরিশোধিত)`;
                 const dueColorClass = dueVal > 0 ? 'text-red-600 dark:text-red-400 font-bold' : 'text-emerald-600 dark:text-emerald-400 font-bold';
 
                 return `
@@ -5690,7 +5716,7 @@
                             <div>
                                 <p class="text-xs text-green-600 dark:text-green-400 font-bold mb-0.5">${s.cls}</p>
                                 <h4 class="font-bold theme-text text-sm leading-tight mb-1">
-                                    ${toBanglaNum(absoluteIndex)}. [ID: ${toBanglaNum(s.id)}] ${s.name}
+                                    ${window.toBanglaNum(absoluteIndex)}. [ID: ${window.toBanglaNum(s.id)}] ${s.name}
                                 </h4>
                                 <p class="text-[11px] theme-text-muted">পিতা: ${s.fname || '---'} | ঠিকানা: ${s.addr || '---'} | <span class="${dueColorClass}">${dueLabel}</span></p>
                             </div>
@@ -5745,7 +5771,7 @@
         window.updateRoutineClassSelect = () => {
             const branch = document.getElementById('routine-branch-select').value;
             const select = document.getElementById('class-select');
-            const classes = branch === 'male' ? BOYS_CLASSES : GIRLS_CLASSES;
+            const classes = branch === 'male' ? (typeof BOYS_CLASSES !== 'undefined' ? BOYS_CLASSES : []) : (typeof GIRLS_CLASSES !== 'undefined' ? GIRLS_CLASSES : []);
             
             select.innerHTML = classes.map(c => `<option value="${c}" class="bg-[var(--bg-card)]">${c}</option>`).join('');
             loadRoutineForSelectedClass();
@@ -5887,7 +5913,7 @@
             let printList = window.mockStudents.filter(s => {
                 const matchbranch = s.branch === window.selectedbranch;
                 const matchClass = filter === 'all' || s.cls === filter;
-                const matchSearch = query === '' || s.name.toLowerCase().includes(query) || s.phone.includes(query) || String(s.id).includes(query);
+                const matchSearch = query === '' || s.name.toLowerCase().includes(query) || (s.phone && s.phone.includes(query)) || (s.id && String(s.id).includes(query));
                 return matchbranch && matchClass && matchSearch;
             });
             if(printList.length === 0) { showToast("কোনো শিক্ষার্থী পাওয়া যায়নি!"); return; }
@@ -5898,13 +5924,13 @@
 
             const rows = printList.map((s, idx) => {
                 const dueVal = s.due || 0;
-                const dueText = dueVal > 0 ? `${toBanglaNum(dueVal)} ৳` : '০ ৳ (পরিশোধিত)';
+                const dueText = dueVal > 0 ? `${window.toBanglaNum(dueVal)} ৳` : '০ ৳ (পরিশোধিত)';
                 const dueColor = dueVal > 0 ? '#b91c1c' : '#047857';
 
                 return `
                 <tr style="border-bottom:1px solid #999;text-align:center;${idx%2===1?'background:#f2f2f2;':''}">
-                    <td style="padding:8px 6px;font-weight:bold;font-size:12px;border-right:1px solid #999;color:#000;">${toBanglaNum(idx+1)}</td>
-                    <td style="padding:8px 6px;font-size:11px;border-right:1px solid #999;color:#000;">${toBanglaNum(s.id)}</td>
+                    <td style="padding:8px 6px;font-weight:bold;font-size:12px;border-right:1px solid #999;color:#000;">${window.toBanglaNum(idx+1)}</td>
+                    <td style="padding:8px 6px;font-size:11px;border-right:1px solid #999;color:#000;">${window.toBanglaNum(s.id)}</td>
                     <td style="padding:8px 6px;font-weight:bold;text-align:left;font-size:12px;border-right:1px solid #999;color:#000;">${s.name}</td>
                     <td style="padding:8px 6px;text-align:left;font-size:11px;border-right:1px solid #999;color:#000;">${s.fname||'---'}</td>
                     <td style="padding:8px 6px;font-size:11px;border-right:1px solid #999;font-family:monospace;color:#000;">${s.phone||'---'}</td>
@@ -5922,7 +5948,7 @@
                             <b style="font-size:13px;color:#000;">${tableTitle}</b>
                         </div>
                         <div style="display:flex;justify-content:space-between;font-size:10px;margin-top:10px;color:#333;">
-                            <span>মোট শিক্ষার্থী: <b style="color:#000;">${toBanglaNum(printList.length)} জন</b></span>
+                            <span>মোট শিক্ষার্থী: <b style="color:#000;">${window.toBanglaNum(printList.length)} জন</b></span>
                             <span>তারিখ: <b>${formattedDate}</b></span>
                         </div>
                     </div>
@@ -5996,7 +6022,7 @@
         };
 
         document.addEventListener('DOMContentLoaded', () => {
-            updateDates(new Date());
+            if (typeof updateDates === 'function') updateDates(new Date());
             renderNotices();
             
             if (window.startMarqueeEngine) {
@@ -6021,5 +6047,94 @@
             }
         });
     </script>
+	<script>
+// নোট লোড ও রেন্ডার করার ফাংশন
+function renderNotes() {
+    const container = document.getElementById('note-list-container');
+    if (!container) return; // কন্টেইনার না থাকলে ফাংশন বন্ধ হবে
+
+    const savedNotes = localStorage.getItem('user_notes');
+    const notes = savedNotes ? JSON.parse(savedNotes) : [];
+    
+    container.innerHTML = '';
+
+    if (notes.length === 0) {
+        container.innerHTML = '<p class="text-center theme-text-muted py-8 text-xs">কোনো নোট পাওয়া যায়নি।</p>';
+        return;
+    }
+
+    notes.forEach(note => {
+        const noteCard = document.createElement('div');
+        noteCard.className = 'theme-card p-3 rounded-xl border relative shadow-sm space-y-2 bg-[var(--bg-card)]';
+        noteCard.innerHTML = `
+            <p class="text-sm theme-text pr-12">${note.text}</p>
+            <div class="flex justify-between items-center text-[10px] theme-text-muted border-t pt-2">
+                <span>${note.date || ''} ${note.private ? '🔐 প্রাইভেট' : ''}</span>
+                <button onclick="deleteNote(${note.id})" class="text-red-500 hover:underline">ডিলিট</button>
+            </div>
+        `;
+        container.appendChild(noteCard);
+    });
+}
+
+		// নতুন নোট সেভ করার মূল ফাংশন
+		function saveNote() {
+			const textArea = document.getElementById('new-note-text');
+			const privacyCheckbox = document.getElementById('note-privacy-checkbox');
+			const text = textArea.value.trim();
+			
+			if (!text) {
+				alert('অনুগ্রহ করে কিছু লিখুন!');
+				return;
+			}
+
+			const notes = JSON.parse(localStorage.getItem('user_notes') || '[]');
+			const newNote = {
+				id: Date.now(),
+				text: text,
+				private: privacyCheckbox ? privacyCheckbox.checked : false,
+				date: new Date().toLocaleDateString('bn-BD')
+			};
+
+			notes.push(newNote);
+			localStorage.setItem('user_notes', JSON.stringify(notes));
+			
+			// ফর্ম রিসেট ও রিফ্রেশ
+			closeAddNoteForm();
+			renderNotes();
+			alert('নোটটি সফলভাবে সেভ করা হয়েছে!');
+		}
+
+		// নোট ডিলিট করার ফাংশন
+		function deleteNote(id) {
+			if (confirm('নোটটি কি ডিলিট করতে চান?')) {
+				let notes = JSON.parse(localStorage.getItem('user_notes') || '[]');
+				notes = notes.filter(note => note.id !== id);
+				localStorage.setItem('user_notes', JSON.stringify(notes));
+				renderNotes();
+			}
+		}
+
+		// মোডাল/ফর্ম কন্ট্রোল
+		function openAddNoteForm() {
+			const form = document.getElementById('add-note-form');
+			if (form) {
+				form.classList.remove('hidden');
+				form.classList.add('flex');
+			}
+		}
+
+		function closeAddNoteForm() {
+			const form = document.getElementById('add-note-form');
+			if (form) {
+				form.classList.add('hidden');
+				form.classList.remove('flex');
+			}
+			const textArea = document.getElementById('new-note-text');
+			const checkbox = document.getElementById('note-privacy-checkbox');
+			if (textArea) textArea.value = '';
+			if (checkbox) checkbox.checked = false;
+		}
+</script>
 </body>
 </html>
